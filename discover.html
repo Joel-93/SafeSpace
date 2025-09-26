@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSpace - Discover</title>
+    <title>Discover Zone - SafeSpace</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,70 +16,501 @@
             --text-dark: #2D3748;
             --text-light: #4A5568;
             --white: #FFFFFF;
-            --shadow: 0 4px 6px rgba(0,0,0,0.05);
-            --shadow-hover: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Poppins', sans-serif; font-size:16px; line-height:1.6; color:var(--text-dark); background-color: var(--light-gray); overflow-x:hidden; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
 
         /* Header & Navigation */
-        header { background-color: var(--white); box-shadow: var(--shadow); position: sticky; top:0; z-index:100; }
-        .navbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 5%; max-width:1400px; margin:0 auto; }
-        .logo { display:flex; align-items:center; gap:10px; font-size:1.5rem; font-weight:700; color:var(--soft-blue); text-decoration:none; }
-        .logo-icon { font-size:2rem; }
-        .nav-tabs { display:flex; gap:2rem; }
-        .nav-tab { padding:0.5rem 1rem; border-radius:50px; font-weight:500; cursor:pointer; transition:all 0.3s ease; text-decoration:none; color:var(--text-dark); }
-        .nav-tab:hover, .nav-tab.active { background-color: var(--soft-blue); color: var(--white); }
-        .mobile-menu-btn { display:none; background:none; border:none; font-size:1.5rem; cursor:pointer; color: var(--soft-blue); }
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        /* Discover Section */
-        .discover-container { max-width: 900px; margin: 2rem auto; padding: 0 5%; }
-        .discover-header { text-align:center; margin-bottom:2rem; }
-        .discover-header h1 { font-size:2.5rem; color:var(--soft-blue); margin-bottom:0.5rem; }
-        .discover-header p { font-size:1.2rem; color:var(--text-light); }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        .quiz-container { background-color: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow); padding:2rem; }
-        .question { font-size:1.2rem; font-weight:500; margin-bottom:1rem; }
-        .options { display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem; }
-        .option-btn { padding:0.8rem 1rem; border:1px solid #ddd; border-radius:var(--border-radius); background-color: var(--white); cursor:pointer; transition: all 0.3s ease; font-size:1rem; text-align:left; }
-        .option-btn:hover { background-color: var(--soft-blue); color: var(--white); border-color: var(--soft-blue); }
-        .option-btn.selected { background-color: var(--soft-green); color: var(--white); border-color: var(--soft-green); }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
 
-        .progress-bar-container { background-color:#eee; border-radius:50px; overflow:hidden; height:12px; margin-bottom:2rem; }
-        .progress-bar { height:100%; width:0%; background-color: var(--soft-blue); transition: width 0.3s ease; }
+        .logo-icon {
+            font-size: 2rem;
+        }
 
-        .quiz-actions { display:flex; justify-content:flex-end; gap:1rem; }
-        .btn { padding:0.8rem 1.5rem; border:none; border-radius:var(--border-radius); font-size:1rem; cursor:pointer; transition:all 0.3s ease; }
-        .btn-primary { background-color: var(--soft-blue); color: var(--white); }
-        .btn-primary:hover { background-color: #8bc5c7; }
-        .btn-secondary { background-color:#e0e0e0; color:var(--text-dark); }
-        .btn-secondary:hover { background-color:#d0d0d0; }
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
 
-        .result-container { display:none; text-align:center; padding:2rem; }
-        .result-container h2 { font-size:2rem; color:var(--soft-blue); margin-bottom:1rem; }
-        .result-container p { font-size:1rem; color:var(--text-light); margin-bottom:1rem; }
-        .highlight { font-weight:600; color: var(--soft-purple); }
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--soft-blue);
+        }
+
+        /* Discover Zone Specific Styles */
+        .discover-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .discover-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .discover-header h1 {
+            font-size: 2.5rem;
+            color: var(--soft-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .discover-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-text {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--soft-green);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Quiz Content */
+        .quiz-content {
+            padding: 2rem;
+        }
+
+        .question-section {
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            display: inline-block;
+            background-color: var(--soft-blue);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .options-section {
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--soft-blue);
+            background-color: rgba(168, 218, 220, 0.1);
+        }
+
+        .option.selected {
+            border-color: var(--soft-blue);
+            background-color: rgba(168, 218, 220, 0.2);
+        }
+
+        .option input {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .option-label {
+            font-weight: 500;
+        }
+
+        /* Navigation Controls */
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--soft-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: #8bc5c7;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.secondary {
+            background-color: #e0e0e0;
+            color: var(--text-dark);
+        }
+
+        .nav-btn.secondary:hover:not(:disabled) {
+            background-color: #d0d0d0;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            color: var(--soft-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            color: var(--soft-blue);
+            margin-bottom: 1rem;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--soft-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .results-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Disclaimer Section */
+        .disclaimer-section {
+            background-color: var(--light-yellow);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .disclaimer-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            color: var(--soft-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: var(--soft-blue);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--soft-blue);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
 
         /* Footer */
-        footer { background-color: var(--white); padding: 2rem 5%; text-align:center; margin-top:4rem; border-top:1px solid rgba(0,0,0,0.05); }
-        .footer-content { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-        .copyright { color: var(--text-light); }
-        .footer-links { display:flex; gap:1.5rem; }
-        .footer-link { color: var(--soft-blue); text-decoration:none; transition: color 0.3s ease; }
-        .footer-link:hover { color: var(--soft-green); }
+        footer {
+            background-color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
-        /* Accessibility Bar */
-        .accessibility-bar { background-color: var(--text-dark); padding:0.5rem 5%; display:flex; justify-content:flex-end; gap:1rem; }
-        .accessibility-btn { background:none; border:none; color:var(--white); cursor:pointer; font-size:1rem; padding:0.25rem 0.5rem; border-radius:4px; transition:background-color 0.3s ease; }
-        .accessibility-btn:hover { background-color: rgba(255,255,255,0.1); }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-        /* Responsive */
-        @media(max-width:768px) {
-            .nav-tabs { display:none; flex-direction:column; position:absolute; top:100%; left:0; right:0; background-color: var(--white); box-shadow: var(--shadow); padding:1rem; }
-            .nav-tabs.active { display:flex; }
-            .mobile-menu-btn { display:block; }
+        .copyright {
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--soft-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--soft-green);
+        }
+
+        /* Accessibility Features */
+        .accessibility-bar {
+            background-color: var(--text-dark);
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .accessibility-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .accessibility-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            --soft-blue: #0066CC;
+            --soft-green: #008000;
+            --light-yellow: #FFFF00;
+            --soft-purple: #800080;
+            --light-gray: #000000;
+            --text-dark: #FFFFFF;
+            --text-light: #CCCCCC;
+            --white: #000000;
+            --shadow: 0 0 0 2px #FFFFFF;
+            --shadow-hover: 0 0 0 3px #FFFFFF;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+
+            .nav-tabs.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .discover-header h1 {
+                font-size: 2rem;
+            }
+
+            .welcome-features {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -109,30 +540,122 @@
         </nav>
     </header>
 
-    <!-- Discover Content -->
+    <!-- Discover Zone Content -->
     <div class="discover-container">
         <div class="discover-header">
-            <h1>Autism Screening Quiz</h1>
-            <p>Answer the following questions honestly. This is <span class="highlight">not a diagnosis</span>, but a screening tool. For a professional assessment, consult a qualified healthcare provider.</p>
+            <h1>Discover Zone</h1>
+            <p>Learn more about autism through our screening quiz and resources</p>
         </div>
 
-        <div class="quiz-container" id="quizContainer">
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progressBar"></div>
+        <!-- Quiz Container -->
+        <div class="quiz-container">
+            <!-- Welcome Section -->
+            <div class="welcome-section" id="welcomeSection">
+                <div class="welcome-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h2 class="welcome-title">Autism Screening Quiz</h2>
+                <p class="welcome-text">
+                    This screening quiz is designed to help you understand more about autism traits and characteristics. 
+                    It is based on common indicators but is not a diagnostic tool.
+                </p>
+                
+                <div class="welcome-features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="feature-title">10 Questions</div>
+                        <div class="feature-text">Quick and easy to complete in just a few minutes</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="feature-title">Instant Results</div>
+                        <div class="feature-text">Get your score and interpretation immediately</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="feature-title">Professional Guidance</div>
+                        <div class="feature-text">Resources to help you take the next steps</div>
+                    </div>
+                </div>
+                
+                <button class="nav-btn" id="startQuizBtn">
+                    <i class="fas fa-play"></i> Start Quiz
+                </button>
             </div>
-            <div class="question" id="quizQuestion"></div>
-            <div class="options" id="quizOptions"></div>
-            <div class="quiz-actions">
-                <button class="btn btn-secondary" id="prevBtn" style="display:none;">Previous</button>
-                <button class="btn btn-primary" id="nextBtn">Next</button>
+
+            <!-- Quiz Section (initially hidden) -->
+            <div id="quizSection" style="display: none;">
+                <!-- Progress Section -->
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <div class="progress-text">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span></div>
+                        <div class="progress-text" id="progressPercent">0%</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Content -->
+                <div class="quiz-content">
+                    <div class="question-section">
+                        <div class="question-number">Question <span id="questionNumber">1</span></div>
+                        <div class="question-text" id="questionText"></div>
+                    </div>
+
+                    <div class="options-section" id="optionsSection">
+                        <!-- Options will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="navigation-controls">
+                    <button class="nav-btn secondary" id="prevBtn" disabled>
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="nav-btn" id="nextBtn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section (initially hidden) -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h2 class="results-title">Your Results</h2>
+                <div class="results-score" id="resultsScore">0%</div>
+                <div class="results-description" id="resultsDescription"></div>
+                
+                <div class="results-actions">
+                    <button class="nav-btn secondary" id="retakeQuizBtn">
+                        <i class="fas fa-redo"></i> Retake Quiz
+                    </button>
+                    <button class="nav-btn" id="resourcesBtn">
+                        <i class="fas fa-book"></i> View Resources
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="result-container" id="resultContainer">
-            <h2>Your Screening Results</h2>
-            <p id="resultText"></p>
-            <p><strong>Disclaimer:</strong> This quiz is for informational purposes only. It is <span class="highlight">not a medical diagnosis</span>.</p>
-            <button class="btn btn-primary" id="restartQuizBtn">Restart Quiz</button>
+        <!-- Disclaimer Section -->
+        <div class="disclaimer-section">
+            <div class="disclaimer-title">
+                <i class="fas fa-exclamation-triangle"></i> Important Disclaimer
+            </div>
+            <div class="disclaimer-text">
+                This screening quiz is for informational purposes only and is not a diagnostic tool. 
+                It is based on common traits associated with autism but cannot provide a definitive diagnosis. 
+                If you have concerns about autism, please consult with a qualified healthcare professional 
+                such as a psychologist, psychiatrist, or developmental pediatrician for a proper evaluation.
+            </div>
         </div>
     </div>
 
@@ -149,117 +672,301 @@
     </footer>
 
     <script>
-        const quizData = [
-            {question: "Do you find it challenging to make small talk or maintain casual conversations?", options:["Never","Sometimes","Often","Always"]},
-            {question: "Do you have intense interests in specific topics?", options:["Never","Sometimes","Often","Always"]},
-            {question: "Do you prefer routine and get upset with changes?", options:["Never","Sometimes","Often","Always"]},
-            {question: "Do you struggle with interpreting social cues like body language or facial expressions?", options:["Never","Sometimes","Often","Always"]},
-            {question: "Do you find it hard to understand others' feelings or perspectives?", options:["Never","Sometimes","Often","Always"]},
+        // Quiz questions and scoring
+        const quizQuestions = [
+            {
+                question: "I prefer to do things the same way or follow the same routine.",
+                options: [
+                    { text: "Always", value: 2 },
+                    { text: "Often", value: 1 },
+                    { text: "Sometimes", value: 0 },
+                    { text: "Rarely", value: 0 },
+                    { text: "Never", value: 0 }
+                ]
+            },
+            {
+                question: "I notice small details, patterns, smells, or sounds that others do not.",
+                options: [
+                    { text: "Always", value: 2 },
+                    { text: "Often", value: 1 },
+                    { text: "Sometimes", value: 0 },
+                    { text: "Rarely", value: 0 },
+                    { text: "Never", value: 0 }
+                ]
+            },
+            {
+                question: "I find it easy to socialize and make new friends.",
+                options: [
+                    { text: "Always", value: 0 },
+                    { text: "Often", value: 0 },
+                    { text: "Sometimes", value: 1 },
+                    { text: "Rarely", value: 2 },
+                    { text: "Never", value: 2 }
+                ]
+            },
+            {
+                question: "I have a strong interest in specific topics and like to learn everything about them.",
+                options: [
+                    { text: "Always", value: 2 },
+                    { text: "Often", value: 1 },
+                    { text: "Sometimes", value: 0 },
+                    { text: "Rarely", value: 0 },
+                    { text: "Never", value: 0 }
+                ]
+            },
+            {
+                question: "I find it easy to understand how others are feeling.",
+                options: [
+                    { text: "Always", value: 0 },
+                    { text: "Often", value: 0 },
+                    { text: "Sometimes", value: 1 },
+                    { text: "Rarely", value: 2 },
+                    { text: "Never", value: 2 }
+                ]
+            },
+            {
+                question: "I am comfortable with eye contact during conversations.",
+                options: [
+                    { text: "Always", value: 0 },
+                    { text: "Often", value: 0 },
+                    { text: "Sometimes", value: 1 },
+                    { text: "Rarely", value: 2 },
+                    { text: "Never", value: 2 }
+                ]
+            },
+            {
+                question: "I use gestures and facial expressions naturally when I talk.",
+                options: [
+                    { text: "Always", value: 0 },
+                    { text: "Often", value: 0 },
+                    { text: "Sometimes", value: 1 },
+                    { text: "Rarely", value: 2 },
+                    { text: "Never", value: 2 }
+                ]
+            },
+            {
+                question: "I prefer to do activities alone rather than with others.",
+                options: [
+                    { text: "Always", value: 2 },
+                    { text: "Often", value: 1 },
+                    { text: "Sometimes", value: 0 },
+                    { text: "Rarely", value: 0 },
+                    { text: "Never", value: 0 }
+                ]
+            },
+            {
+                question: "I am sensitive to certain sounds, textures, or lights.",
+                options: [
+                    { text: "Always", value: 2 },
+                    { text: "Often", value: 1 },
+                    { text: "Sometimes", value: 0 },
+                    { text: "Rarely", value: 0 },
+                    { text: "Never", value: 0 }
+                ]
+            },
+            {
+                question: "I find it easy to adapt when my plans change unexpectedly.",
+                options: [
+                    { text: "Always", value: 0 },
+                    { text: "Often", value: 0 },
+                    { text: "Sometimes", value: 1 },
+                    { text: "Rarely", value: 2 },
+                    { text: "Never", value: 2 }
+                ]
+            }
         ];
 
-        let currentQuestion = 0;
-        const answers = Array(quizData.length).fill(null);
+        // Current state
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizStarted = false;
 
-        const quizQuestion = document.getElementById('quizQuestion');
-        const quizOptions = document.getElementById('quizOptions');
-        const nextBtn = document.getElementById('nextBtn');
+        // DOM elements
+        const welcomeSection = document.getElementById('welcomeSection');
+        const quizSection = document.getElementById('quizSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const questionText = document.getElementById('questionText');
+        const questionNumber = document.getElementById('questionNumber');
+        const currentQuestion = document.getElementById('currentQuestion');
+        const totalQuestions = document.getElementById('totalQuestions');
+        const progressPercent = document.getElementById('progressPercent');
+        const progressFill = document.getElementById('progressFill');
+        const optionsSection = document.getElementById('optionsSection');
         const prevBtn = document.getElementById('prevBtn');
-        const progressBar = document.getElementById('progressBar');
-        const quizContainer = document.getElementById('quizContainer');
-        const resultContainer = document.getElementById('resultContainer');
-        const resultText = document.getElementById('resultText');
-        const restartQuizBtn = document.getElementById('restartQuizBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resultsScore = document.getElementById('resultsScore');
+        const resultsDescription = document.getElementById('resultsDescription');
+        const retakeQuizBtn = document.getElementById('retakeQuizBtn');
+        const resourcesBtn = document.getElementById('resourcesBtn');
 
-        function renderQuestion() {
-            const currentData = quizData[currentQuestion];
-            quizQuestion.textContent = `${currentQuestion + 1}. ${currentData.question}`;
-            quizOptions.innerHTML = '';
-            currentData.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.textContent = opt;
-                btn.className = 'option-btn';
-                if(answers[currentQuestion] === idx) btn.classList.add('selected');
-                btn.addEventListener('click', () => {
-                    answers[currentQuestion] = idx;
-                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                });
-                quizOptions.appendChild(btn);
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up quiz navigation
+            startQuizBtn.addEventListener('click', startQuiz);
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            retakeQuizBtn.addEventListener('click', retakeQuiz);
+            resourcesBtn.addEventListener('click', showResources);
+            
+            // Set up accessibility buttons
+            document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast);
+            document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize);
+            document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize);
+            
+            // Set up mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navTabs').classList.toggle('active');
             });
+            
+            // Initialize total questions display
+            totalQuestions.textContent = quizQuestions.length;
+        });
 
-            prevBtn.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
-            nextBtn.textContent = currentQuestion === quizData.length -1 ? 'Submit' : 'Next';
-
-            progressBar.style.width = `${((currentQuestion)/quizData.length)*100}%`;
+        // Start the quiz
+        function startQuiz() {
+            quizStarted = true;
+            welcomeSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            currentQuestionIndex = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            loadQuestion(currentQuestionIndex);
         }
 
-        nextBtn.addEventListener('click', () => {
-            if(answers[currentQuestion] === null) {
-                alert("Please select an option to proceed.");
-                return;
+        // Load a specific question
+        function loadQuestion(index) {
+            const question = quizQuestions[index];
+            
+            // Update question text and number
+            questionText.textContent = question.question;
+            questionNumber.textContent = index + 1;
+            currentQuestion.textContent = index + 1;
+            
+            // Update progress
+            const progress = ((index) / quizQuestions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.round(progress)}%`;
+            
+            // Clear options
+            optionsSection.innerHTML = '';
+            
+            // Add options
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <input type="radio" id="option-${optionIndex}" name="question-${index}" value="${optionIndex}" ${userAnswers[index] === optionIndex ? 'checked' : ''}>
+                    <label for="option-${optionIndex}" class="option-label">${option.text}</label>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index, optionIndex));
+                optionsSection.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            prevBtn.disabled = index === 0;
+            
+            if (index === quizQuestions.length - 1) {
+                nextBtn.innerHTML = 'See Results <i class="fas fa-chart-bar"></i>';
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
             }
-            if(currentQuestion < quizData.length -1) {
-                currentQuestion++;
-                renderQuestion();
+            
+            // Disable next button if no answer selected
+            nextBtn.disabled = userAnswers[index] === null;
+        }
+
+        // Select an option
+        function selectOption(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            loadQuestion(questionIndex); // Reload to update UI
+        }
+
+        // Go to the previous question
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Go to the next question or show results
+        function goToNextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
             } else {
                 showResults();
             }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if(currentQuestion > 0) {
-                currentQuestion--;
-                renderQuestion();
-            }
-        });
-
-        function showResults() {
-            quizContainer.style.display = 'none';
-            resultContainer.style.display = 'block';
-
-            // Calculate percentage
-            const maxScore = (quizData.length) * 3; // Max score per question = 3 (0-3)
-            const totalScore = answers.reduce((a,b) => a+b,0);
-            const percentage = Math.round((totalScore/maxScore)*100);
-
-            // Result text
-            let resultMessage = '';
-            if(percentage <= 20) resultMessage = "Low likelihood of autism-related traits.";
-            else if(percentage <= 60) resultMessage = "Moderate likelihood of autism-related traits. Consider consulting a specialist.";
-            else resultMessage = "High likelihood of autism-related traits. Professional assessment is recommended.";
-
-            resultText.innerHTML = `Your estimated likelihood of autism is <span class="highlight">${percentage}%</span>.<br><br><span class="highlight">${resultMessage}</span>`;
         }
 
-        restartQuizBtn.addEventListener('click', () => {
-            currentQuestion = 0;
-            answers.fill(null);
-            quizContainer.style.display = 'block';
-            resultContainer.style.display = 'none';
-            renderQuestion();
-        });
+        // Calculate and show results
+        function showResults() {
+            // Calculate score
+            let totalScore = 0;
+            let maxScore = 0;
+            
+            userAnswers.forEach((answerIndex, questionIndex) => {
+                if (answerIndex !== null) {
+                    const optionValue = quizQuestions[questionIndex].options[answerIndex].value;
+                    totalScore += optionValue;
+                    maxScore += 2; // Maximum value per question is 2
+                }
+            });
+            
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // Update results display
+            resultsScore.textContent = `${percentage}%`;
+            resultsDescription.textContent = getResultDescription(percentage);
+            
+            // Show results section
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+        }
 
-        renderQuestion();
+        // Get description based on score
+        function getResultDescription(percentage) {
+            if (percentage < 25) {
+                return "Your results suggest that you show few signs commonly associated with autism. This does not rule out autism, as it presents differently in everyone. If you have concerns, consider consulting a professional for a comprehensive evaluation.";
+            } else if (percentage < 50) {
+                return "Your results indicate that you may show some traits associated with autism. This screening is not a diagnosis, but if these traits are causing challenges in your life, you might benefit from speaking with a healthcare professional.";
+            } else if (percentage < 75) {
+                return "Your results suggest that you show several traits commonly associated with autism. Many autistic people lead fulfilling lives with appropriate support. Consider seeking an evaluation from a qualified professional if you would like clarification.";
+            } else {
+                return "Your results indicate a strong likelihood of autistic traits. Many autistic people find that understanding their neurotype helps them develop effective coping strategies and self-acceptance. We recommend consulting with a healthcare professional for a formal assessment if you haven't already.";
+            }
+        }
 
-        // Accessibility
-        document.getElementById('highContrastToggle').addEventListener('click', () => {
+        // Retake the quiz
+        function retakeQuiz() {
+            resultsSection.style.display = 'none';
+            welcomeSection.style.display = 'block';
+        }
+
+        // Show resources (placeholder function)
+        function showResources() {
+            alert("Resources page would open here with information about autism, support groups, and professional help.");
+        }
+
+        // Accessibility functions
+        function toggleHighContrast() {
             document.body.classList.toggle('high-contrast');
-        });
-        document.getElementById('textSizeIncrease').addEventListener('click', () => {
-            const size = parseFloat(getComputedStyle(document.body).fontSize);
-            document.body.style.fontSize = `${size + 2}px`;
-        });
-        document.getElementById('textSizeDecrease').addEventListener('click', () => {
-            const size = parseFloat(getComputedStyle(document.body).fontSize);
-            if(size > 12) document.body.style.fontSize = `${size - 2}px`;
-        });
+        }
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navTabs = document.getElementById('navTabs');
-        mobileMenuBtn.addEventListener('click', () => {
-            navTabs.classList.toggle('active');
-        });
+        function increaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + 2) + 'px';
+        }
+
+        function decreaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize - 2) + 'px';
+        }
     </script>
 </body>
 </html>

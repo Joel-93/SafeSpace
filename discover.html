@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSpace - Discover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --soft-blue: #A8DADC;
+            --soft-green: #B7E4C7;
+            --light-yellow: #FFE5B4;
+            --soft-purple: #D4A5C8;
+            --light-gray: #F5F5F5;
+            --text-dark: #2D3748;
+            --text-light: #4A5568;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-hover: 0 10px 15px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Poppins', sans-serif; font-size:16px; line-height:1.6; color:var(--text-dark); background-color: var(--light-gray); overflow-x:hidden; }
+
+        /* Header & Navigation */
+        header { background-color: var(--white); box-shadow: var(--shadow); position: sticky; top:0; z-index:100; }
+        .navbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 5%; max-width:1400px; margin:0 auto; }
+        .logo { display:flex; align-items:center; gap:10px; font-size:1.5rem; font-weight:700; color:var(--soft-blue); text-decoration:none; }
+        .logo-icon { font-size:2rem; }
+        .nav-tabs { display:flex; gap:2rem; }
+        .nav-tab { padding:0.5rem 1rem; border-radius:50px; font-weight:500; cursor:pointer; transition:all 0.3s ease; text-decoration:none; color:var(--text-dark); }
+        .nav-tab:hover, .nav-tab.active { background-color: var(--soft-blue); color: var(--white); }
+        .mobile-menu-btn { display:none; background:none; border:none; font-size:1.5rem; cursor:pointer; color: var(--soft-blue); }
+
+        /* Discover Section */
+        .discover-container { max-width: 900px; margin: 2rem auto; padding: 0 5%; }
+        .discover-header { text-align:center; margin-bottom:2rem; }
+        .discover-header h1 { font-size:2.5rem; color:var(--soft-blue); margin-bottom:0.5rem; }
+        .discover-header p { font-size:1.2rem; color:var(--text-light); }
+
+        .quiz-container { background-color: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow); padding:2rem; }
+        .question { font-size:1.2rem; font-weight:500; margin-bottom:1rem; }
+        .options { display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem; }
+        .option-btn { padding:0.8rem 1rem; border:1px solid #ddd; border-radius:var(--border-radius); background-color: var(--white); cursor:pointer; transition: all 0.3s ease; font-size:1rem; text-align:left; }
+        .option-btn:hover { background-color: var(--soft-blue); color: var(--white); border-color: var(--soft-blue); }
+        .option-btn.selected { background-color: var(--soft-green); color: var(--white); border-color: var(--soft-green); }
+
+        .progress-bar-container { background-color:#eee; border-radius:50px; overflow:hidden; height:12px; margin-bottom:2rem; }
+        .progress-bar { height:100%; width:0%; background-color: var(--soft-blue); transition: width 0.3s ease; }
+
+        .quiz-actions { display:flex; justify-content:flex-end; gap:1rem; }
+        .btn { padding:0.8rem 1.5rem; border:none; border-radius:var(--border-radius); font-size:1rem; cursor:pointer; transition:all 0.3s ease; }
+        .btn-primary { background-color: var(--soft-blue); color: var(--white); }
+        .btn-primary:hover { background-color: #8bc5c7; }
+        .btn-secondary { background-color:#e0e0e0; color:var(--text-dark); }
+        .btn-secondary:hover { background-color:#d0d0d0; }
+
+        .result-container { display:none; text-align:center; padding:2rem; }
+        .result-container h2 { font-size:2rem; color:var(--soft-blue); margin-bottom:1rem; }
+        .result-container p { font-size:1rem; color:var(--text-light); margin-bottom:1rem; }
+        .highlight { font-weight:600; color: var(--soft-purple); }
+
+        /* Footer */
+        footer { background-color: var(--white); padding: 2rem 5%; text-align:center; margin-top:4rem; border-top:1px solid rgba(0,0,0,0.05); }
+        .footer-content { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+        .copyright { color: var(--text-light); }
+        .footer-links { display:flex; gap:1.5rem; }
+        .footer-link { color: var(--soft-blue); text-decoration:none; transition: color 0.3s ease; }
+        .footer-link:hover { color: var(--soft-green); }
+
+        /* Accessibility Bar */
+        .accessibility-bar { background-color: var(--text-dark); padding:0.5rem 5%; display:flex; justify-content:flex-end; gap:1rem; }
+        .accessibility-btn { background:none; border:none; color:var(--white); cursor:pointer; font-size:1rem; padding:0.25rem 0.5rem; border-radius:4px; transition:background-color 0.3s ease; }
+        .accessibility-btn:hover { background-color: rgba(255,255,255,0.1); }
+
+        /* Responsive */
+        @media(max-width:768px) {
+            .nav-tabs { display:none; flex-direction:column; position:absolute; top:100%; left:0; right:0; background-color: var(--white); box-shadow: var(--shadow); padding:1rem; }
+            .nav-tabs.active { display:flex; }
+            .mobile-menu-btn { display:block; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+        <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+        <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span>SafeSpace</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-tabs" id="navTabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="learn.html" class="nav-tab">Learn</a>
+                <a href="calm.html" class="nav-tab">Calm</a>
+                <a href="shine.html" class="nav-tab">Shine</a>
+                <a href="discover.html" class="nav-tab active">Discover</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Discover Content -->
+    <div class="discover-container">
+        <div class="discover-header">
+            <h1>Autism Screening Quiz</h1>
+            <p>Answer the following questions honestly. This is <span class="highlight">not a diagnosis</span>, but a screening tool. For a professional assessment, consult a qualified healthcare provider.</p>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="question" id="quizQuestion"></div>
+            <div class="options" id="quizOptions"></div>
+            <div class="quiz-actions">
+                <button class="btn btn-secondary" id="prevBtn" style="display:none;">Previous</button>
+                <button class="btn btn-primary" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="result-container" id="resultContainer">
+            <h2>Your Screening Results</h2>
+            <p id="resultText"></p>
+            <p><strong>Disclaimer:</strong> This quiz is for informational purposes only. It is <span class="highlight">not a medical diagnosis</span>.</p>
+            <button class="btn btn-primary" id="restartQuizBtn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">© 2023 SafeSpace. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const quizData = [
+            {question: "Do you find it challenging to make small talk or maintain casual conversations?", options:["Never","Sometimes","Often","Always"]},
+            {question: "Do you have intense interests in specific topics?", options:["Never","Sometimes","Often","Always"]},
+            {question: "Do you prefer routine and get upset with changes?", options:["Never","Sometimes","Often","Always"]},
+            {question: "Do you struggle with interpreting social cues like body language or facial expressions?", options:["Never","Sometimes","Often","Always"]},
+            {question: "Do you find it hard to understand others' feelings or perspectives?", options:["Never","Sometimes","Often","Always"]},
+        ];
+
+        let currentQuestion = 0;
+        const answers = Array(quizData.length).fill(null);
+
+        const quizQuestion = document.getElementById('quizQuestion');
+        const quizOptions = document.getElementById('quizOptions');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const progressBar = document.getElementById('progressBar');
+        const quizContainer = document.getElementById('quizContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+        const restartQuizBtn = document.getElementById('restartQuizBtn');
+
+        function renderQuestion() {
+            const currentData = quizData[currentQuestion];
+            quizQuestion.textContent = `${currentQuestion + 1}. ${currentData.question}`;
+            quizOptions.innerHTML = '';
+            currentData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.className = 'option-btn';
+                if(answers[currentQuestion] === idx) btn.classList.add('selected');
+                btn.addEventListener('click', () => {
+                    answers[currentQuestion] = idx;
+                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                });
+                quizOptions.appendChild(btn);
+            });
+
+            prevBtn.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+            nextBtn.textContent = currentQuestion === quizData.length -1 ? 'Submit' : 'Next';
+
+            progressBar.style.width = `${((currentQuestion)/quizData.length)*100}%`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if(answers[currentQuestion] === null) {
+                alert("Please select an option to proceed.");
+                return;
+            }
+            if(currentQuestion < quizData.length -1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if(currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        });
+
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+
+            // Calculate percentage
+            const maxScore = (quizData.length) * 3; // Max score per question = 3 (0-3)
+            const totalScore = answers.reduce((a,b) => a+b,0);
+            const percentage = Math.round((totalScore/maxScore)*100);
+
+            // Result text
+            let resultMessage = '';
+            if(percentage <= 20) resultMessage = "Low likelihood of autism-related traits.";
+            else if(percentage <= 60) resultMessage = "Moderate likelihood of autism-related traits. Consider consulting a specialist.";
+            else resultMessage = "High likelihood of autism-related traits. Professional assessment is recommended.";
+
+            resultText.innerHTML = `Your estimated likelihood of autism is <span class="highlight">${percentage}%</span>.<br><br><span class="highlight">${resultMessage}</span>`;
+        }
+
+        restartQuizBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            answers.fill(null);
+            quizContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            renderQuestion();
+        });
+
+        renderQuestion();
+
+        // Accessibility
+        document.getElementById('highContrastToggle').addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+        });
+        document.getElementById('textSizeIncrease').addEventListener('click', () => {
+            const size = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = `${size + 2}px`;
+        });
+        document.getElementById('textSizeDecrease').addEventListener('click', () => {
+            const size = parseFloat(getComputedStyle(document.body).fontSize);
+            if(size > 12) document.body.style.fontSize = `${size - 2}px`;
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navTabs = document.getElementById('navTabs');
+        mobileMenuBtn.addEventListener('click', () => {
+            navTabs.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

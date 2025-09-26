@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shine Zone - SafeSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --soft-blue: #A8DADC;
+            --soft-green: #B7E4C7;
+            --light-yellow: #FFE5B4;
+            --soft-purple: #D4A5C8;
+            --light-gray: #F5F5F5;
+            --text-dark: #2D3748;
+            --text-light: #4A5568;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--soft-blue);
+        }
+
+        /* Shine Zone Specific Styles */
+        .shine-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .shine-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .shine-header h1 {
+            font-size: 2.5rem;
+            color: var(--soft-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .shine-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-section h2 {
+            color: var(--soft-blue);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--soft-blue);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--soft-green);
+            background-color: rgba(183, 228, 199, 0.1);
+        }
+
+        .upload-area.drag-over {
+            border-color: var(--soft-green);
+            background-color: rgba(183, 228, 199, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--soft-blue);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            margin-bottom: 1rem;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--soft-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: #8bc5c7;
+            transform: translateY(-2px);
+        }
+
+        .upload-form {
+            display: none;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--soft-blue);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #8bc5c7;
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background-color: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+            border-color: var(--soft-blue);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            font-size: 1rem;
+            width: 200px;
+        }
+
+        .search-icon {
+            color: var(--text-light);
+            margin: 0 0.5rem;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin-bottom: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--soft-green);
+            color: var(--white);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .item-description {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .author-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--soft-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            color: var(--soft-blue);
+        }
+
+        .action-btn.liked {
+            color: #e74c3c;
+        }
+
+        .likes-count {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-left: 0.2rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--soft-blue);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .modal-description {
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--soft-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--soft-green);
+        }
+
+        /* Accessibility Features */
+        .accessibility-bar {
+            background-color: var(--text-dark);
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .accessibility-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .accessibility-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            --soft-blue: #0066CC;
+            --soft-green: #008000;
+            --light-yellow: #FFFF00;
+            --soft-purple: #800080;
+            --light-gray: #000000;
+            --text-dark: #FFFFFF;
+            --text-light: #CCCCCC;
+            --white: #000000;
+            --shadow: 0 0 0 2px #FFFFFF;
+            --shadow-hover: 0 0 0 3px #FFFFFF;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+
+            .nav-tabs.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .shine-header h1 {
+                font-size: 2rem;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+        <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+        <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span>SafeSpace</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-tabs" id="navTabs">
+                <a href="index.html" class="nav-tab">Home</a>
+                <a href="learn.html" class="nav-tab">Learn</a>
+                <a href="calm.html" class="nav-tab">Calm</a>
+                <a href="shine.html" class="nav-tab active">Shine</a>
+                <a href="discover.html" class="nav-tab">Discover</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Shine Zone Content -->
+    <div class="shine-container">
+        <div class="shine-header">
+            <h1>Shine Zone</h1>
+            <p>Showcase your talents, creativity, and achievements in a supportive community</p>
+        </div>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <h2><i class="fas fa-upload"></i> Share Your Talent</h2>
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">
+                    <p>Drag and drop your files here or click to browse</p>
+                    <p class="small-text">Supported formats: JPG, PNG, GIF, MP3, MP4, PDF</p>
+                </div>
+                <button class="upload-btn">Select Files</button>
+                <input type="file" id="fileInput" multiple style="display: none;">
+            </div>
+            
+            <div class="upload-form" id="uploadForm">
+                <div class="form-group">
+                    <label for="itemTitle">Title</label>
+                    <input type="text" id="itemTitle" class="form-control" placeholder="Give your work a title">
+                </div>
+                <div class="form-group">
+                    <label for="itemType">Category</label>
+                    <select id="itemType" class="form-control">
+                        <option value="art">Art</option>
+                        <option value="music">Music</option>
+                        <option value="coding">Coding</option>
+                        <option value="writing">Writing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Description</label>
+                    <textarea id="itemDescription" class="form-control" rows="3" placeholder="Tell us about your work"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancelUpload">Cancel</button>
+                    <button class="btn btn-primary" id="submitUpload">Share</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-filter="all">All</div>
+                <div class="filter-tab" data-filter="art">Art</div>
+                <div class="filter-tab" data-filter="music">Music</div>
+                <div class="filter-tab" data-filter="coding">Coding</div>
+                <div class="filter-tab" data-filter="writing">Writing</div>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search content...">
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be populated by JavaScript -->
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>No content to display</h3>
+                <p>Be the first to share your talent with the community!</p>
+                <button class="btn btn-primary" id="emptyUploadBtn">Upload Now</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <img src="" alt="" class="modal-image" id="modalImage">
+            </div>
+            <div class="modal-body">
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <div class="modal-meta">
+                    <span id="modalType"></span>
+                    <span id="modalAuthor"></span>
+                    <span id="modalDate"></span>
+                </div>
+                <p class="modal-description" id="modalDescription"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="item-actions">
+                    <button class="action-btn" id="modalLikeBtn">
+                        <i class="far fa-heart"></i>
+                        <span class="likes-count" id="modalLikesCount">0</span>
+                    </button>
+                </div>
+                <button class="btn btn-secondary" id="modalCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">© 2023 SafeSpace. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for the gallery
+        const sampleItems = [
+            {
+                id: 1,
+                title: "Sunset Landscape",
+                type: "art",
+                description: "A beautiful watercolor painting of a sunset over mountains. Created during my art therapy sessions.",
+                image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Alex J.",
+                date: "2023-06-15",
+                likes: 24,
+                liked: false
+            },
+            {
+                id: 2,
+                title: "JavaScript Game",
+                type: "coding",
+                description: "A simple browser game I created using JavaScript. It helped me practice my coding skills and logic.",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Sam R.",
+                date: "2023-07-02",
+                likes: 18,
+                liked: true
+            },
+            {
+                id: 3,
+                title: "Morning Melody",
+                type: "music",
+                description: "A short piano composition I wrote. Music helps me express emotions when words are difficult.",
+                image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Taylor M.",
+                date: "2023-06-28",
+                likes: 32,
+                liked: false
+            },
+            {
+                id: 4,
+                title: "My Journey Poem",
+                type: "writing",
+                description: "A poem about my experience with autism and finding my place in the world.",
+                image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Jordan K.",
+                date: "2023-07-10",
+                likes: 41,
+                liked: false
+            },
+            {
+                id: 5,
+                title: "Abstract Digital Art",
+                type: "art",
+                description: "Created this digital artwork to represent how I perceive sounds and colors.",
+                image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Riley P.",
+                date: "2023-07-05",
+                likes: 15,
+                liked: true
+            },
+            {
+                id: 6,
+                title: "Python Data Visualization",
+                type: "coding",
+                description: "A data visualization project showing patterns I noticed in my daily routines.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                author: "Casey L.",
+                date: "2023-06-20",
+                likes: 27,
+                liked: false
+            }
+        ];
+
+        // Current state
+        let galleryItems = [...sampleItems];
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // DOM elements
+        const galleryGrid = document.getElementById('galleryGrid');
+        const emptyState = document.getElementById('emptyState');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
+        const cancelUpload = document.getElementById('cancelUpload');
+        const submitUpload = document.getElementById('submitUpload');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const searchInput = document.getElementById('searchInput');
+        const itemModal = document.getElementById('itemModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalLikeBtn = document.getElementById('modalLikeBtn');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render initial gallery
+            renderGallery();
+            
+            // Set up upload functionality
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            fileInput.addEventListener('change', handleFileSelect);
+            cancelUpload.addEventListener('click', resetUploadForm);
+            submitUpload.addEventListener('click', handleUploadSubmit);
+            
+            // Set up filtering
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFilter = tab.dataset.filter;
+                    renderGallery();
+                });
+            });
+            
+            // Set up search
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                renderGallery();
+            });
+            
+            // Set up modal
+            modalClose.addEventListener('click', closeModal);
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalLikeBtn.addEventListener('click', toggleModalLike);
+            
+            // Set up empty state button
+            document.getElementById('emptyUploadBtn').addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Set up accessibility buttons
+            document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast);
+            document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize);
+            document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize);
+            
+            // Set up mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navTabs').classList.toggle('active');
+            });
+        });
+
+        // Render the gallery based on current filter and search
+        function renderGallery() {
+            // Filter items
+            let filteredItems = galleryItems.filter(item => {
+                const matchesFilter = currentFilter === 'all' || item.type === currentFilter;
+                const matchesSearch = item.title.toLowerCase().includes(currentSearch) || 
+                                     item.description.toLowerCase().includes(currentSearch);
+                return matchesFilter && matchesSearch;
+            });
+            
+            // Clear gallery
+            galleryGrid.innerHTML = '';
+            
+            // Show empty state if no items
+            if (filteredItems.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            // Hide empty state
+            emptyState.style.display = 'none';
+            
+            // Add items to gallery
+            filteredItems.forEach(item => {
+                const galleryItem = createGalleryItem(item);
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+
+        // Create a gallery item element
+        function createGalleryItem(item) {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'gallery-item';
+            itemElement.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="item-image">
+                <div class="item-content">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">${item.title}</h3>
+                            <span class="item-type">${getTypeLabel(item.type)}</span>
+                        </div>
+                    </div>
+                    <p class="item-description">${item.description}</p>
+                    <div class="item-footer">
+                        <div class="item-author">
+                            <div class="author-avatar">${item.author.charAt(0)}</div>
+                            <span>${item.author}</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn ${item.liked ? 'liked' : ''}" data-id="${item.id}">
+                                <i class="${item.liked ? 'fas' : 'far'} fa-heart"></i>
+                                <span class="likes-count">${item.likes}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to open modal
+            itemElement.addEventListener('click', (e) => {
+                if (!e.target.closest('.action-btn')) {
+                    openModal(item);
+                }
+            });
+            
+            // Add like button functionality
+            const likeBtn = itemElement.querySelector('.action-btn');
+            likeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleLike(item.id);
+            });
+            
+            return itemElement;
+        }
+
+        // Get display label for item type
+        function getTypeLabel(type) {
+            const labels = {
+                art: 'Art',
+                music: 'Music',
+                coding: 'Coding',
+                writing: 'Writing',
+                other: 'Other'
+            };
+            return labels[type] || 'Other';
+        }
+
+        // Open modal with item details
+        function openModal(item) {
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalType').textContent = getTypeLabel(item.type);
+            document.getElementById('modalAuthor').textContent = `By ${item.author}`;
+            document.getElementById('modalDate').textContent = new Date(item.date).toLocaleDateString();
+            document.getElementById('modalDescription').textContent = item.description;
+            document.getElementById('modalLikesCount').textContent = item.likes;
+            
+            // Set like button state
+            const likeIcon = modalLikeBtn.querySelector('i');
+            likeIcon.className = item.liked ? 'fas fa-heart' : 'far fa-heart';
+            modalLikeBtn.dataset.id = item.id;
+            
+            itemModal.style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal() {
+            itemModal.style.display = 'none';
+        }
+
+        // Toggle like for an item
+        function toggleLike(itemId) {
+            const item = galleryItems.find(i => i.id === itemId);
+            if (item) {
+                item.liked = !item.liked;
+                item.likes += item.liked ? 1 : -1;
+                renderGallery();
+            }
+        }
+
+        // Toggle like in modal
+        function toggleModalLike() {
+            const itemId = parseInt(modalLikeBtn.dataset.id);
+            toggleLike(itemId);
+            
+            // Update modal display
+            const item = galleryItems.find(i => i.id === itemId);
+            if (item) {
+                const likeIcon = modalLikeBtn.querySelector('i');
+                likeIcon.className = item.liked ? 'fas fa-heart' : 'far fa-heart';
+                document.getElementById('modalLikesCount').textContent = item.likes;
+            }
+        }
+
+        // Upload functionality
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        }
+
+        function handleFiles(files) {
+            // Show upload form
+            uploadForm.style.display = 'block';
+            
+            // You would normally upload files to a server here
+            // For this demo, we'll just simulate the process
+            console.log('Files selected:', files);
+        }
+
+        function resetUploadForm() {
+            uploadForm.style.display = 'none';
+            fileInput.value = '';
+        }
+
+        function handleUploadSubmit() {
+            const title = document.getElementById('itemTitle').value;
+            const type = document.getElementById('itemType').value;
+            const description = document.getElementById('itemDescription').value;
+            
+            if (!title || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Create new item
+            const newItem = {
+                id: galleryItems.length + 1,
+                title: title,
+                type: type,
+                description: description,
+                image: "https://via.placeholder.com/400x200.png?text=Uploaded+File", // Placeholder image
+                author: "You",
+                date: new Date().toISOString().split('T')[0],
+                likes: 0,
+                liked: false
+            };
+
+            // Add the new item to the gallery
+            galleryItems.unshift(newItem); // Add to the beginning
+            renderGallery();
+
+            // Reset upload form
+            resetUploadForm();
+        }
+
+        // Accessibility functions
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function increaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + 2) + 'px';
+        }
+
+        function decreaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            if (currentSize > 12) {
+                document.body.style.fontSize = (currentSize - 2) + 'px';
+            }
+        }
+
+    </script>
+</body>
+</html>

@@ -214,7 +214,7 @@
             padding: 1rem;
             border-radius: 18px;
             position: relative;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
@@ -222,10 +222,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .character-message {
             align-self: flex-start;
             background-color: var(--soft-green);
             border-bottom-left-radius: 5px;
+            animation: slideInLeft 0.5s ease;
         }
 
         .user-message {
@@ -233,6 +244,7 @@
             background-color: var(--soft-blue);
             color: var(--white);
             border-bottom-right-radius: 5px;
+            animation: slideInRight 0.5s ease;
         }
 
         .feedback-message {
@@ -241,6 +253,39 @@
             text-align: center;
             font-style: italic;
             max-width: 90%;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: var(--soft-green);
+            border-bottom-left-radius: 5px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--text-dark);
+            opacity: 0.6;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
         }
 
         .response-options {
@@ -313,7 +358,7 @@
 
         .progress-fill {
             height: 100%;
-            background-color: var(--soft-green);
+            background: linear-gradient(90deg, var(--soft-blue), var(--soft-green));
             width: 0%;
             transition: width 0.5s ease;
         }
@@ -322,6 +367,97 @@
             text-align: center;
             margin-top: 0.5rem;
             color: var(--text-light);
+        }
+
+        /* Results Card */
+        .results-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .results-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h2 {
+            color: var(--soft-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .strengths, .improvements {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .strengths h3, .improvements h3 {
+            color: var(--soft-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .improvements h3 {
+            color: var(--soft-purple);
+        }
+
+        .strengths-list, .improvements-list {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .strengths-list li, .improvements-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .strengths-list li:before {
+            content: "✓";
+            color: var(--soft-green);
+            position: absolute;
+            left: 0;
+        }
+
+        .improvements-list li:before {
+            content: "→";
+            color: var(--soft-purple);
+            position: absolute;
+            left: 0;
+        }
+
+        .encouragement-message {
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            color: var(--text-light);
+        }
+
+        .review-choices-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--soft-purple);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .review-choices-btn:hover {
+            background-color: #c28ab5;
+            transform: translateY(-2px);
         }
 
         /* Footer */
@@ -458,6 +594,7 @@
                 <a href="calm.html" class="nav-tab">Calm</a>
                 <a href="shine.html" class="nav-tab">Shine</a>
                 <a href="discover.html" class="nav-tab">Discover</a>
+                <a href="friend.html" class="nav-tab">Friend</a>
             </div>
         </nav>
     </header>
@@ -470,10 +607,7 @@
         </div>
 
         <div class="scenario-selector">
-            <button class="scenario-btn active" data-scenario="meeting">Meeting New People</button>
-            <button class="scenario-btn" data-scenario="conversation">Keeping a Conversation</button>
-            <button class="scenario-btn" data-scenario="friends">Making Friends</button>
-            <button class="scenario-btn" data-scenario="classroom">Classroom Situations</button>
+            <!-- Scenario buttons will be populated by JavaScript -->
         </div>
 
         <div class="progress-container">
@@ -488,18 +622,18 @@
                 <div class="character-info">
                     <div class="character-avatar">👤</div>
                     <div>
-                        <h3>Alex</h3>
+                        <h3 id="characterName">Alex</h3>
                         <p>Practice Partner</p>
                     </div>
                 </div>
                 <div class="tts-controls">
-                    <button class="tts-btn" id="playTTS" title="Play conversation">
+                    <button class="tts-btn" id="playTTS" title="Play conversation" aria-label="Play conversation">
                         <i class="fas fa-play"></i>
                     </button>
-                    <button class="tts-btn" id="pauseTTS" title="Pause" disabled>
+                    <button class="tts-btn" id="pauseTTS" title="Pause" aria-label="Pause conversation" disabled>
                         <i class="fas fa-pause"></i>
                     </button>
-                    <button class="tts-btn" id="stopTTS" title="Stop">
+                    <button class="tts-btn" id="stopTTS" title="Stop" aria-label="Stop conversation">
                         <i class="fas fa-stop"></i>
                     </button>
                 </div>
@@ -529,12 +663,17 @@
                 </button>
             </div>
         </div>
+
+        <!-- Results Card (hidden by default) -->
+        <div class="results-card" id="resultsCard" style="display: none;">
+            <!-- Results content will be populated by JavaScript -->
+        </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="copyright">© 2023 SafeSpace. All rights reserved.</div>
+            <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
             <div class="footer-links">
                 <a href="#" class="footer-link">Contact</a>
                 <a href="#" class="footer-link">Privacy Policy</a>
@@ -544,65 +683,14 @@
     </footer>
 
     <script>
-        // Scenario data
-        const scenarios = {
-            meeting: {
-                title: "Meeting New People",
-                steps: [
-                    {
-                        character: "Hi! I'm Alex. What's your name?",
-                        options: [
-                            { text: "I'm [Your Name]. Nice to meet you!", feedback: "Great! You introduced yourself politely. 👋" },
-                            { text: "Why do you want to know?", feedback: "That might sound defensive. Try a friendly introduction instead." },
-                            { text: "...", feedback: "Staying silent can make others uncomfortable. A simple introduction works best." }
-                        ]
-                    },
-                    {
-                        character: "Nice to meet you! Do you come here often?",
-                        options: [
-                            { text: "Yes, I really like this place. How about you?", feedback: "Excellent! You answered and asked a follow-up question. 💬" },
-                            { text: "No.", feedback: "Short answers can stop conversations. Try adding a little more detail." },
-                            { text: "That's none of your business.", feedback: "That response might seem unfriendly. Try being more open." }
-                        ]
-                    },
-                    {
-                        character: "I'm here for the first time. What do you recommend checking out?",
-                        options: [
-                            { text: "The garden is really peaceful. Would you like me to show you?", feedback: "Perfect! You gave a suggestion and offered help. 🌿" },
-                            { text: "I don't know.", feedback: "It's okay to not know, but try to think of something positive to share." },
-                            { text: "Figure it out yourself.", feedback: "That might sound rude. Offering help is a friendly gesture." }
-                        ]
-                    }
-                ]
-            },
-            conversation: {
-                title: "Keeping a Conversation",
-                steps: [
-                    {
-                        character: "I really enjoyed the movie we saw last week. What did you think?",
-                        options: [
-                            { text: "I liked it too! The special effects were amazing.", feedback: "Great! You shared your opinion and added a specific detail. 🎬" },
-                            { text: "It was okay.", feedback: "Try to expand a bit more to keep the conversation going." },
-                            { text: "I don't remember.", feedback: "Even if you don't remember details, you can share general feelings." }
-                        ]
-                    },
-                    {
-                        character: "Yes, the effects were incredible! Do you have a favorite scene?",
-                        options: [
-                            { text: "I loved the spaceship chase. How about you?", feedback: "Perfect! You shared your favorite part and asked about theirs. 🚀" },
-                            { text: "No.", feedback: "One-word answers can stop conversations. Try to share something." },
-                            { text: "I don't want to talk about this.", feedback: "It's okay to change topics, but try to do it politely." }
-                        ]
-                    }
-                ]
-            }
-        };
-
         // Current state
-        let currentScenario = 'meeting';
+        let currentScenario = null;
         let currentStep = 0;
         let isPlayingTTS = false;
         let ttsUtterance = null;
+        let userChoices = [];
+        let totalScore = 0;
+        let maxScore = 0;
 
         // DOM elements
         const chatMessages = document.getElementById('chatMessages');
@@ -614,19 +702,253 @@
         const playTTSBtn = document.getElementById('playTTS');
         const pauseTTSBtn = document.getElementById('pauseTTS');
         const stopTTSBtn = document.getElementById('stopTTS');
+        const scenarioSelector = document.querySelector('.scenario-selector');
+        const resultsCard = document.getElementById('resultsCard');
+        const characterName = document.getElementById('characterName');
+
+        // Load scenarios from JSON
+        let scenarios = [];
+
+        // Fetch scenarios from JSON file
+        async function loadScenarios() {
+            try {
+                const response = await fetch('scenarios.json');
+                const data = await response.json();
+                scenarios = data.scenarios;
+                initializeScenarioSelector();
+            } catch (error) {
+                console.error('Error loading scenarios:', error);
+                // Fallback to hardcoded scenarios if JSON fails to load
+                scenarios = [
+                    {
+                        "id": 1,
+                        "title": "Greeting Someone",
+                        "character": "Alex",
+                        "steps": [
+                            {
+                                "character": "👋 Hi there! How are you?",
+                                "options": [
+                                    {
+                                        "text": "Smile and say 'Hello!'",
+                                        "feedback": "Great! Smiling and greeting helps start conversations. 😊",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "Ignore and walk away",
+                                        "feedback": "Hmm, that might make the other person feel sad.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "title": "Asking for Help",
+                        "character": "Taylor",
+                        "steps": [
+                            {
+                                "character": "📚 Can I help you with your homework?",
+                                "options": [
+                                    {
+                                        "text": "Yes, thank you!",
+                                        "feedback": "Perfect! Asking politely is great. 🙌",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "No, go away!",
+                                        "feedback": "That may sound rude. Try to be kinder.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "title": "Joining a Group",
+                        "character": "Jordan",
+                        "steps": [
+                            {
+                                "character": "Hey, we're playing a game. Want to join?",
+                                "options": [
+                                    {
+                                        "text": "Yes, I'd love to!",
+                                        "feedback": "Great! Joining in is a wonderful way to connect with others. 🎮",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "No, I'm not good at games",
+                                        "feedback": "It's okay to be unsure, but trying new things can be fun!",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "title": "Making Small Talk",
+                        "character": "Riley",
+                        "steps": [
+                            {
+                                "character": "Nice weather we're having today, isn't it?",
+                                "options": [
+                                    {
+                                        "text": "Yes, it's lovely! I enjoy sunny days.",
+                                        "feedback": "Perfect! You acknowledged the comment and added your own thoughts. ☀️",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "I don't like talking about weather",
+                                        "feedback": "Small talk can feel awkward, but it's a normal way to start conversations.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "title": "Handling a Mistake",
+                        "character": "Casey",
+                        "steps": [
+                            {
+                                "character": "Oops, I think you accidentally took my pencil.",
+                                "options": [
+                                    {
+                                        "text": "I'm sorry! Here you go.",
+                                        "feedback": "Great response! Apologizing and fixing mistakes shows maturity. ✏️",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "It's not my problem",
+                                        "feedback": "Taking responsibility for mistakes helps maintain good relationships.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 6,
+                        "title": "Sharing Something",
+                        "character": "Morgan",
+                        "steps": [
+                            {
+                                "character": "I brought cookies to share. Would you like one?",
+                                "options": [
+                                    {
+                                        "text": "Thank you! That's very kind of you.",
+                                        "feedback": "Perfect! Accepting offers graciously builds connections. 🍪",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "No, I don't like cookies",
+                                        "feedback": "You can politely decline while still appreciating the gesture.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 7,
+                        "title": "Asking to Play/Work Together",
+                        "character": "Avery",
+                        "steps": [
+                            {
+                                "character": "I'm working on this puzzle. It's pretty challenging!",
+                                "options": [
+                                    {
+                                        "text": "Would you like some help?",
+                                        "feedback": "Great! Offering help shows kindness and teamwork. 🧩",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "That looks boring",
+                                        "feedback": "Even if something doesn't interest you, being polite is important.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 8,
+                        "title": "Saying No Politely",
+                        "character": "Quinn",
+                        "steps": [
+                            {
+                                "character": "Do you want to come to my party this weekend?",
+                                "options": [
+                                    {
+                                        "text": "Thanks for inviting me, but I can't make it.",
+                                        "feedback": "Perfect! You declined politely while appreciating the invitation. 🎉",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "No, I don't want to",
+                                        "feedback": "Adding a polite explanation can make your refusal feel less harsh.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 9,
+                        "title": "Expressing Feelings",
+                        "character": "Skyler",
+                        "steps": [
+                            {
+                                "character": "You seem a bit quiet today. Is everything okay?",
+                                "options": [
+                                    {
+                                        "text": "I'm feeling a little tired, but thank you for asking.",
+                                        "feedback": "Great! Sharing feelings appropriately helps others understand you. 💭",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "It's none of your business",
+                                        "feedback": "You can set boundaries while still being respectful.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 10,
+                        "title": "Ending a Conversation",
+                        "character": "Peyton",
+                        "steps": [
+                            {
+                                "character": "This has been a great chat!",
+                                "options": [
+                                    {
+                                        "text": "Yes, it was nice talking with you. See you later!",
+                                        "feedback": "Perfect! Ending conversations politely leaves a positive impression. 👋",
+                                        "score": 1
+                                    },
+                                    {
+                                        "text": "I have to go now",
+                                        "feedback": "Adding a friendly closing makes the ending feel more natural.",
+                                        "score": 0
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ];
+                initializeScenarioSelector();
+            }
+        }
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            // Set up scenario buttons
-            document.querySelectorAll('.scenario-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentScenario = this.dataset.scenario;
-                    currentStep = 0;
-                    loadScenario();
-                });
-            });
+            // Load scenarios
+            loadScenarios();
 
             // Set up navigation buttons
             prevBtn.addEventListener('click', goToPreviousStep);
@@ -646,20 +968,50 @@
             document.getElementById('mobileMenuBtn').addEventListener('click', function() {
                 document.getElementById('navTabs').classList.toggle('active');
             });
-
-            // Load initial scenario
-            loadScenario();
         });
+
+        // Initialize scenario selector buttons
+        function initializeScenarioSelector() {
+            scenarioSelector.innerHTML = '';
+            
+            scenarios.forEach((scenario, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'scenario-btn';
+                btn.textContent = `${index + 1}. ${scenario.title}`;
+                btn.dataset.scenarioId = scenario.id;
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentScenario = scenario;
+                    currentStep = 0;
+                    userChoices = [];
+                    totalScore = 0;
+                    maxScore = 0;
+                    loadScenario();
+                });
+                scenarioSelector.appendChild(btn);
+            });
+        }
 
         // Load the current scenario
         function loadScenario() {
-            const scenario = scenarios[currentScenario];
             chatMessages.innerHTML = '';
             responseOptions.querySelector('.options-grid').innerHTML = '';
+            resultsCard.style.display = 'none';
+            
+            // Update character name
+            characterName.textContent = currentScenario.character;
             
             // Add welcome message
-            addMessage(`Let's practice: ${scenario.title}`, 'feedback-message');
-            addMessage("Hi! Ready to practice this scenario together?", 'character-message');
+            addMessage(`Let's practice: ${currentScenario.title}`, 'feedback-message');
+            
+            // Show typing indicator before character message
+            showTypingIndicator();
+            
+            // Load the first step after a short delay
+            setTimeout(() => {
+                loadStep(0);
+            }, 1500);
             
             // Update progress
             updateProgress();
@@ -667,39 +1019,61 @@
             // Disable navigation buttons initially
             prevBtn.disabled = true;
             nextBtn.disabled = true;
-            
-            // Load the first step after a short delay
-            setTimeout(() => {
-                loadStep(0);
-            }, 1000);
         }
 
         // Load a specific step in the scenario
         function loadStep(stepIndex) {
-            const scenario = scenarios[currentScenario];
             currentStep = stepIndex;
             
             // Clear previous options
             responseOptions.querySelector('.options-grid').innerHTML = '';
             
-            // Add character message
-            addMessage(scenario.steps[stepIndex].character, 'character-message');
+            // Show typing indicator before character message
+            showTypingIndicator();
             
-            // Add response options
-            scenario.steps[stepIndex].options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'response-option';
-                optionElement.textContent = option.text;
-                optionElement.addEventListener('click', () => selectOption(option));
-                responseOptions.querySelector('.options-grid').appendChild(optionElement);
-            });
+            // Add character message after a delay
+            setTimeout(() => {
+                addMessage(currentScenario.steps[stepIndex].character, 'character-message');
+                
+                // Add response options
+                currentScenario.steps[stepIndex].options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'response-option';
+                    optionElement.textContent = option.text;
+                    optionElement.addEventListener('click', () => selectOption(option, stepIndex));
+                    responseOptions.querySelector('.options-grid').appendChild(optionElement);
+                });
+                
+                // Update navigation buttons
+                prevBtn.disabled = stepIndex === 0;
+                nextBtn.disabled = true; // Disabled until an option is selected
+                
+                // Update progress
+                updateProgress();
+            }, 1000);
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.className = 'typing-indicator';
+            typingElement.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span>${currentScenario.character} is typing...</span>
+            `;
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
             
-            // Update navigation buttons
-            prevBtn.disabled = stepIndex === 0;
-            nextBtn.disabled = true; // Disabled until an option is selected
-            
-            // Update progress
-            updateProgress();
+            // Remove typing indicator after a delay
+            setTimeout(() => {
+                if (typingElement.parentNode) {
+                    typingElement.remove();
+                }
+            }, 1000);
         }
 
         // Add a message to the chat
@@ -712,34 +1086,64 @@
         }
 
         // Handle option selection
-        function selectOption(option) {
+        function selectOption(option, stepIndex) {
             // Add user message
             addMessage(option.text, 'user-message');
             
-            // Add feedback
-            addMessage(option.feedback, 'feedback-message');
-            
-            // Enable next button
-            nextBtn.disabled = false;
-            
-            // Disable all options
-            document.querySelectorAll('.response-option').forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                opt.style.opacity = '0.7';
+            // Store user choice
+            userChoices.push({
+                scenario: currentScenario.title,
+                step: stepIndex,
+                choice: option.text,
+                feedback: option.feedback,
+                score: option.score
             });
+            
+            // Update score
+            totalScore += option.score;
+            maxScore += 1; // Each step has at least one option with score 1
+            
+            // Add feedback after a short delay
+            setTimeout(() => {
+                addMessage(option.feedback, 'feedback-message');
+                
+                // Enable next button
+                nextBtn.disabled = false;
+                
+                // Disable all options
+                document.querySelectorAll('.response-option').forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    opt.style.opacity = '0.7';
+                });
+            }, 500);
         }
 
         // Navigate to the next step
         function goToNextStep() {
-            const scenario = scenarios[currentScenario];
-            if (currentStep < scenario.steps.length - 1) {
+            if (currentStep < currentScenario.steps.length - 1) {
                 loadStep(currentStep + 1);
             } else {
                 // Scenario completed
-                addMessage("Great job completing this scenario! Would you like to try another one?", 'character-message');
-                prevBtn.disabled = false;
-                nextBtn.disabled = true;
-                responseOptions.querySelector('.options-grid').innerHTML = '';
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    addMessage("Great job completing this scenario! Would you like to try another one?", 'character-message');
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = true;
+                    responseOptions.querySelector('.options-grid').innerHTML = '';
+                    
+                    // Check if all scenarios are completed
+                    const completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
+                    if (!completedScenarios.includes(currentScenario.id)) {
+                        completedScenarios.push(currentScenario.id);
+                        localStorage.setItem('completedScenarios', JSON.stringify(completedScenarios));
+                    }
+                    
+                    // Show results if all scenarios are completed
+                    if (completedScenarios.length === scenarios.length) {
+                        showFinalResults();
+                    }
+                }, 1000);
             }
         }
 
@@ -747,6 +1151,13 @@
         function goToPreviousStep() {
             if (currentStep > 0) {
                 loadStep(currentStep - 1);
+                
+                // Remove the last user choice
+                if (userChoices.length > 0) {
+                    const lastChoice = userChoices.pop();
+                    totalScore -= lastChoice.score;
+                    maxScore -= 1;
+                }
             } else {
                 // Back to scenario selection
                 chatMessages.innerHTML = '';
@@ -756,15 +1167,98 @@
                 prevBtn.disabled = true;
                 nextBtn.disabled = true;
                 updateProgress();
+                resultsCard.style.display = 'none';
             }
         }
 
         // Update progress bar
         function updateProgress() {
-            const scenario = scenarios[currentScenario];
-            const progress = currentStep / scenario.steps.length * 100;
+            if (!currentScenario) {
+                progressFill.style.width = '0%';
+                progressText.textContent = 'Progress: 0%';
+                return;
+            }
+            
+            const progress = currentStep / currentScenario.steps.length * 100;
             progressFill.style.width = `${progress}%`;
             progressText.textContent = `Progress: ${Math.round(progress)}%`;
+        }
+
+        // Show final results
+        function showFinalResults() {
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // Determine strengths and areas for improvement
+            const strengths = [];
+            const improvements = [];
+            
+            userChoices.forEach(choice => {
+                if (choice.score === 1) {
+                    if (!strengths.includes(choice.scenario)) {
+                        strengths.push(choice.scenario);
+                    }
+                } else {
+                    if (!improvements.includes(choice.scenario)) {
+                        improvements.push(choice.scenario);
+                    }
+                }
+            });
+            
+            // Create results card content
+            resultsCard.innerHTML = `
+                <div class="results-header">
+                    <h2>Scenario Completion Results</h2>
+                    <p>You've completed all 10 social scenarios!</p>
+                </div>
+                <div class="score-display">${percentage}%</div>
+                <div class="encouragement-message">
+                    ${percentage >= 80 ? "You did amazing! 🌟 Keep practicing and you'll shine even more." :
+                      percentage >= 60 ? "Great job! 👍 You're making good progress with social skills." :
+                      "Good effort! 💪 With more practice, you'll continue to improve."}
+                </div>
+                ${strengths.length > 0 ? `
+                <div class="strengths">
+                    <h3>Your Strengths</h3>
+                    <ul class="strengths-list">
+                        ${strengths.map(strength => `<li>${strength}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                ${improvements.length > 0 ? `
+                <div class="improvements">
+                    <h3>Areas to Practice</h3>
+                    <ul class="improvements-list">
+                        ${improvements.map(improvement => `<li>${improvement}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                <button class="review-choices-btn" id="reviewChoicesBtn">Review My Choices</button>
+            `;
+            
+            resultsCard.style.display = 'block';
+            
+            // Set up review choices button
+            document.getElementById('reviewChoicesBtn').addEventListener('click', reviewChoices);
+        }
+
+        // Review user choices
+        function reviewChoices() {
+            chatMessages.innerHTML = '';
+            responseOptions.querySelector('.options-grid').innerHTML = '';
+            resultsCard.style.display = 'none';
+            
+            addMessage("Let's review your choices:", 'feedback-message');
+            
+            userChoices.forEach(choice => {
+                addMessage(`Scenario: ${choice.scenario}`, 'character-message');
+                addMessage(`Your choice: ${choice.choice}`, 'user-message');
+                addMessage(`Feedback: ${choice.feedback}`, 'feedback-message');
+            });
+            
+            addMessage("Review completed. Would you like to practice any scenario again?", 'character-message');
+            
+            prevBtn.disabled = false;
+            nextBtn.disabled = true;
         }
 
         // Text-to-Speech functionality
@@ -777,8 +1271,8 @@
             // Stop any ongoing speech
             stopTTS();
             
-            // Get all character messages
-            const characterMessages = document.querySelectorAll('.character-message');
+            // Get all character and feedback messages
+            const characterMessages = document.querySelectorAll('.character-message, .feedback-message');
             let fullText = "";
             
             characterMessages.forEach(msg => {

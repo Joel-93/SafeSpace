@@ -1,1164 +1,1157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calm Zone - SafeSpace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        :root {
-            --soft-blue: #A8DADC;
-            --soft-green: #B7E4C7;
-            --light-yellow: #FFE5B4;
-            --soft-purple: #D4A5C8;
-            --light-gray: #F5F5F5;
-            --text-dark: #2D3748;
-            --text-light: #4A5568;
-            --white: #FFFFFF;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --border-radius: 12px;
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      
+      /* Animated background */
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+      
+      .cloud {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: float linear infinite;
+      }
+      
+      .cloud:nth-child(1) {
+        width: 120px;
+        height: 40px;
+        top: 10%;
+        left: -120px;
+        animation-duration: 40s;
+        animation-delay: 0s;
+      }
+      
+      .cloud:nth-child(2) {
+        width: 180px;
+        height: 60px;
+        top: 25%;
+        left: -180px;
+        animation-duration: 50s;
+        animation-delay: 10s;
+      }
+      
+      .cloud:nth-child(3) {
+        width: 100px;
+        height: 35px;
+        top: 40%;
+        left: -100px;
+        animation-duration: 35s;
+        animation-delay: 5s;
+      }
+      
+      .cloud:nth-child(4) {
+        width: 150px;
+        height: 50px;
+        top: 60%;
+        left: -150px;
+        animation-duration: 45s;
+        animation-delay: 15s;
+      }
+      
+      .cloud:nth-child(5) {
+        width: 200px;
+        height: 70px;
+        top: 75%;
+        left: -200px;
+        animation-duration: 55s;
+        animation-delay: 20s;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateX(0);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        100% {
+          transform: translateX(calc(100vw + 200px));
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--light-gray);
-            transition: all 0.3s ease;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Animated background */
-        .background-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: float linear infinite;
-        }
-
-        .cloud:nth-child(1) {
-            width: 120px;
-            height: 40px;
-            top: 10%;
-            left: -120px;
-            animation-duration: 40s;
-            animation-delay: 0s;
-        }
-
-        .cloud:nth-child(2) {
-            width: 180px;
-            height: 60px;
-            top: 25%;
-            left: -180px;
-            animation-duration: 50s;
-            animation-delay: 10s;
-        }
-
-        .cloud:nth-child(3) {
-            width: 100px;
-            height: 35px;
-            top: 40%;
-            left: -100px;
-            animation-duration: 35s;
-            animation-delay: 5s;
-        }
-
-        .cloud:nth-child(4) {
-            width: 150px;
-            height: 50px;
-            top: 60%;
-            left: -150px;
-            animation-duration: 45s;
-            animation-delay: 15s;
-        }
-
-        .cloud:nth-child(5) {
-            width: 200px;
-            height: 70px;
-            top: 75%;
-            left: -200px;
-            animation-duration: 55s;
-            animation-delay: 20s;
-        }
-
-        @keyframes float {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(100vw + 200px)); }
-        }
-
-        /* Header & Navigation */
-        header {
-            background-color: var(--white);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--soft-blue);
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-tab {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: var(--text-dark);
-        }
-
-        .nav-tab:hover, .nav-tab.active {
-            background-color: var(--soft-blue);
-            color: var(--white);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--soft-blue);
-        }
-
-        /* Calm Zone Specific Styles */
-        .calm-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 5%;
-        }
-
-        .calm-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .calm-header h1 {
-            font-size: 2.5rem;
-            color: var(--soft-blue);
-            margin-bottom: 0.5rem;
-        }
-
-        .calm-header p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        text-decoration: none;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Calm Zone Specific Styles */
+      .calm-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 5%;
+      }
+      
+      .calm-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .calm-header h1 {
+        font-size: 2.5rem;
+        color: var(--soft-blue);
+        margin-bottom: 0.5rem;
+      }
+      
+      .calm-header p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .calm-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      @media (max-width: 968px) {
         .calm-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
+          grid-template-columns: 1fr;
         }
-
-        @media (max-width: 968px) {
-            .calm-content {
-                grid-template-columns: 1fr;
-            }
+      }
+      
+      /* Sound Mixer Section */
+      .sound-mixer {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+      }
+      
+      .sound-mixer h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .sound-control {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      
+      .sound-control:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      
+      .sound-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      
+      .sound-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+      }
+      
+      .sound-icon {
+        font-size: 1.2rem;
+      }
+      
+      .volume-value {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        min-width: 40px;
+        text-align: right;
+      }
+      
+      .volume-slider {
+        width: 100%;
+        height: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #e0e0e0;
+        border-radius: 4px;
+        outline: none;
+      }
+      
+      .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--soft-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .volume-slider::-webkit-slider-thumb:hover {
+        background: #8bc5c7;
+        transform: scale(1.1);
+      }
+      
+      .mixer-controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      
+      .control-btn {
+        flex: 1;
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-blue);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .control-btn:hover {
+        background-color: #8bc5c7;
+        transform: translateY(-2px);
+      }
+      
+      .control-btn.stop {
+        background-color: #e74c3c;
+      }
+      
+      .control-btn.stop:hover {
+        background-color: #c0392b;
+      }
+      
+      /* Breathing Exercise Section */
+      .breathing-exercise {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+      }
+      
+      .breathing-exercise h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .breathing-container {
+        position: relative;
+        margin: 2rem auto;
+        width: 200px;
+        height: 200px;
+      }
+      
+      .breathing-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--soft-blue) 0%, #8bc5c7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-weight: 600;
+        font-size: 1.2rem;
+        transition: all 0.5s ease-in-out;
+        box-shadow: 0 10px 20px rgba(168, 218, 220, 0.3);
+      }
+      
+      .breathing-text {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--soft-blue);
+        min-height: 2rem;
+      }
+      
+      .breathing-instruction {
+        margin-top: 0.5rem;
+        color: var(--text-light);
+        min-height: 1.5rem;
+      }
+      
+      .breathing-controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: center;
+      }
+      
+      .breathing-btn {
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-green);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .breathing-btn:hover {
+        background-color: #9bd4ab;
+        transform: translateY(-2px);
+      }
+      
+      .breathing-btn.pause {
+        background-color: var(--light-yellow);
+        color: var(--text-dark);
+      }
+      
+      .breathing-btn.pause:hover {
+        background-color: #f5d6a3;
+      }
+      
+      .breathing-btn.stop {
+        background-color: #e74c3c;
+      }
+      
+      .breathing-btn.stop:hover {
+        background-color: #c0392b;
+      }
+      
+      /* Timer Section */
+      .timer-section {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+      }
+      
+      .timer-section h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .timer-display {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        margin: 1rem 0;
+      }
+      
+      .timer-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+      
+      .timer-btn {
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-purple);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .timer-btn:hover {
+        background-color: #c895bb;
+        transform: translateY(-2px);
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: 4rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
         }
-
-        /* Sound Mixer Section */
-        .sound-mixer {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
+      
+        .nav-tabs.active {
+          display: flex;
         }
-
-        .sound-mixer h2 {
-            color: var(--soft-blue);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+      
+        .mobile-menu-btn {
+          display: block;
         }
-
-        .sound-control {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
+      
+        .calm-header h1 {
+          font-size: 2rem;
         }
-
-        .sound-control:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .sound-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .sound-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-        }
-
-        .sound-icon {
-            font-size: 1.2rem;
-        }
-
-        .volume-value {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            min-width: 40px;
-            text-align: right;
-        }
-
-        .volume-slider {
-            width: 100%;
-            height: 8px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: #e0e0e0;
-            border-radius: 4px;
-            outline: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--soft-blue);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .volume-slider::-webkit-slider-thumb:hover {
-            background: #8bc5c7;
-            transform: scale(1.1);
-        }
-
-        .mixer-controls {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .control-btn {
-            flex: 1;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--soft-blue);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .control-btn:hover {
-            background-color: #8bc5c7;
-            transform: translateY(-2px);
-        }
-
-        .control-btn.stop {
-            background-color: #e74c3c;
-        }
-
-        .control-btn.stop:hover {
-            background-color: #c0392b;
-        }
-
-        /* Breathing Exercise Section */
-        .breathing-exercise {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .breathing-exercise h2 {
-            color: var(--soft-blue);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .breathing-container {
-            position: relative;
-            margin: 2rem auto;
-            width: 200px;
-            height: 200px;
-        }
-
-        .breathing-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--soft-blue) 0%, #8bc5c7 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 1.2rem;
-            transition: all 0.5s ease-in-out;
-            box-shadow: 0 10px 20px rgba(168, 218, 220, 0.3);
-        }
-
-        .breathing-text {
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--soft-blue);
-            min-height: 2rem;
-        }
-
-        .breathing-instruction {
-            margin-top: 0.5rem;
-            color: var(--text-light);
-            min-height: 1.5rem;
-        }
-
-        .breathing-controls {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            justify-content: center;
-        }
-
-        .breathing-btn {
-            padding: 0.8rem 1.5rem;
-            background-color: var(--soft-green);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .breathing-btn:hover {
-            background-color: #9bd4ab;
-            transform: translateY(-2px);
-        }
-
-        .breathing-btn.pause {
-            background-color: var(--light-yellow);
-            color: var(--text-dark);
-        }
-
-        .breathing-btn.pause:hover {
-            background-color: #f5d6a3;
-        }
-
-        .breathing-btn.stop {
-            background-color: #e74c3c;
-        }
-
-        .breathing-btn.stop:hover {
-            background-color: #c0392b;
-        }
-
-        /* Timer Section */
-        .timer-section {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .timer-section h2 {
-            color: var(--soft-blue);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .timer-display {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--soft-blue);
-            margin: 1rem 0;
-        }
-
+      
+        .mixer-controls,
+        .breathing-controls,
         .timer-controls {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
+          flex-direction: column;
         }
-
-        .timer-btn {
-            padding: 0.8rem 1.5rem;
-            background-color: var(--soft-purple);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .timer-btn:hover {
-            background-color: #c895bb;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--white);
-            padding: 2rem 5%;
-            text-align: center;
-            margin-top: 4rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
+      
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+          flex-direction: column;
         }
-
-        .copyright {
-            color: var(--text-light);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-link {
-            color: var(--soft-blue);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--soft-green);
-        }
-
-        /* Accessibility Features */
-        .accessibility-bar {
-            background-color: var(--text-dark);
-            padding: 0.5rem 5%;
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        .accessibility-btn {
-            background: none;
-            border: none;
-            color: var(--white);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        .accessibility-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* High Contrast Mode */
-        body.high-contrast {
-            --soft-blue: #0066CC;
-            --soft-green: #008000;
-            --light-yellow: #FFFF00;
-            --soft-purple: #800080;
-            --light-gray: #000000;
-            --text-dark: #FFFFFF;
-            --text-light: #CCCCCC;
-            --white: #000000;
-            --shadow: 0 0 0 2px #FFFFFF;
-            --shadow-hover: 0 0 0 3px #FFFFFF;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-tabs {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background-color: var(--white);
-                box-shadow: var(--shadow);
-                padding: 1rem;
-            }
-
-            .nav-tabs.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .calm-header h1 {
-                font-size: 2rem;
-            }
-
-            .mixer-controls, .breathing-controls, .timer-controls {
-                flex-direction: column;
-            }
-
-            .footer-content {
-                flex-direction: column;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Animated Background -->
     <div class="background-animation">
-        <div class="cloud"></div>
-        <div class="cloud"></div>
-        <div class="cloud"></div>
-        <div class="cloud"></div>
-        <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
     </div>
 
     <!-- Accessibility Bar -->
     <div class="accessibility-bar">
-        <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
-        <button class="accessibility-btn" id="textSizeIncrease">A+</button>
-        <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
     </div>
 
     <!-- Header -->
     <header>
-        <nav class="navbar">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🌿</span>
-                <span>SafeSpace</span>
-            </a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-            <div class="nav-tabs" id="navTabs">
-                <a href="index.html" class="nav-tab">Home</a>
-                <a href="learn.html" class="nav-tab">Learn</a>
-                <a href="calm.html" class="nav-tab active">Calm</a>
-                <a href="shine.html" class="nav-tab">Shine</a>
-                <a href="discover.html" class="nav-tab">Discover</a>
-                <a href="friend.html" class="nav-tab">Friend</a>
-
-            </div>
-        </nav>
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab active">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+        </div>
+      </nav>
     </header>
 
     <!-- Calm Zone Content -->
     <div class="calm-container">
-        <div class="calm-header">
-            <h1>Calm Zone</h1>
-            <p>Relax with soothing sounds, breathing exercises, and peaceful moments</p>
-        </div>
+      <div class="calm-header">
+        <h1>Calm Zone</h1>
+        <p>Relax with soothing sounds, breathing exercises, and peaceful moments</p>
+      </div>
 
-        <div class="calm-content">
-            <!-- Sound Mixer Section -->
-            <section class="sound-mixer">
-                <h2><i class="fas fa-volume-up"></i> Sound Mixer</h2>
-                
-                <div class="sound-control">
-                    <div class="sound-info">
-                        <span class="sound-name"><i class="fas fa-cloud-rain sound-icon"></i> Rain</span>
-                        <span class="volume-value" id="rainVolume">50%</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="volume-slider" id="rainSlider">
-                </div>
-                
-                <div class="sound-control">
-                    <div class="sound-info">
-                        <span class="sound-name"><i class="fas fa-water sound-icon"></i> Ocean Waves</span>
-                        <span class="volume-value" id="oceanVolume">50%</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="volume-slider" id="oceanSlider">
-                </div>
-                
-                <div class="sound-control">
-                    <div class="sound-info">
-                        <span class="sound-name"><i class="fas fa-wind sound-icon"></i> Wind</span>
-                        <span class="volume-value" id="windVolume">50%</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="volume-slider" id="windSlider">
-                </div>
-                
-                <div class="sound-control">
-                    <div class="sound-info">
-                        <span class="sound-name"><i class="fas fa-feather sound-icon"></i> Birds</span>
-                        <span class="volume-value" id="birdsVolume">50%</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="volume-slider" id="birdsSlider">
-                </div>
-                
-                <div class="sound-control">
-                    <div class="sound-info">
-                        <span class="sound-name"><i class="fas fa-music sound-icon"></i> Ambient Music</span>
-                        <span class="volume-value" id="musicVolume">50%</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="volume-slider" id="musicSlider">
-                </div>
-                
-                <div class="mixer-controls">
-                    <button class="control-btn" id="playAllBtn">
-                        <i class="fas fa-play"></i> Play All
-                    </button>
-                    <button class="control-btn stop" id="stopAllBtn">
-                        <i class="fas fa-stop"></i> Stop All
-                    </button>
-                </div>
-            </section>
+      <div class="calm-content">
+        <!-- Sound Mixer Section -->
+        <section class="sound-mixer">
+          <h2><i class="fas fa-volume-up"></i> Sound Mixer</h2>
 
-            <!-- Breathing Exercise Section -->
-            <section class="breathing-exercise">
-                <h2><i class="fas fa-wind"></i> Breathing Exercise</h2>
-                <p>Follow the circle to practice calming breathing techniques</p>
-                
-                <div class="breathing-container">
-                    <div class="breathing-circle" id="breathingCircle">
-                        Breathe
-                    </div>
-                </div>
-                
-                <div class="breathing-text" id="breathingText">Ready to begin</div>
-                <div class="breathing-instruction" id="breathingInstruction">Click Start to begin the exercise</div>
-                
-                <div class="breathing-controls">
-                    <button class="breathing-btn" id="startBreathingBtn">
-                        <i class="fas fa-play"></i> Start
-                    </button>
-                    <button class="breathing-btn pause" id="pauseBreathingBtn" disabled>
-                        <i class="fas fa-pause"></i> Pause
-                    </button>
-                    <button class="breathing-btn stop" id="stopBreathingBtn" disabled>
-                        <i class="fas fa-stop"></i> Stop
-                    </button>
-                </div>
-            </section>
-        </div>
-
-        <!-- Timer Section -->
-        <section class="timer-section">
-            <h2><i class="fas fa-clock"></i> Relaxation Timer</h2>
-            <p>Set a timer for your relaxation session</p>
-            
-            <div class="timer-display" id="timerDisplay">05:00</div>
-            
-            <div class="timer-controls">
-                <button class="timer-btn" id="timer5Min">5 Min</button>
-                <button class="timer-btn" id="timer10Min">10 Min</button>
-                <button class="timer-btn" id="timer15Min">15 Min</button>
-                <button class="timer-btn" id="timerStart">Start</button>
-                <button class="timer-btn" id="timerPause">Pause</button>
-                <button class="timer-btn" id="timerReset">Reset</button>
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-cloud-rain sound-icon"></i> Rain</span>
+              <span class="volume-value" id="rainVolume">50%</span>
             </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="rainSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-water sound-icon"></i> Ocean Waves</span>
+              <span class="volume-value" id="oceanVolume">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="oceanSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-wind sound-icon"></i> Wind</span>
+              <span class="volume-value" id="windVolume">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="windSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-feather sound-icon"></i> Birds</span>
+              <span class="volume-value" id="birdsVolume">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="birdsSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-music sound-icon"></i> Ambient Music</span>
+              <span class="volume-value" id="musicVolume">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="musicSlider" />
+          </div>
+
+          <div class="mixer-controls">
+            <button class="control-btn" id="playAllBtn"><i class="fas fa-play"></i> Play All</button>
+            <button class="control-btn stop" id="stopAllBtn"><i class="fas fa-stop"></i> Stop All</button>
+          </div>
         </section>
+
+        <!-- Breathing Exercise Section -->
+        <section class="breathing-exercise">
+          <h2><i class="fas fa-wind"></i> Breathing Exercise</h2>
+          <p>Follow the circle to practice calming breathing techniques</p>
+
+          <div class="breathing-container">
+            <div class="breathing-circle" id="breathingCircle">Breathe</div>
+          </div>
+
+          <div class="breathing-text" id="breathingText">Ready to begin</div>
+          <div class="breathing-instruction" id="breathingInstruction">Click Start to begin the exercise</div>
+
+          <div class="breathing-controls">
+            <button class="breathing-btn" id="startBreathingBtn"><i class="fas fa-play"></i> Start</button>
+            <button class="breathing-btn pause" id="pauseBreathingBtn" disabled><i class="fas fa-pause"></i> Pause</button>
+            <button class="breathing-btn stop" id="stopBreathingBtn" disabled><i class="fas fa-stop"></i> Stop</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Timer Section -->
+      <section class="timer-section">
+        <h2><i class="fas fa-clock"></i> Relaxation Timer</h2>
+        <p>Set a timer for your relaxation session</p>
+
+        <div class="timer-display" id="timerDisplay">05:00</div>
+
+        <div class="timer-controls">
+          <button class="timer-btn" id="timer5Min">5 Min</button>
+          <button class="timer-btn" id="timer10Min">10 Min</button>
+          <button class="timer-btn" id="timer15Min">15 Min</button>
+          <button class="timer-btn" id="timerStart">Start</button>
+          <button class="timer-btn" id="timerPause">Pause</button>
+          <button class="timer-btn" id="timerReset">Reset</button>
+        </div>
+      </section>
     </div>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
-            <div class="footer-links">
-                <a href="#" class="footer-link">Contact</a>
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-            </div>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
         </div>
+      </div>
     </footer>
 
     <script>
-        // Sound mixer functionality
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        let sounds = {};
-        let isPlaying = false;
-
+      // Sound mixer functionality
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+      let sounds = {}
+      let isPlaying = false
+      
+      // Initialize sounds
+      function initSounds() {
+        // Create oscillator nodes for each sound
+        sounds.rain = createRainSound()
+        sounds.ocean = createOceanSound()
+        sounds.wind = createWindSound()
+        sounds.birds = createBirdsSound()
+        sounds.music = createMusicSound()
+      
+        // Connect to master gain node
+        const masterGain = audioContext.createGain()
+        masterGain.connect(audioContext.destination)
+        masterGain.gain.value = 0.7 // Master volume control
+      
+        // Connect all sounds to master gain
+        Object.values(sounds).forEach((sound) => {
+          if (sound && sound.gain) {
+            sound.gain.connect(masterGain)
+          }
+        })
+      
+        // Set initial volumes from sliders
+        updateVolume('rain')
+        updateVolume('ocean')
+        updateVolume('wind')
+        updateVolume('birds')
+        updateVolume('music')
+      }
+      
+      // Create different types of sounds
+      function createRainSound() {
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 0
+      
+        // Create multiple noise sources for rain effect
+        for (let i = 0; i < 5; i++) {
+          const noise = audioContext.createBufferSource()
+          const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate)
+          const data = buffer.getChannelData(0)
+      
+          for (let j = 0; j < buffer.length; j++) {
+            data[j] = Math.random() * 2 - 1
+          }
+      
+          noise.buffer = buffer
+          noise.loop = true
+      
+          const filter = audioContext.createBiquadFilter()
+          filter.type = 'bandpass'
+          filter.frequency.value = 1000 + Math.random() * 3000
+          filter.Q.value = 1
+      
+          noise.connect(filter)
+          filter.connect(gainNode)
+          noise.start()
+        }
+      
+        return { gain: gainNode }
+      }
+      
+      function createOceanSound() {
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 0
+      
+        // Create ocean waves using low-frequency oscillators
+        const oscillator = audioContext.createOscillator()
+        oscillator.type = 'sine'
+        oscillator.frequency.value = 0.1
+      
+        const gainModulator = audioContext.createGain()
+        gainModulator.gain.value = 0.3
+      
+        oscillator.connect(gainModulator)
+        gainModulator.connect(gainNode)
+        oscillator.start()
+      
+        // Add some noise for wave crashing sounds
+        const noise = audioContext.createBufferSource()
+        const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate)
+        const data = buffer.getChannelData(0)
+      
+        for (let i = 0; i < buffer.length; i++) {
+          data[i] = Math.random() * 2 - 1
+        }
+      
+        noise.buffer = buffer
+        noise.loop = true
+      
+        const noiseFilter = audioContext.createBiquadFilter()
+        noiseFilter.type = 'lowpass'
+        noiseFilter.frequency.value = 800
+      
+        const noiseGain = audioContext.createGain()
+        noiseGain.gain.value = 0.1
+      
+        noise.connect(noiseFilter)
+        noiseFilter.connect(noiseGain)
+        noiseGain.connect(gainNode)
+        noise.start()
+      
+        return { gain: gainNode }
+      }
+      
+      function createWindSound() {
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 0
+      
+        // Create wind using filtered noise
+        const noise = audioContext.createBufferSource()
+        const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate)
+        const data = buffer.getChannelData(0)
+      
+        for (let i = 0; i < buffer.length; i++) {
+          data[i] = Math.random() * 2 - 1
+        }
+      
+        noise.buffer = buffer
+        noise.loop = true
+      
+        const filter = audioContext.createBiquadFilter()
+        filter.type = 'highpass'
+        filter.frequency.value = 800
+        filter.Q.value = 0.5
+      
+        noise.connect(filter)
+        filter.connect(gainNode)
+        noise.start()
+      
+        return { gain: gainNode }
+      }
+      
+      function createBirdsSound() {
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 0
+      
+        // Create occasional bird chirps
+        function playChirp() {
+          const oscillator = audioContext.createOscillator()
+          oscillator.type = 'sine'
+          oscillator.frequency.setValueAtTime(1500 + Math.random() * 2000, audioContext.currentTime)
+          oscillator.frequency.exponentialRampToValueAtTime(500 + Math.random() * 1000, audioContext.currentTime + 0.1 + Math.random() * 0.2)
+      
+          const chirpGain = audioContext.createGain()
+          chirpGain.gain.setValueAtTime(0, audioContext.currentTime)
+          chirpGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05)
+          chirpGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3)
+      
+          oscillator.connect(chirpGain)
+          chirpGain.connect(gainNode)
+          oscillator.start()
+          oscillator.stop(audioContext.currentTime + 0.3)
+        }
+      
+        // Play chirps at random intervals
+        setInterval(() => {
+          if (Math.random() > 0.7) {
+            playChirp()
+          }
+        }, 1000)
+      
+        return { gain: gainNode }
+      }
+      
+      function createMusicSound() {
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 0
+      
+        // Create simple ambient music with multiple oscillators
+        const oscillators = []
+        const frequencies = [220, 277.18, 329.63, 392] // A, C#, E, G
+      
+        frequencies.forEach((freq) => {
+          const oscillator = audioContext.createOscillator()
+          oscillator.type = 'sine'
+          oscillator.frequency.value = freq
+      
+          const slowOscillator = audioContext.createOscillator()
+          slowOscillator.type = 'sine'
+          slowOscillator.frequency.value = 0.1 + Math.random() * 0.2
+      
+          const gainModulator = audioContext.createGain()
+          gainModulator.gain.value = 0.1
+      
+          slowOscillator.connect(gainModulator.gain)
+          oscillator.connect(gainModulator)
+          gainModulator.connect(gainNode)
+      
+          oscillator.start()
+          slowOscillator.start()
+      
+          oscillators.push(oscillator)
+          oscillators.push(slowOscillator)
+        })
+      
+        return { gain: gainNode, oscillators: oscillators }
+      }
+      
+      // Update volume for a specific sound
+      function updateVolume(soundName) {
+        const slider = document.getElementById(`${soundName}Slider`)
+        const volumeValue = document.getElementById(`${soundName}Volume`)
+        const volume = parseInt(slider.value) / 100
+      
+        if (sounds[soundName] && sounds[soundName].gain) {
+          sounds[soundName].gain.gain.value = volume
+        }
+      
+        volumeValue.textContent = `${slider.value}%`
+      }
+      
+      // Play all sounds
+      function playAllSounds() {
+        if (audioContext.state === 'suspended') {
+          audioContext.resume()
+        }
+      
+        isPlaying = true
+        document.getElementById('playAllBtn').disabled = true
+        document.getElementById('stopAllBtn').disabled = false
+      }
+      
+      // Stop all sounds
+      function stopAllSounds() {
+        isPlaying = false
+        document.getElementById('playAllBtn').disabled = false
+        document.getElementById('stopAllBtn').disabled = true
+      
+        // Set all volumes to 0
+        Object.keys(sounds).forEach((soundName) => {
+          if (sounds[soundName] && sounds[soundName].gain) {
+            sounds[soundName].gain.gain.value = 0
+          }
+        })
+      }
+      
+      // Breathing exercise functionality
+      let breathingInterval
+      let isBreathingActive = false
+      let isInhalePhase = true
+      let breathCount = 0
+      const breathDuration = 4000 // 4 seconds per phase
+      
+      function startBreathing() {
+        if (isBreathingActive) return
+      
+        isBreathingActive = true
+        breathCount = 0
+      
+        document.getElementById('startBreathingBtn').disabled = true
+        document.getElementById('pauseBreathingBtn').disabled = false
+        document.getElementById('stopBreathingBtn').disabled = false
+      
+        breathingInterval = setInterval(updateBreathing, 50)
+        updateBreathingText()
+      }
+      
+      function pauseBreathing() {
+        if (!isBreathingActive) return
+      
+        isBreathingActive = false
+        clearInterval(breathingInterval)
+      
+        document.getElementById('startBreathingBtn').disabled = false
+        document.getElementById('pauseBreathingBtn').disabled = true
+        document.getElementById('breathingText').textContent = 'Paused'
+        document.getElementById('breathingInstruction').textContent = 'Click Resume to continue'
+      }
+      
+      function stopBreathing() {
+        isBreathingActive = false
+        clearInterval(breathingInterval)
+      
+        document.getElementById('startBreathingBtn').disabled = false
+        document.getElementById('pauseBreathingBtn').disabled = true
+        document.getElementById('stopBreathingBtn').disabled = true
+      
+        document.getElementById('breathingCircle').style.transform = 'scale(1)'
+        document.getElementById('breathingText').textContent = 'Ready to begin'
+        document.getElementById('breathingInstruction').textContent = 'Click Start to begin the exercise'
+      }
+      
+      function updateBreathing() {
+        const circle = document.getElementById('breathingCircle')
+        const currentTime = Date.now() % breathDuration
+        const progress = currentTime / breathDuration
+      
+        if (progress < 0.5) {
+          // Inhale phase
+          if (!isInhalePhase) {
+            isInhalePhase = true
+            breathCount++
+            updateBreathingText()
+          }
+          const scale = 1 + progress * 0.5 // Scale from 1 to 1.5
+          circle.style.transform = `scale(${scale})`
+        } else {
+          // Exhale phase
+          if (isInhalePhase) {
+            isInhalePhase = false
+            updateBreathingText()
+          }
+          const scale = 1.5 - (progress - 0.5) * 0.5 // Scale from 1.5 to 1
+          circle.style.transform = `scale(${scale})`
+        }
+      }
+      
+      function updateBreathingText() {
+        const breathingText = document.getElementById('breathingText')
+        const breathingInstruction = document.getElementById('breathingInstruction')
+      
+        if (isInhalePhase) {
+          breathingText.textContent = 'Breathe In'
+          breathingInstruction.textContent = 'Slowly inhale through your nose'
+        } else {
+          breathingText.textContent = 'Breathe Out'
+          breathingInstruction.textContent = 'Gently exhale through your mouth'
+        }
+      }
+      
+      // Timer functionality
+      let timerInterval
+      let timerTime = 5 * 60 // 5 minutes in seconds
+      let isTimerRunning = false
+      
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timerTime / 60)
+        const seconds = timerTime % 60
+        document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      }
+      
+      function startTimer() {
+        if (isTimerRunning) return
+      
+        isTimerRunning = true
+        timerInterval = setInterval(() => {
+          if (timerTime > 0) {
+            timerTime--
+            updateTimerDisplay()
+          } else {
+            clearInterval(timerInterval)
+            isTimerRunning = false
+            alert('Relaxation session complete! Take a moment to notice how you feel.')
+          }
+        }, 1000)
+      }
+      
+      function pauseTimer() {
+        clearInterval(timerInterval)
+        isTimerRunning = false
+      }
+      
+      function resetTimer(minutes = 5) {
+        clearInterval(timerInterval)
+        isTimerRunning = false
+        timerTime = minutes * 60
+        updateTimerDisplay()
+      }
+      
+      // Initialize the page
+      document.addEventListener('DOMContentLoaded', function () {
         // Initialize sounds
-        function initSounds() {
-            // Create oscillator nodes for each sound
-            sounds.rain = createRainSound();
-            sounds.ocean = createOceanSound();
-            sounds.wind = createWindSound();
-            sounds.birds = createBirdsSound();
-            sounds.music = createMusicSound();
-            
-            // Connect to master gain node
-            const masterGain = audioContext.createGain();
-            masterGain.connect(audioContext.destination);
-            masterGain.gain.value = 0.7; // Master volume control
-            
-            // Connect all sounds to master gain
-            Object.values(sounds).forEach(sound => {
-                if (sound && sound.gain) {
-                    sound.gain.connect(masterGain);
-                }
-            });
-            
-            // Set initial volumes from sliders
-            updateVolume('rain');
-            updateVolume('ocean');
-            updateVolume('wind');
-            updateVolume('birds');
-            updateVolume('music');
-        }
-
-        // Create different types of sounds
-        function createRainSound() {
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0;
-            
-            // Create multiple noise sources for rain effect
-            for (let i = 0; i < 5; i++) {
-                const noise = audioContext.createBufferSource();
-                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
-                const data = buffer.getChannelData(0);
-                
-                for (let j = 0; j < buffer.length; j++) {
-                    data[j] = Math.random() * 2 - 1;
-                }
-                
-                noise.buffer = buffer;
-                noise.loop = true;
-                
-                const filter = audioContext.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1000 + Math.random() * 3000;
-                filter.Q.value = 1;
-                
-                noise.connect(filter);
-                filter.connect(gainNode);
-                noise.start();
+        initSounds()
+      
+        // Set up volume sliders
+        document.querySelectorAll('.volume-slider').forEach((slider) => {
+          slider.addEventListener('input', function () {
+            const soundName = this.id.replace('Slider', '')
+            updateVolume(soundName)
+      
+            // If sounds are playing, update the volume in real-time
+            if (isPlaying) {
+              updateVolume(soundName)
             }
-            
-            return { gain: gainNode };
-        }
-
-        function createOceanSound() {
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0;
-            
-            // Create ocean waves using low-frequency oscillators
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = 'sine';
-            oscillator.frequency.value = 0.1;
-            
-            const gainModulator = audioContext.createGain();
-            gainModulator.gain.value = 0.3;
-            
-            oscillator.connect(gainModulator);
-            gainModulator.connect(gainNode);
-            oscillator.start();
-            
-            // Add some noise for wave crashing sounds
-            const noise = audioContext.createBufferSource();
-            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
-            const data = buffer.getChannelData(0);
-            
-            for (let i = 0; i < buffer.length; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
-            
-            noise.buffer = buffer;
-            noise.loop = true;
-            
-            const noiseFilter = audioContext.createBiquadFilter();
-            noiseFilter.type = 'lowpass';
-            noiseFilter.frequency.value = 800;
-            
-            const noiseGain = audioContext.createGain();
-            noiseGain.gain.value = 0.1;
-            
-            noise.connect(noiseFilter);
-            noiseFilter.connect(noiseGain);
-            noiseGain.connect(gainNode);
-            noise.start();
-            
-            return { gain: gainNode };
-        }
-
-        function createWindSound() {
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0;
-            
-            // Create wind using filtered noise
-            const noise = audioContext.createBufferSource();
-            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
-            const data = buffer.getChannelData(0);
-            
-            for (let i = 0; i < buffer.length; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
-            
-            noise.buffer = buffer;
-            noise.loop = true;
-            
-            const filter = audioContext.createBiquadFilter();
-            filter.type = 'highpass';
-            filter.frequency.value = 800;
-            filter.Q.value = 0.5;
-            
-            noise.connect(filter);
-            filter.connect(gainNode);
-            noise.start();
-            
-            return { gain: gainNode };
-        }
-
-        function createBirdsSound() {
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0;
-            
-            // Create occasional bird chirps
-            function playChirp() {
-                const oscillator = audioContext.createOscillator();
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(1500 + Math.random() * 2000, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(500 + Math.random() * 1000, audioContext.currentTime + 0.1 + Math.random() * 0.2);
-                
-                const chirpGain = audioContext.createGain();
-                chirpGain.gain.setValueAtTime(0, audioContext.currentTime);
-                chirpGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05);
-                chirpGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
-                
-                oscillator.connect(chirpGain);
-                chirpGain.connect(gainNode);
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.3);
-            }
-            
-            // Play chirps at random intervals
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    playChirp();
-                }
-            }, 1000);
-            
-            return { gain: gainNode };
-        }
-
-        function createMusicSound() {
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0;
-            
-            // Create simple ambient music with multiple oscillators
-            const oscillators = [];
-            const frequencies = [220, 277.18, 329.63, 392]; // A, C#, E, G
-            
-            frequencies.forEach(freq => {
-                const oscillator = audioContext.createOscillator();
-                oscillator.type = 'sine';
-                oscillator.frequency.value = freq;
-                
-                const slowOscillator = audioContext.createOscillator();
-                slowOscillator.type = 'sine';
-                slowOscillator.frequency.value = 0.1 + Math.random() * 0.2;
-                
-                const gainModulator = audioContext.createGain();
-                gainModulator.gain.value = 0.1;
-                
-                slowOscillator.connect(gainModulator.gain);
-                oscillator.connect(gainModulator);
-                gainModulator.connect(gainNode);
-                
-                oscillator.start();
-                slowOscillator.start();
-                
-                oscillators.push(oscillator);
-                oscillators.push(slowOscillator);
-            });
-            
-            return { gain: gainNode, oscillators: oscillators };
-        }
-
-        // Update volume for a specific sound
-        function updateVolume(soundName) {
-            const slider = document.getElementById(`${soundName}Slider`);
-            const volumeValue = document.getElementById(`${soundName}Volume`);
-            const volume = parseInt(slider.value) / 100;
-            
-            if (sounds[soundName] && sounds[soundName].gain) {
-                sounds[soundName].gain.gain.value = volume;
-            }
-            
-            volumeValue.textContent = `${slider.value}%`;
-        }
-
-        // Play all sounds
-        function playAllSounds() {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            isPlaying = true;
-            document.getElementById('playAllBtn').disabled = true;
-            document.getElementById('stopAllBtn').disabled = false;
-        }
-
-        // Stop all sounds
-        function stopAllSounds() {
-            isPlaying = false;
-            document.getElementById('playAllBtn').disabled = false;
-            document.getElementById('stopAllBtn').disabled = true;
-            
-            // Set all volumes to 0
-            Object.keys(sounds).forEach(soundName => {
-                if (sounds[soundName] && sounds[soundName].gain) {
-                    sounds[soundName].gain.gain.value = 0;
-                }
-            });
-        }
-
-        // Breathing exercise functionality
-        let breathingInterval;
-        let isBreathingActive = false;
-        let isInhalePhase = true;
-        let breathCount = 0;
-        const breathDuration = 4000; // 4 seconds per phase
-
-        function startBreathing() {
-            if (isBreathingActive) return;
-            
-            isBreathingActive = true;
-            breathCount = 0;
-            
-            document.getElementById('startBreathingBtn').disabled = true;
-            document.getElementById('pauseBreathingBtn').disabled = false;
-            document.getElementById('stopBreathingBtn').disabled = false;
-            
-            breathingInterval = setInterval(updateBreathing, 50);
-            updateBreathingText();
-        }
-
-        function pauseBreathing() {
-            if (!isBreathingActive) return;
-            
-            isBreathingActive = false;
-            clearInterval(breathingInterval);
-            
-            document.getElementById('startBreathingBtn').disabled = false;
-            document.getElementById('pauseBreathingBtn').disabled = true;
-            document.getElementById('breathingText').textContent = "Paused";
-            document.getElementById('breathingInstruction').textContent = "Click Resume to continue";
-        }
-
-        function stopBreathing() {
-            isBreathingActive = false;
-            clearInterval(breathingInterval);
-            
-            document.getElementById('startBreathingBtn').disabled = false;
-            document.getElementById('pauseBreathingBtn').disabled = true;
-            document.getElementById('stopBreathingBtn').disabled = true;
-            
-            document.getElementById('breathingCircle').style.transform = 'scale(1)';
-            document.getElementById('breathingText').textContent = "Ready to begin";
-            document.getElementById('breathingInstruction').textContent = "Click Start to begin the exercise";
-        }
-
-        function updateBreathing() {
-            const circle = document.getElementById('breathingCircle');
-            const currentTime = Date.now() % breathDuration;
-            const progress = currentTime / breathDuration;
-            
-            if (progress < 0.5) {
-                // Inhale phase
-                if (!isInhalePhase) {
-                    isInhalePhase = true;
-                    breathCount++;
-                    updateBreathingText();
-                }
-                const scale = 1 + progress * 0.5; // Scale from 1 to 1.5
-                circle.style.transform = `scale(${scale})`;
-            } else {
-                // Exhale phase
-                if (isInhalePhase) {
-                    isInhalePhase = false;
-                    updateBreathingText();
-                }
-                const scale = 1.5 - (progress - 0.5) * 0.5; // Scale from 1.5 to 1
-                circle.style.transform = `scale(${scale})`;
-            }
-        }
-
-        function updateBreathingText() {
-            const breathingText = document.getElementById('breathingText');
-            const breathingInstruction = document.getElementById('breathingInstruction');
-            
-            if (isInhalePhase) {
-                breathingText.textContent = "Breathe In";
-                breathingInstruction.textContent = "Slowly inhale through your nose";
-            } else {
-                breathingText.textContent = "Breathe Out";
-                breathingInstruction.textContent = "Gently exhale through your mouth";
-            }
-        }
-
-        // Timer functionality
-        let timerInterval;
-        let timerTime = 5 * 60; // 5 minutes in seconds
-        let isTimerRunning = false;
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timerTime / 60);
-            const seconds = timerTime % 60;
-            document.getElementById('timerDisplay').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function startTimer() {
-            if (isTimerRunning) return;
-            
-            isTimerRunning = true;
-            timerInterval = setInterval(() => {
-                if (timerTime > 0) {
-                    timerTime--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(timerInterval);
-                    isTimerRunning = false;
-                    alert("Relaxation session complete! Take a moment to notice how you feel.");
-                }
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-        }
-
-        function resetTimer(minutes = 5) {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            timerTime = minutes * 60;
-            updateTimerDisplay();
-        }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize sounds
-            initSounds();
-            
-            // Set up volume sliders
-            document.querySelectorAll('.volume-slider').forEach(slider => {
-                slider.addEventListener('input', function() {
-                    const soundName = this.id.replace('Slider', '');
-                    updateVolume(soundName);
-                    
-                    // If sounds are playing, update the volume in real-time
-                    if (isPlaying) {
-                        updateVolume(soundName);
-                    }
-                });
-            });
-            
-            // Set up sound control buttons
-            document.getElementById('playAllBtn').addEventListener('click', playAllSounds);
-            document.getElementById('stopAllBtn').addEventListener('click', stopAllSounds);
-            
-            // Set up breathing exercise buttons
-            document.getElementById ('startBreathingBtn').addEventListener('click', startBreathing);
-            document.getElementById('pauseBreathingBtn').addEventListener('click', pauseBreathing);
-            document.getElementById('stopBreathingBtn').addEventListener('click', stopBreathing);
-
-            // Set up timer buttons
-            document.getElementById('timer5Min').addEventListener('click', () => resetTimer(5));
-            document.getElementById('timer10Min').addEventListener('click', () => resetTimer(10));
-            document.getElementById('timer15Min').addEventListener('click', () => resetTimer(15));
-            document.getElementById('timerStart').addEventListener('click', startTimer);
-            document.getElementById('timerPause').addEventListener('click', pauseTimer);
-            document.getElementById('timerReset').addEventListener('click', () => resetTimer(5));
-
-            // Accessibility: High Contrast toggle
-            const highContrastBtn = document.getElementById('highContrastToggle');
-            highContrastBtn.addEventListener('click', () => {
-                document.body.classList.toggle('high-contrast');
-            });
-
-            // Accessibility: Text size adjustments
-            const textIncreaseBtn = document.getElementById('textSizeIncrease');
-            const textDecreaseBtn = document.getElementById('textSizeDecrease');
-            textIncreaseBtn.addEventListener('click', () => {
-                const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
-                document.body.style.fontSize = `${currentSize * 1.1}px`;
-            });
-            textDecreaseBtn.addEventListener('click', () => {
-                const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
-                document.body.style.fontSize = `${currentSize / 1.1}px`;
-            });
-
-            // Mobile menu toggle
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const navTabs = document.getElementById('navTabs');
-            mobileMenuBtn.addEventListener('click', () => {
-                navTabs.classList.toggle('active');
-            });
-        });
+          })
+        })
+      
+        // Set up sound control buttons
+        document.getElementById('playAllBtn').addEventListener('click', playAllSounds)
+        document.getElementById('stopAllBtn').addEventListener('click', stopAllSounds)
+      
+        // Set up breathing exercise buttons
+        document.getElementById('startBreathingBtn').addEventListener('click', startBreathing)
+        document.getElementById('pauseBreathingBtn').addEventListener('click', pauseBreathing)
+        document.getElementById('stopBreathingBtn').addEventListener('click', stopBreathing)
+      
+        // Set up timer buttons
+        document.getElementById('timer5Min').addEventListener('click', () => resetTimer(5))
+        document.getElementById('timer10Min').addEventListener('click', () => resetTimer(10))
+        document.getElementById('timer15Min').addEventListener('click', () => resetTimer(15))
+        document.getElementById('timerStart').addEventListener('click', startTimer)
+        document.getElementById('timerPause').addEventListener('click', pauseTimer)
+        document.getElementById('timerReset').addEventListener('click', () => resetTimer(5))
+      
+        // Accessibility: High Contrast toggle
+        const highContrastBtn = document.getElementById('highContrastToggle')
+        highContrastBtn.addEventListener('click', () => {
+          document.body.classList.toggle('high-contrast')
+        })
+      
+        // Accessibility: Text size adjustments
+        const textIncreaseBtn = document.getElementById('textSizeIncrease')
+        const textDecreaseBtn = document.getElementById('textSizeDecrease')
+        textIncreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+          document.body.style.fontSize = `${currentSize * 1.1}px`
+        })
+        textDecreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+          document.body.style.fontSize = `${currentSize / 1.1}px`
+        })
+      
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn')
+        const navTabs = document.getElementById('navTabs')
+        mobileMenuBtn.addEventListener('click', () => {
+          navTabs.classList.toggle('active')
+        })
+      })
     </script>
-</body>
+  </body>
 </html>

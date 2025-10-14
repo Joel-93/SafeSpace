@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calm Zone - SafeSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      
+      /* Animated background */
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+      
+      .cloud {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: float linear infinite;
+      }
+      
+      .cloud:nth-child(1) {
+        width: 120px;
+        height: 40px;
+        top: 10%;
+        left: -120px;
+        animation-duration: 40s;
+        animation-delay: 0s;
+      }
+      
+      .cloud:nth-child(2) {
+        width: 180px;
+        height: 60px;
+        top: 25%;
+        left: -180px;
+        animation-duration: 50s;
+        animation-delay: 10s;
+      }
+      
+      .cloud:nth-child(3) {
+        width: 100px;
+        height: 35px;
+        top: 40%;
+        left: -100px;
+        animation-duration: 35s;
+        animation-delay: 5s;
+      }
+      
+      .cloud:nth-child(4) {
+        width: 150px;
+        height: 50px;
+        top: 60%;
+        left: -150px;
+        animation-duration: 45s;
+        animation-delay: 15s;
+      }
+      
+      .cloud:nth-child(5) {
+        width: 200px;
+        height: 70px;
+        top: 75%;
+        left: -200px;
+        animation-duration: 55s;
+        animation-delay: 20s;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(100vw + 200px));
+        }
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        text-decoration: none;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Calm Zone Specific Styles */
+      .calm-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 5%;
+      }
+      
+      .calm-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .calm-header h1 {
+        font-size: 2.5rem;
+        color: var(--soft-blue);
+        margin-bottom: 0.5rem;
+      }
+      
+      .calm-header p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .calm-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      @media (max-width: 968px) {
+        .calm-content {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      /* Sound Mixer Section */
+      .sound-mixer {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+      }
+      
+      .sound-mixer h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .sound-control {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      
+      .sound-control:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      
+      .sound-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      
+      .sound-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+      }
+      
+      .sound-icon {
+        font-size: 1.2rem;
+      }
+      
+      .volume-value {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        min-width: 40px;
+        text-align: right;
+      }
+      
+      .volume-slider {
+        width: 100%;
+        height: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #e0e0e0;
+        border-radius: 4px;
+        outline: none;
+      }
+      
+      .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--soft-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .volume-slider::-webkit-slider-thumb:hover {
+        background: #8bc5c7;
+        transform: scale(1.1);
+      }
+      
+      .mixer-controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      
+      .control-btn {
+        flex: 1;
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-blue);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .control-btn:hover {
+        background-color: #8bc5c7;
+        transform: translateY(-2px);
+      }
+      
+      .control-btn.stop {
+        background-color: #e74c3c;
+      }
+      
+      .control-btn.stop:hover {
+        background-color: #c0392b;
+      }
+      
+      .control-btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      /* Breathing Exercise Section */
+      .breathing-exercise {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+      }
+      
+      .breathing-exercise h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .breathing-container {
+        position: relative;
+        margin: 2rem auto;
+        width: 200px;
+        height: 200px;
+      }
+      
+      .breathing-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--soft-blue) 0%, #8bc5c7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-weight: 600;
+        font-size: 1.2rem;
+        transition: all 0.5s ease-in-out;
+        box-shadow: 0 10px 20px rgba(168, 218, 220, 0.3);
+      }
+      
+      .breathing-text {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--soft-blue);
+        min-height: 2rem;
+      }
+      
+      .breathing-instruction {
+        margin-top: 0.5rem;
+        color: var(--text-light);
+        min-height: 1.5rem;
+      }
+      
+      .breathing-controls {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: center;
+      }
+      
+      .breathing-btn {
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-green);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .breathing-btn:hover {
+        background-color: #9bd4ab;
+        transform: translateY(-2px);
+      }
+      
+      .breathing-btn.pause {
+        background-color: var(--light-yellow);
+        color: var(--text-dark);
+      }
+      
+      .breathing-btn.pause:hover {
+        background-color: #f5d6a3;
+      }
+      
+      .breathing-btn.stop {
+        background-color: #e74c3c;
+      }
+      
+      .breathing-btn.stop:hover {
+        background-color: #c0392b;
+      }
+      
+      .breathing-btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      /* Timer Section */
+      .timer-section {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+      }
+      
+      .timer-section h2 {
+        color: var(--soft-blue);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .timer-display {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        margin: 1rem 0;
+      }
+      
+      .timer-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+      
+      .timer-btn {
+        padding: 0.8rem 1.5rem;
+        background-color: var(--soft-purple);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .timer-btn:hover {
+        background-color: #c895bb;
+        transform: translateY(-2px);
+      }
+      
+      /* New Features Section */
+      .new-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      
+      .feature-card {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+      }
+      
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--soft-blue);
+      }
+      
+      .feature-card h3 {
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .feature-card p {
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+      }
+      
+      .feature-btn {
+        padding: 0.7rem 1.5rem;
+        background-color: var(--soft-green);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+      
+      .feature-btn:hover {
+        background-color: #9bd4ab;
+      }
+      
+      .scene-container {
+        width: 100%;
+        height: 200px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        margin-bottom: 1rem;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+      
+      .scene-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 0.5rem;
+        text-align: center;
+      }
+      
+      /* Mood Tracker */
+      .mood-tracker {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+      
+      .mood-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        transition: all 0.3s ease;
+      }
+      
+      .mood-option:hover {
+        background-color: rgba(168, 218, 220, 0.2);
+      }
+      
+      .mood-option.selected {
+        background-color: var(--soft-blue);
+      }
+      
+      .mood-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      /* Guided Meditation */
+      .meditation-list {
+        text-align: left;
+        margin-top: 1rem;
+      }
+      
+      .meditation-item {
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .meditation-item:hover {
+        background-color: rgba(168, 218, 220, 0.1);
+      }
+      
+      .meditation-item:last-child {
+        border-bottom: none;
+      }
+      
+      .meditation-duration {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: 4rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
+        }
+      
+        .nav-tabs.active {
+          display: flex;
+        }
+      
+        .mobile-menu-btn {
+          display: block;
+        }
+      
+        .calm-header h1 {
+          font-size: 2rem;
+        }
+      
+        .mixer-controls,
+        .breathing-controls,
+        .timer-controls {
+          flex-direction: column;
+        }
+      
+        .footer-content {
+          flex-direction: column;
+        }
+        
+        .mood-tracker {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        
+        .mood-option {
+          flex: 0 0 calc(33.333% - 1rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+    </div>
+
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab active">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab">SafeLine</a>  
+        </div>
+      </nav>
+    </header>
+
+    <!-- Calm Zone Content -->
+    <div class="calm-container">
+      <div class="calm-header">
+        <h1>Calm Zone</h1>
+        <p>Relax with soothing sounds, breathing exercises, and peaceful moments</p>
+      </div>
+
+      <div class="calm-content">
+        <!-- Sound Mixer Section -->
+        <section class="sound-mixer">
+          <h2><i class="fas fa-volume-up"></i> Sound Mixer</h2>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-cloud-rain sound-icon"></i> Rain</span>
+              <span class="volume-value" id="rainVolume">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="volume-slider" id="rainSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-water sound-icon"></i> Ocean Waves</span>
+              <span class="volume-value" id="oceanVolume">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="volume-slider" id="oceanSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-wind sound-icon"></i> Wind</span>
+              <span class="volume-value" id="windVolume">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="volume-slider" id="windSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-feather sound-icon"></i> Birds</span>
+              <span class="volume-value" id="birdsVolume">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="volume-slider" id="birdsSlider" />
+          </div>
+
+          <div class="sound-control">
+            <div class="sound-info">
+              <span class="sound-name"><i class="fas fa-music sound-icon"></i> Ambient Music</span>
+              <span class="volume-value" id="musicVolume">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="volume-slider" id="musicSlider" />
+          </div>
+
+          <div class="mixer-controls">
+            <button class="control-btn" id="playAllBtn"><i class="fas fa-play"></i> Play All</button>
+            <button class="control-btn stop" id="stopAllBtn" disabled><i class="fas fa-stop"></i> Stop All</button>
+          </div>
+        </section>
+
+        <!-- Breathing Exercise Section -->
+        <section class="breathing-exercise">
+          <h2><i class="fas fa-wind"></i> Breathing Exercise</h2>
+          <p>Follow the circle to practice calming breathing techniques</p>
+
+          <div class="breathing-container">
+            <div class="breathing-circle" id="breathingCircle">Breathe</div>
+          </div>
+
+          <div class="breathing-text" id="breathingText">Ready to begin</div>
+          <div class="breathing-instruction" id="breathingInstruction">Click Start to begin the exercise</div>
+
+          <div class="breathing-controls">
+            <button class="breathing-btn" id="startBreathingBtn"><i class="fas fa-play"></i> Start</button>
+            <button class="breathing-btn pause" id="pauseBreathingBtn" disabled><i class="fas fa-pause"></i> Pause</button>
+            <button class="breathing-btn stop" id="stopBreathingBtn" disabled><i class="fas fa-stop"></i> Stop</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Timer Section -->
+      <section class="timer-section">
+        <h2><i class="fas fa-clock"></i> Relaxation Timer</h2>
+        <p>Set a timer for your relaxation session</p>
+
+        <div class="timer-display" id="timerDisplay">05:00</div>
+
+        <div class="timer-controls">
+          <button class="timer-btn" id="timer5Min">5 Min</button>
+          <button class="timer-btn" id="timer10Min">10 Min</button>
+          <button class="timer-btn" id="timer15Min">15 Min</button>
+          <button class="timer-btn" id="timerStart">Start</button>
+          <button class="timer-btn" id="timerPause">Pause</button>
+          <button class="timer-btn" id="timerReset">Reset</button>
+        </div>
+      </section>
+
+      <!-- New Features Section -->
+      <section class="new-features">
+        <!-- Guided Meditation -->
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-spa"></i></div>
+          <h3>Guided Meditations</h3>
+          <p>Follow along with soothing guided meditations for different needs</p>
+          <div class="meditation-list">
+            <div class="meditation-item" data-audio="meditation1">
+              <span>Morning Calm</span>
+              <span class="meditation-duration">5 min</span>
+            </div>
+            <div class="meditation-item" data-audio="meditation2">
+              <span>Stress Relief</span>
+              <span class="meditation-duration">10 min</span>
+            </div>
+            <div class="meditation-item" data-audio="meditation3">
+              <span>Sleep Preparation</span>
+              <span class="meditation-duration">15 min</span>
+            </div>
+          </div>
+          <button class="feature-btn" id="playMeditationBtn">Play Selected</button>
+        </div>
+
+        <!-- Nature Scenes -->
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-mountain"></i></div>
+          <h3>Nature Scenes</h3>
+          <p>Immerse yourself in calming natural environments</p>
+          <div class="scene-container" id="natureScene" style="background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+            <div class="scene-overlay">Forest Path</div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="feature-btn" id="prevSceneBtn">Previous</button>
+            <button class="feature-btn" id="nextSceneBtn">Next</button>
+          </div>
+        </div>
+
+        <!-- Mood Tracker -->
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-smile"></i></div>
+          <h3>Mood Tracker</h3>
+          <p>Track how you're feeling before and after using Calm Zone</p>
+          <div class="mood-tracker">
+            <div class="mood-option" data-mood="very-happy">
+              <span class="mood-icon">😄</span>
+              <span>Very Happy</span>
+            </div>
+            <div class="mood-option" data-mood="happy">
+              <span class="mood-icon">😊</span>
+              <span>Happy</span>
+            </div>
+            <div class="mood-option" data-mood="neutral">
+              <span class="mood-icon">😐</span>
+              <span>Neutral</span>
+            </div>
+            <div class="mood-option" data-mood="sad">
+              <span class="mood-icon">😔</span>
+              <span>Sad</span>
+            </div>
+            <div class="mood-option" data-mood="very-sad">
+              <span class="mood-icon">😢</span>
+              <span>Very Sad</span>
+            </div>
+          </div>
+          <button class="feature-btn" id="saveMoodBtn">Save Mood</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Sound mixer functionality
+      let audioContext = null;
+      let sounds = {};
+      let isPlaying = false;
+      
+      // Initialize sounds only when needed
+      function initSounds() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        // Create oscillator nodes for each sound
+        sounds.rain = createRainSound();
+        sounds.ocean = createOceanSound();
+        sounds.wind = createWindSound();
+        sounds.birds = createBirdsSound();
+        sounds.music = createMusicSound();
+      
+        // Connect to master gain node
+        const masterGain = audioContext.createGain();
+        masterGain.connect(audioContext.destination);
+        masterGain.gain.value = 0.7; // Master volume control
+      
+        // Connect all sounds to master gain
+        Object.values(sounds).forEach((sound) => {
+          if (sound && sound.gain) {
+            sound.gain.connect(masterGain);
+          }
+        });
+      
+        // Set initial volumes from sliders
+        updateVolume('rain');
+        updateVolume('ocean');
+        updateVolume('wind');
+        updateVolume('birds');
+        updateVolume('music');
+      }
+      
+      // Create different types of sounds
+      function createRainSound() {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+      
+        // Create multiple noise sources for rain effect
+        for (let i = 0; i < 3; i++) {
+          const noise = audioContext.createBufferSource();
+          const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+          const data = buffer.getChannelData(0);
+      
+          for (let j = 0; j < buffer.length; j++) {
+            data[j] = Math.random() * 2 - 1;
+          }
+      
+          noise.buffer = buffer;
+          noise.loop = true;
+      
+          const filter = audioContext.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.value = 800 + Math.random() * 2000;
+          filter.Q.value = 0.8;
+      
+          noise.connect(filter);
+          filter.connect(gainNode);
+          noise.start();
+        }
+      
+        return { gain: gainNode };
+      }
+      
+      function createOceanSound() {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+      
+        // Create ocean waves using low-frequency oscillators
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 0.05;
+      
+        const gainModulator = audioContext.createGain();
+        gainModulator.gain.value = 0.2;
+      
+        oscillator.connect(gainModulator);
+        gainModulator.connect(gainNode);
+        oscillator.start();
+      
+        // Add some noise for wave crashing sounds
+        const noise = audioContext.createBufferSource();
+        const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+      
+        for (let i = 0; i < buffer.length; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+      
+        noise.buffer = buffer;
+        noise.loop = true;
+      
+        const noiseFilter = audioContext.createBiquadFilter();
+        noiseFilter.type = 'lowpass';
+        noiseFilter.frequency.value = 600;
+      
+        const noiseGain = audioContext.createGain();
+        noiseGain.gain.value = 0.05;
+      
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(gainNode);
+        noise.start();
+      
+        return { gain: gainNode };
+      }
+      
+      function createWindSound() {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+      
+        // Create wind using filtered noise
+        const noise = audioContext.createBufferSource();
+        const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+      
+        for (let i = 0; i < buffer.length; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+      
+        noise.buffer = buffer;
+        noise.loop = true;
+      
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 500;
+        filter.Q.value = 0.5;
+      
+        noise.connect(filter);
+        filter.connect(gainNode);
+        noise.start();
+      
+        return { gain: gainNode };
+      }
+      
+      function createBirdsSound() {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+      
+        // Create occasional bird chirps
+        function playChirp() {
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = 'sine';
+          oscillator.frequency.setValueAtTime(1200 + Math.random() * 1500, audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(600 + Math.random() * 800, audioContext.currentTime + 0.1 + Math.random() * 0.2);
+      
+          const chirpGain = audioContext.createGain();
+          chirpGain.gain.setValueAtTime(0, audioContext.currentTime);
+          chirpGain.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.05);
+          chirpGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+      
+          oscillator.connect(chirpGain);
+          chirpGain.connect(gainNode);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.3);
+        }
+      
+        // Play chirps at random intervals
+        const chirpInterval = setInterval(() => {
+          if (Math.random() > 0.8) {
+            playChirp();
+          }
+        }, 1500);
+      
+        return { gain: gainNode, interval: chirpInterval };
+      }
+      
+      function createMusicSound() {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0;
+      
+        // Create simple ambient music with multiple oscillators
+        const oscillators = [];
+        const frequencies = [220, 277.18, 329.63, 392]; // A, C#, E, G
+      
+        frequencies.forEach((freq) => {
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = 'sine';
+          oscillator.frequency.value = freq;
+      
+          const slowOscillator = audioContext.createOscillator();
+          slowOscillator.type = 'sine';
+          slowOscillator.frequency.value = 0.05 + Math.random() * 0.1;
+      
+          const gainModulator = audioContext.createGain();
+          gainModulator.gain.value = 0.08;
+      
+          slowOscillator.connect(gainModulator.gain);
+          oscillator.connect(gainModulator);
+          gainModulator.connect(gainNode);
+      
+          oscillator.start();
+          slowOscillator.start();
+      
+          oscillators.push(oscillator);
+          oscillators.push(slowOscillator);
+        });
+      
+        return { gain: gainNode, oscillators: oscillators };
+      }
+      
+      // Update volume for a specific sound
+      function updateVolume(soundName) {
+        const slider = document.getElementById(`${soundName}Slider`);
+        const volumeValue = document.getElementById(`${soundName}Volume`);
+        const volume = parseInt(slider.value) / 100;
+      
+        if (sounds[soundName] && sounds[soundName].gain) {
+          sounds[soundName].gain.gain.value = volume;
+        }
+      
+        volumeValue.textContent = `${slider.value}%`;
+      }
+      
+      // Play all sounds
+      function playAllSounds() {
+        if (!audioContext) {
+          initSounds();
+        }
+        
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      
+        isPlaying = true;
+        document.getElementById('playAllBtn').disabled = true;
+        document.getElementById('stopAllBtn').disabled = false;
+        
+        // Set all volumes to slider values
+        updateVolume('rain');
+        updateVolume('ocean');
+        updateVolume('wind');
+        updateVolume('birds');
+        updateVolume('music');
+      }
+      
+      // Stop all sounds
+      function stopAllSounds() {
+        isPlaying = false;
+        document.getElementById('playAllBtn').disabled = false;
+        document.getElementById('stopAllBtn').disabled = true;
+      
+        // Set all volumes to 0
+        Object.keys(sounds).forEach((soundName) => {
+          if (sounds[soundName] && sounds[soundName].gain) {
+            sounds[soundName].gain.gain.value = 0;
+          }
+        });
+        
+        // Reset sliders to 0
+        document.querySelectorAll('.volume-slider').forEach(slider => {
+          slider.value = 0;
+          const soundName = slider.id.replace('Slider', '');
+          document.getElementById(`${soundName}Volume`).textContent = '0%';
+        });
+      }
+      
+      // Breathing exercise functionality
+      let breathingInterval;
+      let isBreathingActive = false;
+      let isInhalePhase = true;
+      let breathCount = 0;
+      const breathDuration = 4000; // 4 seconds per phase
+      
+      function startBreathing() {
+        if (isBreathingActive) return;
+      
+        isBreathingActive = true;
+        breathCount = 0;
+      
+        document.getElementById('startBreathingBtn').disabled = true;
+        document.getElementById('pauseBreathingBtn').disabled = false;
+        document.getElementById('stopBreathingBtn').disabled = false;
+      
+        breathingInterval = setInterval(updateBreathing, 50);
+        updateBreathingText();
+      }
+      
+      function pauseBreathing() {
+        if (!isBreathingActive) return;
+      
+        isBreathingActive = false;
+        clearInterval(breathingInterval);
+      
+        document.getElementById('startBreathingBtn').disabled = false;
+        document.getElementById('pauseBreathingBtn').disabled = true;
+        document.getElementById('breathingText').textContent = 'Paused';
+        document.getElementById('breathingInstruction').textContent = 'Click Resume to continue';
+      }
+      
+      function stopBreathing() {
+        isBreathingActive = false;
+        clearInterval(breathingInterval);
+      
+        document.getElementById('startBreathingBtn').disabled = false;
+        document.getElementById('pauseBreathingBtn').disabled = true;
+        document.getElementById('stopBreathingBtn').disabled = true;
+      
+        document.getElementById('breathingCircle').style.transform = 'scale(1)';
+        document.getElementById('breathingText').textContent = 'Ready to begin';
+        document.getElementById('breathingInstruction').textContent = 'Click Start to begin the exercise';
+      }
+      
+      function updateBreathing() {
+        const circle = document.getElementById('breathingCircle');
+        const currentTime = Date.now() % breathDuration;
+        const progress = currentTime / breathDuration;
+      
+        if (progress < 0.5) {
+          // Inhale phase
+          if (!isInhalePhase) {
+            isInhalePhase = true;
+            breathCount++;
+            updateBreathingText();
+          }
+          const scale = 1 + progress * 0.5; // Scale from 1 to 1.5
+          circle.style.transform = `scale(${scale})`;
+        } else {
+          // Exhale phase
+          if (isInhalePhase) {
+            isInhalePhase = false;
+            updateBreathingText();
+          }
+          const scale = 1.5 - (progress - 0.5) * 0.5; // Scale from 1.5 to 1
+          circle.style.transform = `scale(${scale})`;
+        }
+      }
+      
+      function updateBreathingText() {
+        const breathingText = document.getElementById('breathingText');
+        const breathingInstruction = document.getElementById('breathingInstruction');
+      
+        if (isInhalePhase) {
+          breathingText.textContent = 'Breathe In';
+          breathingInstruction.textContent = 'Slowly inhale through your nose';
+        } else {
+          breathingText.textContent = 'Breathe Out';
+          breathingInstruction.textContent = 'Gently exhale through your mouth';
+        }
+      }
+      
+      // Timer functionality
+      let timerInterval;
+      let timerTime = 5 * 60; // 5 minutes in seconds
+      let isTimerRunning = false;
+      
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timerTime / 60);
+        const seconds = timerTime % 60;
+        document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      
+      function startTimer() {
+        if (isTimerRunning) return;
+      
+        isTimerRunning = true;
+        timerInterval = setInterval(() => {
+          if (timerTime > 0) {
+            timerTime--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            alert('Relaxation session complete! Take a moment to notice how you feel.');
+          }
+        }, 1000);
+      }
+      
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+      }
+      
+      function resetTimer(minutes = 5) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timerTime = minutes * 60;
+        updateTimerDisplay();
+      }
+      
+      // New Features Functionality
+      
+      // Nature Scenes
+      const natureScenes = [
+        {
+          name: "Forest Path",
+          image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          name: "Mountain Lake",
+          image: "https://images.unsplash.com/photo-1464822759844-d62dda5d49a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          name: "Ocean Waves",
+          image: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          name: "Desert Sunset",
+          image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        }
+      ];
+      
+      let currentSceneIndex = 0;
+      
+      function updateNatureScene() {
+        const sceneContainer = document.getElementById('natureScene');
+        const currentScene = natureScenes[currentSceneIndex];
+        
+        sceneContainer.style.backgroundImage = `url('${currentScene.image}')`;
+        sceneContainer.querySelector('.scene-overlay').textContent = currentScene.name;
+      }
+      
+      // Mood Tracker
+      let selectedMood = null;
+      
+      function selectMood(moodElement) {
+        // Remove selected class from all mood options
+        document.querySelectorAll('.mood-option').forEach(option => {
+          option.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked mood
+        moodElement.classList.add('selected');
+        selectedMood = moodElement.getAttribute('data-mood');
+      }
+      
+      function saveMood() {
+        if (!selectedMood) {
+          alert('Please select a mood first');
+          return;
+        }
+        
+        const moods = {
+          'very-happy': 'Very Happy 😄',
+          'happy': 'Happy 😊',
+          'neutral': 'Neutral 😐',
+          'sad': 'Sad 😔',
+          'very-sad': 'Very Sad 😢'
+        };
+        
+        alert(`Your mood (${moods[selectedMood]}) has been saved!`);
+        
+        // In a real app, you would save this to a database
+        console.log(`Mood saved: ${selectedMood}`);
+      }
+      
+      // Guided Meditation (simulated)
+      function playMeditation() {
+        const selectedMeditation = document.querySelector('.meditation-item.selected');
+        
+        if (!selectedMeditation) {
+          alert('Please select a meditation first');
+          return;
+        }
+        
+        const meditationName = selectedMeditation.querySelector('span').textContent;
+        alert(`Now playing: ${meditationName}\n\n(In a real app, this would play an audio file)`);
+        
+        // In a real app, you would play the selected audio file
+      }
+      
+      // Initialize the page
+      document.addEventListener('DOMContentLoaded', function () {
+        // Set up volume sliders
+        document.querySelectorAll('.volume-slider').forEach((slider) => {
+          slider.addEventListener('input', function () {
+            const soundName = this.id.replace('Slider', '');
+            updateVolume(soundName);
+          });
+        });
+      
+        // Set up sound control buttons
+        document.getElementById('playAllBtn').addEventListener('click', playAllSounds);
+        document.getElementById('stopAllBtn').addEventListener('click', stopAllSounds);
+      
+        // Set up breathing exercise buttons
+        document.getElementById('startBreathingBtn').addEventListener('click', startBreathing);
+        document.getElementById('pauseBreathingBtn').addEventListener('click', pauseBreathing);
+        document.getElementById('stopBreathingBtn').addEventListener('click', stopBreathing);
+      
+        // Set up timer buttons
+        document.getElementById('timer5Min').addEventListener('click', () => resetTimer(5));
+        document.getElementById('timer10Min').addEventListener('click', () => resetTimer(10));
+        document.getElementById('timer15Min').addEventListener('click', () => resetTimer(15));
+        document.getElementById('timerStart').addEventListener('click', startTimer);
+        document.getElementById('timerPause').addEventListener('click', pauseTimer);
+        document.getElementById('timerReset').addEventListener('click', () => resetTimer(5));
+      
+        // Accessibility: High Contrast toggle
+        const highContrastBtn = document.getElementById('highContrastToggle');
+        highContrastBtn.addEventListener('click', () => {
+          document.body.classList.toggle('high-contrast');
+        });
+      
+        // Accessibility: Text size adjustments
+        const textIncreaseBtn = document.getElementById('textSizeIncrease');
+        const textDecreaseBtn = document.getElementById('textSizeDecrease');
+        textIncreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+          document.body.style.fontSize = `${currentSize * 1.1}px`;
+        });
+        textDecreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+          document.body.style.fontSize = `${currentSize / 1.1}px`;
+        });
+      
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navTabs = document.getElementById('navTabs');
+        mobileMenuBtn.addEventListener('click', () => {
+          navTabs.classList.toggle('active');
+        });
+        
+        // New Features Setup
+        
+        // Nature Scenes
+        updateNatureScene();
+        
+        document.getElementById('prevSceneBtn').addEventListener('click', () => {
+          currentSceneIndex = (currentSceneIndex - 1 + natureScenes.length) % natureScenes.length;
+          updateNatureScene();
+        });
+        
+        document.getElementById('nextSceneBtn').addEventListener('click', () => {
+          currentSceneIndex = (currentSceneIndex + 1) % natureScenes.length;
+          updateNatureScene();
+        });
+        
+        // Mood Tracker
+        document.querySelectorAll('.mood-option').forEach(option => {
+          option.addEventListener('click', function() {
+            selectMood(this);
+          });
+        });
+        
+        document.getElementById('saveMoodBtn').addEventListener('click', saveMood);
+        
+        // Guided Meditation
+        document.querySelectorAll('.meditation-item').forEach(item => {
+          item.addEventListener('click', function() {
+            // Remove selected class from all items
+            document.querySelectorAll('.meditation-item').forEach(i => {
+              i.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked item
+            this.classList.add('selected');
+          });
+        });
+        
+        document.getElementById('playMeditationBtn').addEventListener('click', playMeditation);
+      });
+    </script>
+  </body>
+</html>

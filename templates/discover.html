@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discover Zone - SafeSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        text-decoration: none;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Discover Page Layout */
+      .discover-container {
+        flex: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 5%;
+      }
+      
+      /* Header Section */
+      .discover-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .discover-header h1 {
+        font-size: 2.5rem;
+        color: var(--soft-blue);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .discover-header p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      /* Quiz Container */
+      .quiz-container {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      .quiz-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .quiz-header h2 {
+        font-size: 1.8rem;
+        color: var(--soft-blue);
+        margin-bottom: 0.5rem;
+      }
+      
+      .quiz-header p {
+        color: var(--text-light);
+      }
+      
+      /* Progress Bar */
+      .progress-container {
+        margin-bottom: 2rem;
+      }
+      
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+      
+      .progress-bar {
+        height: 12px;
+        background-color: var(--light-gray);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--soft-blue), var(--soft-green));
+        transition: width 0.5s ease;
+      }
+      
+      /* Questions */
+      .question-container {
+        margin-bottom: 2rem;
+      }
+      
+      .question-card {
+        background-color: var(--light-gray);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+      
+      .question-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+      }
+      
+      .question-number {
+        display: inline-block;
+        background-color: var(--soft-blue);
+        color: var(--white);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 0.5rem;
+        font-weight: 600;
+      }
+      
+      .question-text {
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      
+      .option {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        background-color: var(--white);
+        border: 2px solid var(--soft-blue);
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .option:hover {
+        background-color: var(--soft-blue);
+        color: var(--white);
+        transform: translateY(-2px);
+      }
+      
+      .option.selected {
+        background-color: var(--soft-blue);
+        color: var(--white);
+        border-color: var(--soft-green);
+      }
+      
+      .option input {
+        margin-right: 0.8rem;
+      }
+      
+      /* Submit Button */
+      .submit-container {
+        text-align: center;
+        margin-top: 2rem;
+      }
+      
+      .submit-btn {
+        padding: 1rem 2.5rem;
+        background-color: var(--soft-blue);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .submit-btn:hover {
+        background-color: var(--soft-green);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: auto;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
+        }
+      
+        .nav-tabs.active {
+          display: flex;
+        }
+      
+        .mobile-menu-btn {
+          display: block;
+        }
+      
+        .discover-header h1 {
+          font-size: 2rem;
+        }
+      
+        .quiz-container {
+          padding: 1.5rem;
+        }
+      
+        .option {
+          padding: 0.7rem 0.9rem;
+        }
+      
+        .footer-content {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab active">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab ">SafeLine</a>  
+
+        </div>
+      </nav>
+    </header>
+
+    <!-- Discover Page Content -->
+    <div class="discover-container">
+      <div class="discover-header">
+        <h1>🧩 Discover Zone</h1>
+        <p>Learn more about autism with our screening quiz and resources</p>
+      </div>
+
+      <!-- Quiz Container -->
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h2>Autism Screening Quiz</h2>
+          <p>Answer these questions to understand autism traits better. This is a screening tool, not a diagnosis.</p>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Progress</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <form id="quizForm" action="/predict" method="post">
+          <div class="question-container">
+            <!-- Question 1 -->
+            <div class="question-card">
+              <div class="question-number">1</div>
+              <div class="question-text">Do you find it hard to maintain eye contact?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q1" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q1" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q1" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+              <div class="question-number">2</div>
+              <div class="question-text">Do you prefer being alone rather than in a group?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q2" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q2" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q2" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card">
+              <div class="question-number">3</div>
+              <div class="question-text">Do you find it hard to understand others' feelings?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q3" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q3" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q3" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card">
+              <div class="question-number">4</div>
+              <div class="question-text">Do you notice small details that others miss?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q4" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q4" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q4" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card">
+              <div class="question-number">5</div>
+              <div class="question-text">Do you find it hard to cope with changes in routine?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q5" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q5" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q5" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card">
+              <div class="question-number">6</div>
+              <div class="question-text">Do you have repetitive habits or actions?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q6" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q6" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q6" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card">
+              <div class="question-number">7</div>
+              <div class="question-text">Do you struggle with making friends?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q7" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q7" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q7" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card">
+              <div class="question-number">8</div>
+              <div class="question-text">Do you get very focused on specific topics of interest?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q8" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q8" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q8" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card">
+              <div class="question-number">9</div>
+              <div class="question-text">Do you feel overwhelmed by loud sounds or bright lights?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q9" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q9" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q9" value="3" />Often</label>
+              </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card">
+              <div class="question-number">10</div>
+              <div class="question-text">Do you often avoid social interactions?</div>
+              <div class="options-container">
+                <label class="option"><input type="radio" name="Q10" value="1" required />Never</label>
+                <label class="option"><input type="radio" name="Q10" value="2" />Sometimes</label>
+                <label class="option"><input type="radio" name="Q10" value="3" />Often</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="submit-container">
+            <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Get Results</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // DOM elements
+      const quizForm = document.getElementById('quizForm')
+      const progressFill = document.getElementById('progressFill')
+      const progressPercent = document.getElementById('progressPercent')
+      const options = document.querySelectorAll('.option input[type="radio"]')
+      
+      // Initialize the page
+      document.addEventListener('DOMContentLoaded', function () {
+        // Set up event listeners
+        options.forEach((option) => {
+          option.addEventListener('change', updateProgress)
+          option.addEventListener('change', highlightSelectedOption)
+        })
+      
+        // Set up mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function () {
+          document.getElementById('navTabs').classList.toggle('active')
+        })
+      
+        // Set up accessibility buttons
+        document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast)
+        document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize)
+        document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize)
+      
+        // Initialize progress
+        updateProgress()
+      })
+      
+      // Update progress bar
+      function updateProgress() {
+        const totalQuestions = 10
+        let answered = 0
+      
+        // Count answered questions
+        for (let i = 1; i <= totalQuestions; i++) {
+          const questionName = `Q${i}`
+          const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`)
+          if (selectedOption) {
+            answered++
+          }
+        }
+      
+        const percent = Math.round((answered / totalQuestions) * 100)
+        progressFill.style.width = `${percent}%`
+        progressPercent.textContent = `${percent}%`
+      }
+      
+      // Highlight selected option
+      function highlightSelectedOption(event) {
+        const selectedOption = event.target
+      
+        // Remove selected class from all options in this question
+        const questionOptions = selectedOption.closest('.options-container').querySelectorAll('.option')
+        questionOptions.forEach((option) => {
+          option.classList.remove('selected')
+        })
+      
+        // Add selected class to the chosen option
+        selectedOption.closest('.option').classList.add('selected')
+      }
+      
+      // Form submission
+      quizForm.addEventListener('submit', function (e) {
+        // Check if all questions are answered
+        const allAnswered = Array.from(options).filter((opt) => opt.checked).length === 10
+      
+        if (!allAnswered) {
+          e.preventDefault()
+          alert('Please answer all questions before submitting.')
+          return
+        }
+      
+        // Add loading state
+        const submitBtn = document.querySelector('.submit-btn')
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'
+        submitBtn.disabled = true
+      })
+      
+      // Accessibility functions
+      function toggleHighContrast() {
+        document.body.classList.toggle('high-contrast')
+      }
+      
+      function increaseTextSize() {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize + 2 + 'px'
+      }
+      
+      function decreaseTextSize() {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize - 2 + 'px'
+      }
+    </script>
+  </body>
+</html>

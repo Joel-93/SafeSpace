@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSpace | SafeLine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --soft-blue: #a8dadc;
+            --soft-green: #b7e4c7;
+            --light-yellow: #ffe5b4;
+            --soft-purple: #d4a5c8;
+            --light-gray: #f5f5f5;
+            --text-dark: #2d3748;
+            --text-light: #4a5568;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --premium-gold: #ffd700;
+            --premium-dark: #b8860b;
+            --calm-blue: #E6F0FA;
+            --calm-lavender: #F0E6FA;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Accessibility Bar */
+        .accessibility-bar {
+            background-color: var(--text-dark);
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .accessibility-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .accessibility-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* High Contrast Mode */
+        body.high-contrast {
+            --soft-blue: #0066cc;
+            --soft-green: #008000;
+            --light-yellow: #ffff00;
+            --soft-purple: #800080;
+            --light-gray: #000000;
+            --text-dark: #ffffff;
+            --text-light: #cccccc;
+            --white: #000000;
+            --shadow: 0 0 0 2px #ffffff;
+            --shadow-hover: 0 0 0 3px #ffffff;
+            --calm-blue: #000080;
+            --calm-lavender: #800080;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .nav-tab:hover,
+        .nav-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--soft-blue);
+        }
+        
+        /* SafeLine Header */
+        .safeline-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .safeline-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .safeline-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--premium-gold), var(--premium-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .safeline-subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: var(--text-dark);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+        
+        .content-section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--premium-gold);
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+        
+        /* Session Selection Cards */
+        .session-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .session-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .session-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--soft-blue);
+        }
+        
+        .session-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--soft-blue);
+        }
+        
+        .session-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .session-description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-session {
+            background: linear-gradient(135deg, var(--soft-blue), #8bc5c7);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(168, 218, 220, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        
+        .btn-session:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(168, 218, 220, 0.4);
+        }
+        
+        /* Video Call Interface */
+        .video-interface {
+            display: none;
+            background: var(--calm-blue);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .video-header {
+            background: var(--soft-blue);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .video-container {
+            display: flex;
+            height: 500px;
+            position: relative;
+        }
+        
+        .therapist-video {
+            flex: 1;
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .user-video {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 150px;
+            background: var(--text-dark);
+            border-radius: 10px;
+            border: 2px solid var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .chat-sidebar {
+            width: 300px;
+            background: var(--white);
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: 18px;
+            font-size: 0.9rem;
+        }
+        
+        .therapist-message {
+            align-self: flex-start;
+            background: var(--soft-green);
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: var(--soft-blue);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .send-btn {
+            background: var(--soft-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .video-controls {
+            padding: 1rem 1.5rem;
+            background: var(--white);
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .control-btn {
+            background: var(--soft-blue);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: #8bc5c7;
+            transform: scale(1.05);
+        }
+        
+        .end-call-btn {
+            background: #e74c3c;
+        }
+        
+        .end-call-btn:hover {
+            background: #c0392b;
+        }
+        
+        .session-timer {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        /* Chat Interface */
+        .chat-interface {
+            display: none;
+            background: var(--calm-lavender);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .chat-main {
+            display: flex;
+            height: 500px;
+        }
+        
+        .therapist-info {
+            width: 250px;
+            background: var(--white);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .therapist-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--soft-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .therapist-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .therapist-details p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .tag {
+            background: var(--soft-blue);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: var(--soft-purple);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-assistant {
+            background: var(--light-yellow);
+            padding: 1rem;
+            text-align: center;
+            font-style: italic;
+            color: var(--text-dark);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* Waiting State */
+        .waiting-state {
+            display: none;
+            background: var(--calm-blue);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .waiting-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--soft-blue);
+        }
+        
+        .waiting-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .waiting-description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .ai-messages {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .ai-message {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .ai-message:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        /* Feedback Modal */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feedback-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .feedback-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+        
+        .feedback-options {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feedback-option {
+            background: none;
+            border: none;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .feedback-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .feedback-message {
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            color: var(--text-dark);
+        }
+        
+        .btn-close {
+            background: var(--soft-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-close:hover {
+            background: #8bc5c7;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .copyright {
+            color: var(--text-light);
+        }
+        
+        .confidentiality {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .footer-link {
+            color: var(--soft-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--soft-green);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+        
+            .nav-tabs.active {
+                display: flex;
+            }
+        
+            .mobile-menu-btn {
+                display: block;
+            }
+        
+            .safeline-title {
+                font-size: 2.5rem;
+            }
+            
+            .safeline-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .session-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .chat-sidebar {
+                width: 100%;
+                height: 300px;
+            }
+            
+            .user-video {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                width: 100%;
+                height: 150px;
+                margin: 1rem;
+            }
+            
+            .chat-main {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .therapist-info {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+        <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+        <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span>SafeSpace</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab ">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab active">SafeLine</a>  
+            </div>
+        </nav>
+    </header>
+
+    <!-- SafeLine Header -->
+    <section class="safeline-header">
+        <h1 class="safeline-title">SafeLine</h1>
+        <p class="safeline-subtitle">Your Space to Talk Freely</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <section class="content-section">
+            <h2 class="section-title"><i class="fas fa-heart"></i> Welcome to SafeLine</h2>
+            <p class="intro-text">
+                Welcome to SafeLine 🌿<br>
+                A secure space to connect with certified therapists who are ready to listen and guide you.<br><br>
+                
+                Choose how you'd like to begin:<br>
+                🎥 Live Video Conversation – Talk face-to-face with your therapist.<br>
+                💬 Chat Session – Prefer typing? Start a calm, private conversation.<br><br>
+                
+                Your feelings matter, and you're never alone. Let's begin your journey toward healing ❤️
+            </p>
+            
+            <div class="session-cards">
+                <div class="session-card" id="videoCard">
+                    <div class="session-icon">🎥</div>
+                    <h3 class="session-title">Live Video Conversation</h3>
+                    <p class="session-description">
+                        Connect face-to-face with a certified therapist through secure video calls.
+                        Share your thoughts and feelings in real-time with professional guidance.
+                    </p>
+                    <button class="btn-session" id="startVideoBtn">
+                        <i class="fas fa-video"></i> Start Video Session
+                    </button>
+                </div>
+                
+                <div class="session-card" id="chatCard">
+                    <div class="session-icon">💬</div>
+                    <h3 class="session-title">Chat Session</h3>
+                    <p class="session-description">
+                        Prefer typing? Have a calm, private text conversation with a therapist.
+                        Take your time to express yourself at your own pace.
+                    </p>
+                    <button class="btn-session" id="startChatBtn">
+                        <i class="fas fa-comments"></i> Start Chat Session
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Call Interface -->
+        <section class="video-interface" id="videoInterface">
+            <div class="video-header">
+                <h3>Live Video Session with Dr. Emily Carter</h3>
+                <div class="session-timer" id="videoTimer">00:00</div>
+            </div>
+            
+            <div class="video-container">
+                <div class="therapist-video">
+                    <div>
+                        <i class="fas fa-user-md" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>Dr. Emily Carter - Therapist</p>
+                    </div>
+                </div>
+                
+                <div class="user-video">
+                    <i class="fas fa-user"></i>
+                </div>
+                
+                <div class="chat-sidebar">
+                    <div class="chat-messages" id="videoChatMessages">
+                        <div class="message therapist-message">
+                            Hello! I'm Dr. Emily Carter. How are you feeling today?
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type a message..." id="videoChatInput">
+                        <button class="send-btn" id="sendVideoMessage">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-controls">
+                <button class="control-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="control-btn">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button class="control-btn end-call-btn" id="endVideoCall">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Chat Interface -->
+        <section class="chat-interface" id="chatInterface">
+            <div class="chat-header">
+                <h3>Chat Session with Dr. Michael Chen</h3>
+                <div class="session-timer" id="chatTimer">00:00</div>
+            </div>
+            
+            <div class="chat-main">
+                <div class="therapist-info">
+                    <div class="therapist-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="therapist-details">
+                        <h3>Dr. Michael Chen</h3>
+                        <p>Licensed Therapist</p>
+                        <p>8 years experience</p>
+                    </div>
+                    <div class="specialty-tags">
+                        <span class="tag">Anxiety</span>
+                        <span class="tag">Stress</span>
+                        <span class="tag">Relationships</span>
+                    </div>
+                </div>
+                
+                <div class="chat-area">
+                    <div class="ai-assistant" id="aiAssistant">
+                        <i class="fas fa-robot"></i> While you wait for Dr. Chen, I'm here to support you. Try taking a deep breath and focusing on the present moment.
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message therapist-message">
+                            Hello, I'm Dr. Michael Chen. Thank you for reaching out. How can I help you today?
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message..." id="chatInput">
+                        <button class="send-btn" id="sendChatMessage">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-controls">
+                <button class="control-btn end-call-btn" id="endChatSession">
+                    <i class="fas fa-times"></i> End Session
+                </button>
+            </div>
+        </section>
+
+        <!-- Waiting State -->
+        <section class="waiting-state" id="waitingState">
+            <div class="waiting-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h2 class="waiting-title">Connecting You with a Therapist</h2>
+            <p class="waiting-description">
+                Please wait while we connect you with an available therapist. This usually takes less than a minute.
+                In the meantime, our AI assistant is here to support you.
+            </p>
+            
+            <div class="ai-messages">
+                <div class="ai-message">
+                    <strong>AI Assistant:</strong> It's brave of you to reach out for support. Remember that taking this step is an important part of your healing journey.
+                </div>
+                <div class="ai-message">
+                    <strong>AI Assistant:</strong> While you wait, try this brief mindfulness exercise: Close your eyes and take three deep breaths, focusing on the sensation of air filling your lungs.
+                </div>
+                <div class="ai-message">
+                    <strong>AI Assistant:</strong> Your feelings are valid, and you deserve to be heard. I'm here with you until your therapist connects.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-content">
+            <h2 class="feedback-title">How was your session?</h2>
+            <p>Your feedback helps us improve our service</p>
+            
+            <div class="feedback-options">
+                <button class="feedback-option" data-rating="good">🙂</button>
+                <button class="feedback-option" data-rating="neutral">😐</button>
+                <button class="feedback-option" data-rating="bad">🙁</button>
+            </div>
+            
+            <div class="feedback-message" id="feedbackMessage">
+                You did great today 🌼 Healing starts with talking.
+            </div>
+            
+            <button class="btn-close" id="closeFeedback">Return to SafeLine</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+            <div class="confidentiality">All conversations are private and protected.</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const videoCard = document.getElementById('videoCard');
+        const chatCard = document.getElementById('chatCard');
+        const videoInterface = document.getElementById('videoInterface');
+        const chatInterface = document.getElementById('chatInterface');
+        const waitingState = document.getElementById('waitingState');
+        const feedbackModal = document.getElementById('feedbackModal');
+        const startVideoBtn = document.getElementById('startVideoBtn');
+        const startChatBtn = document.getElementById('startChatBtn');
+        const endVideoCall = document.getElementById('endVideoCall');
+        const endChatSession = document.getElementById('endChatSession');
+        const closeFeedback = document.getElementById('closeFeedback');
+        const videoTimer = document.getElementById('videoTimer');
+        const chatTimer = document.getElementById('chatTimer');
+        const videoChatInput = document.getElementById('videoChatInput');
+        const chatInput = document.getElementById('chatInput');
+        const sendVideoMessage = document.getElementById('sendVideoMessage');
+        const sendChatMessage = document.getElementById('sendChatMessage');
+        const videoChatMessages = document.getElementById('videoChatMessages');
+        const chatMessages = document.getElementById('chatMessages');
+        const feedbackOptions = document.querySelectorAll('.feedback-option');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const aiAssistant = document.getElementById('aiAssistant');
+
+        // Session state
+        let videoSessionActive = false;
+        let chatSessionActive = false;
+        let videoTime = 0;
+        let chatTime = 0;
+        let videoInterval;
+        let chatInterval;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navTabs').classList.toggle('active');
+            });
+            
+            // Set up accessibility buttons
+            document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast);
+            document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize);
+            document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize);
+            
+            // Set up session buttons
+            startVideoBtn.addEventListener('click', startVideoSession);
+            startChatBtn.addEventListener('click', startChatSession);
+            endVideoCall.addEventListener('click', endVideoSession);
+            endChatSession.addEventListener('click', endChatSessionFn);
+            closeFeedback.addEventListener('click', closeFeedbackModal);
+            
+            // Set up chat functionality
+            sendVideoMessage.addEventListener('click', sendVideoChatMessage);
+            sendChatMessage.addEventListener('click', sendChatSessionMessage);
+            
+            videoChatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendVideoChatMessage();
+            });
+            
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendChatSessionMessage();
+            });
+            
+            // Set up feedback options
+            feedbackOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    handleFeedback(rating);
+                });
+            });
+        });
+
+        // Start video session
+        function startVideoSession() {
+            videoCard.style.display = 'none';
+            chatCard.style.display = 'none';
+            waitingState.style.display = 'block';
+            
+            // Simulate connecting to therapist
+            setTimeout(() => {
+                waitingState.style.display = 'none';
+                videoInterface.style.display = 'block';
+                videoSessionActive = true;
+                startVideoTimer();
+                
+                // Add welcome message after a delay
+                setTimeout(() => {
+                    addVideoMessage("I'm glad you reached out today. What would you like to talk about?", 'therapist');
+                }, 2000);
+            }, 3000);
+        }
+
+        // Start chat session
+        function startChatSession() {
+            videoCard.style.display = 'none';
+            chatCard.style.display = 'none';
+            waitingState.style.display = 'block';
+            
+            // Simulate connecting to therapist
+            setTimeout(() => {
+                waitingState.style.display = 'none';
+                chatInterface.style.display = 'block';
+                chatSessionActive = true;
+                startChatTimer();
+                
+                // Hide AI assistant after therapist connects
+                setTimeout(() => {
+                    aiAssistant.style.display = 'none';
+                }, 2000);
+            }, 3000);
+        }
+
+        // End video session
+        function endVideoSession() {
+            videoSessionActive = false;
+            clearInterval(videoInterval);
+            videoInterface.style.display = 'none';
+            showFeedbackModal();
+        }
+
+        // End chat session
+        function endChatSessionFn() {
+            chatSessionActive = false;
+            clearInterval(chatInterval);
+            chatInterface.style.display = 'none';
+            showFeedbackModal();
+        }
+
+        // Show feedback modal
+        function showFeedbackModal() {
+            feedbackModal.style.display = 'flex';
+        }
+
+        // Close feedback modal
+        function closeFeedbackModal() {
+            feedbackModal.style.display = 'none';
+            resetToMainView();
+        }
+
+        // Handle feedback selection
+        function handleFeedback(rating) {
+            let message = "";
+            
+            if (rating === 'good') {
+                message = "You did great today 🌼 Healing starts with talking.";
+            } else if (rating === 'neutral') {
+                message = "Thank you for sharing 🌿 Every conversation is a step forward.";
+            } else {
+                message = "Your courage is inspiring 💫 Remember, growth happens one step at a time.";
+            }
+            
+            feedbackMessage.textContent = message;
+        }
+
+        // Reset to main view
+        function resetToMainView() {
+            videoCard.style.display = 'block';
+            chatCard.style.display = 'block';
+            videoTime = 0;
+            chatTime = 0;
+            videoTimer.textContent = '00:00';
+            chatTimer.textContent = '00:00';
+            videoChatMessages.innerHTML = '<div class="message therapist-message">Hello! I\'m Dr. Emily Carter. How are you feeling today?</div>';
+            chatMessages.innerHTML = '<div class="message therapist-message">Hello, I\'m Dr. Michael Chen. Thank you for reaching out. How can I help you today?</div>';
+            aiAssistant.style.display = 'block';
+        }
+
+        // Start video timer
+        function startVideoTimer() {
+            videoInterval = setInterval(() => {
+                videoTime++;
+                const minutes = Math.floor(videoTime / 60);
+                const seconds = videoTime % 60;
+                videoTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Start chat timer
+        function startChatTimer() {
+            chatInterval = setInterval(() => {
+                chatTime++;
+                const minutes = Math.floor(chatTime / 60);
+                const seconds = chatTime % 60;
+                chatTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Send video chat message
+        function sendVideoChatMessage() {
+            const message = videoChatInput.value.trim();
+            if (message === '') return;
+            
+            addVideoMessage(message, 'user');
+            videoChatInput.value = '';
+            
+            // Simulate therapist response after a delay
+            setTimeout(() => {
+                const responses = [
+                    "I understand how that might feel. Can you tell me more about that?",
+                    "Thank you for sharing that with me. How does that make you feel?",
+                    "That sounds challenging. What support do you feel you need right now?",
+                    "I appreciate you being open with me. Let's explore that together."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addVideoMessage(randomResponse, 'therapist');
+            }, 1500);
+        }
+
+        // Send chat session message
+        function sendChatSessionMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+            
+            addChatMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Simulate therapist response after a delay
+            setTimeout(() => {
+                const responses = [
+                    "I hear what you're saying. Can you elaborate on that?",
+                    "Thank you for trusting me with that. How long have you been feeling this way?",
+                    "That sounds difficult. What do you think might help in this situation?",
+                    "I appreciate your honesty. Let's work through this together."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addChatMessage(randomResponse, 'therapist');
+            }, 2000);
+        }
+
+        // Add message to video chat
+        function addVideoMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender === 'user' ? 'user-message' : 'therapist-message'}`;
+            messageElement.textContent = text;
+            videoChatMessages.appendChild(messageElement);
+            videoChatMessages.scrollTop = videoChatMessages.scrollHeight;
+        }
+
+        // Add message to chat session
+        function addChatMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender === 'user' ? 'user-message' : 'therapist-message'}`;
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Accessibility functions
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function increaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + 2) + 'px';
+        }
+
+        function decreaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize - 2) + 'px';
+        }
+    </script>
+</body>
+</html>

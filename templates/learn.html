@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Zone - SafeSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --soft-blue: #A8DADC;
+            --soft-green: #B7E4C7;
+            --light-yellow: #FFE5B4;
+            --soft-purple: #D4A5C8;
+            --light-gray: #F5F5F5;
+            --text-dark: #2D3748;
+            --text-light: #4A5568;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-gray);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--soft-blue);
+        }
+
+        /* Learn Zone Specific Styles */
+        .learn-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .learn-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .learn-header h1 {
+            font-size: 2.5rem;
+            color: var(--soft-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .learn-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .scenario-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .scenario-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--white);
+            border: 2px solid var(--soft-blue);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-btn:hover, .scenario-btn.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+
+        .chat-simulator {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .chat-header {
+            background-color: var(--soft-blue);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .character-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .character-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--soft-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .tts-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tts-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .tts-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .character-message {
+            align-self: flex-start;
+            background-color: var(--soft-green);
+            border-bottom-left-radius: 5px;
+            animation: slideInLeft 0.5s ease;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--soft-blue);
+            color: var(--white);
+            border-bottom-right-radius: 5px;
+            animation: slideInRight 0.5s ease;
+        }
+
+        .feedback-message {
+            align-self: center;
+            background-color: var(--light-yellow);
+            text-align: center;
+            font-style: italic;
+            max-width: 90%;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: var(--soft-green);
+            border-bottom-left-radius: 5px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--text-dark);
+            opacity: 0.6;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .response-options {
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .response-option {
+            padding: 1rem;
+            background-color: var(--white);
+            border: 2px solid var(--soft-blue);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .response-option:hover {
+            background-color: var(--soft-blue);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--soft-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: #8bc5c7;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--soft-blue), var(--soft-green));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: var(--text-light);
+        }
+
+        /* Results Card */
+        .results-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .results-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h2 {
+            color: var(--soft-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .strengths, .improvements {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .strengths h3, .improvements h3 {
+            color: var(--soft-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .improvements h3 {
+            color: var(--soft-purple);
+        }
+
+        .strengths-list, .improvements-list {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .strengths-list li, .improvements-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .strengths-list li:before {
+            content: "✓";
+            color: var(--soft-green);
+            position: absolute;
+            left: 0;
+        }
+
+        .improvements-list li:before {
+            content: "→";
+            color: var(--soft-purple);
+            position: absolute;
+            left: 0;
+        }
+
+        .encouragement-message {
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            color: var(--text-light);
+        }
+
+        .review-choices-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--soft-purple);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .review-choices-btn:hover {
+            background-color: #c28ab5;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--white);
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--soft-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--soft-green);
+        }
+
+        /* Accessibility Features */
+        .accessibility-bar {
+            background-color: var(--text-dark);
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .accessibility-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .accessibility-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            --soft-blue: #0066CC;
+            --soft-green: #008000;
+            --light-yellow: #FFFF00;
+            --soft-purple: #800080;
+            --light-gray: #000000;
+            --text-dark: #FFFFFF;
+            --text-light: #CCCCCC;
+            --white: #000000;
+            --shadow: 0 0 0 2px #FFFFFF;
+            --shadow-hover: 0 0 0 3px #FFFFFF;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+
+            .nav-tabs.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .learn-header h1 {
+                font-size: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+        <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+        <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+        <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span>SafeSpace</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab active">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab ">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab ">SafeLine</a>  
+            </div>
+        </nav>
+    </header>
+
+    <!-- Learn Zone Content -->
+    <div class="learn-container">
+        <div class="learn-header">
+            <h1>Learn Zone</h1>
+            <p>Practice social skills in a safe, supportive environment with interactive scenarios</p>
+        </div>
+
+        <div class="scenario-selector">
+            <!-- Scenario buttons will be populated by JavaScript -->
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Progress: 0%</div>
+        </div>
+
+        <div class="chat-simulator">
+            <div class="chat-header">
+                <div class="character-info">
+                    <div class="character-avatar">👤</div>
+                    <div>
+                        <h3 id="characterName">Alex</h3>
+                        <p>Practice Partner</p>
+                    </div>
+                </div>
+                <div class="tts-controls">
+                    <button class="tts-btn" id="playTTS" title="Play conversation" aria-label="Play conversation">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="tts-btn" id="pauseTTS" title="Pause" aria-label="Pause conversation" disabled>
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="tts-btn" id="stopTTS" title="Stop" aria-label="Stop conversation">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message character-message">
+                    Hi there! I'm Alex. Ready to practice some social skills together?
+                </div>
+                <div class="message feedback-message">
+                    Select a scenario above to get started!
+                </div>
+            </div>
+
+            <div class="response-options" id="responseOptions">
+                <div class="options-grid">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="navigation-controls">
+                <button class="nav-btn" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="nav-btn" id="nextBtn" disabled>
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Card (hidden by default) -->
+        <div class="results-card" id="resultsCard" style="display: none;">
+            <!-- Results content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Current state
+        let currentScenario = null;
+        let currentStep = 0;
+        let isPlayingTTS = false;
+        let ttsUtterance = null;
+        let userChoices = [];
+        let totalScore = 0;
+        let maxScore = 0;
+
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const responseOptions = document.getElementById('responseOptions');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playTTSBtn = document.getElementById('playTTS');
+        const pauseTTSBtn = document.getElementById('pauseTTS');
+        const stopTTSBtn = document.getElementById('stopTTS');
+        const scenarioSelector = document.querySelector('.scenario-selector');
+        const resultsCard = document.getElementById('resultsCard');
+        const characterName = document.getElementById('characterName');
+
+        // Enhanced scenarios with 7-step conversations
+        const scenarios = [
+            {
+                "id": 1,
+                "title": "Greeting Someone",
+                "character": "Alex",
+                "steps": [
+                    {
+                        "character": "👋 Hi there! How are you doing today?",
+                        "options": [
+                            {
+                                "text": "I'm doing well, thanks for asking! How about you?",
+                                "feedback": "Great! A friendly response with a return question keeps the conversation going. 😊",
+                                "score": 1
+                            },
+                            {
+                                "text": "Fine.",
+                                "feedback": "Short answers can make conversations difficult to continue. Try adding a little more.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I'm doing pretty good! I was just heading to grab some lunch. Have you eaten yet?",
+                        "options": [
+                            {
+                                "text": "Not yet, I was thinking about getting something soon too.",
+                                "feedback": "Perfect! You're finding common ground which helps build connection. 🍽️",
+                                "score": 1
+                            },
+                            {
+                                "text": "No.",
+                                "feedback": "One-word answers can stall conversations. Try sharing a bit more.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Nice! Any favorite places around here you'd recommend?",
+                        "options": [
+                            {
+                                "text": "I really like the café down the street. Their sandwiches are amazing!",
+                                "feedback": "Excellent! Sharing specific details makes conversations more engaging. ☕",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't know.",
+                                "feedback": "Even if you're unsure, you could mention what type of food you like.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Oh, I've been meaning to try that place! What's the best time to go?",
+                        "options": [
+                            {
+                                "text": "It's usually less crowded around 2 PM if you want to avoid the lunch rush.",
+                                "feedback": "Great advice! Being helpful strengthens social bonds. 🕑",
+                                "score": 1
+                            },
+                            {
+                                "text": "Whenever.",
+                                "feedback": "Being more specific shows you're engaged in the conversation.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Thanks for the tip! So, what brings you to this area today?",
+                        "options": [
+                            {
+                                "text": "I'm meeting a friend later, but I came early to do some window shopping.",
+                                "feedback": "Perfect! Sharing your plans creates opportunities for more conversation. 🛍️",
+                                "score": 1
+                            },
+                            {
+                                "text": "Just hanging out.",
+                                "feedback": "Adding a little more detail helps the other person understand you better.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "That sounds nice. I should probably let you get to your shopping. It was really nice chatting with you!",
+                        "options": [
+                            {
+                                "text": "It was great talking to you too! Maybe I'll see you around sometime.",
+                                "feedback": "Perfect ending! Friendly and leaves the door open for future interactions. 👋",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A warmer goodbye helps leave a positive impression.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "Asking for Help",
+                "character": "Taylor",
+                "steps": [
+                    {
+                        "character": "📚 Hey, I noticed you're working on that math problem. I'm stuck on the same one.",
+                        "options": [
+                            {
+                                "text": "I'm having trouble too. Would you like to work on it together?",
+                                "feedback": "Great approach! Offering collaboration shows teamwork. 🤝",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't know how to do it either.",
+                                "feedback": "Being more open to working together can lead to better solutions.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "That would be awesome! I think the formula is confusing me. Do you understand it?",
+                        "options": [
+                            {
+                                "text": "I think I'm starting to get it. Let me try to explain what I understand.",
+                                "feedback": "Excellent! Sharing knowledge helps both people learn. 📝",
+                                "score": 1
+                            },
+                            {
+                                "text": "No, it's too hard.",
+                                "feedback": "Even if it's difficult, trying to work through it together can help.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Your explanation actually makes sense! What if we try applying it to problem 3?",
+                        "options": [
+                            {
+                                "text": "Good idea! Let's work through it step by step together.",
+                                "feedback": "Perfect! Breaking problems into smaller steps is a great strategy. 🔢",
+                                "score": 1
+                            },
+                            {
+                                "text": "You do it.",
+                                "feedback": "Working together makes difficult tasks more manageable.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I think we're getting closer. Should we check the example in the textbook?",
+                        "options": [
+                            {
+                                "text": "That's a good suggestion. The example might give us a clue.",
+                                "feedback": "Great! Being open to different approaches shows flexibility. 📖",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't have the book.",
+                                "feedback": "Even without resources, you can still brainstorm ideas together.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Look! I think we figured it out. Your method combined with the example worked!",
+                        "options": [
+                            {
+                                "text": "That's great! Teamwork really helped us solve this.",
+                                "feedback": "Wonderful! Acknowledging successful collaboration builds confidence. 🎉",
+                                "score": 1
+                            },
+                            {
+                                "text": "Finally.",
+                                "feedback": "Celebrating small successes together strengthens relationships.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Thanks so much for your help! I actually understand this concept much better now.",
+                        "options": [
+                            {
+                                "text": "I'm glad I could help! Working together helped me understand it better too.",
+                                "feedback": "Perfect response! Showing mutual benefit makes helping rewarding. 🌟",
+                                "score": 1
+                            },
+                            {
+                                "text": "No problem.",
+                                "feedback": "Adding a little more shows you value the interaction.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "title": "Joining a Group",
+                "character": "Jordan",
+                "steps": [
+                    {
+                        "character": "🎮 Hey, we're playing a board game. Want to join us?",
+                        "options": [
+                            {
+                                "text": "That sounds fun! What game are you playing?",
+                                "feedback": "Great! Showing interest helps you feel part of the group. 🎲",
+                                "score": 1
+                            },
+                            {
+                                "text": "I'm not good at games.",
+                                "feedback": "It's okay to be unsure, but trying new things can be fun with friends!",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "We're playing Settlers of Catan. Have you played before?",
+                        "options": [
+                            {
+                                "text": "I haven't, but I'd love to learn if you don't mind teaching me.",
+                                "feedback": "Perfect! Being open to learning shows great social attitude. 📚",
+                                "score": 1
+                            },
+                            {
+                                "text": "No, it looks complicated.",
+                                "feedback": "Most games seem complicated at first but become fun once you learn.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "We'd be happy to teach you! The basic idea is collecting resources to build settlements.",
+                        "options": [
+                            {
+                                "text": "That sounds interesting. What's the first thing I should do?",
+                                "feedback": "Excellent! Asking questions shows engagement and interest. ❓",
+                                "score": 1
+                            },
+                            {
+                                "text": "I'll just watch.",
+                                "feedback": "Participating is more fun than watching - give it a try!",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "We'll help you set up. You can start by placing your first settlement on the board.",
+                        "options": [
+                            {
+                                "text": "Thanks for helping me! This spot looks good for resources.",
+                                "feedback": "Great! Showing appreciation and making decisions builds confidence. 🏘️",
+                                "score": 1
+                            },
+                            {
+                                "text": "Where should I put it?",
+                                "feedback": "Making your own choices (with guidance) helps you learn faster.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Good choice! Now on your turn, you'll roll the dice to see what resources you get.",
+                        "options": [
+                            {
+                                "text": "Okay, let me try rolling. I hope I get some wood!",
+                                "feedback": "Perfect enthusiasm! Showing excitement makes group activities more fun. 🎲",
+                                "score": 1
+                            },
+                            {
+                                "text": "You roll for me.",
+                                "feedback": "Doing things yourself helps you feel more involved in the game.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "You rolled a six! That gives you brick. You're getting the hang of this quickly!",
+                        "options": [
+                            {
+                                "text": "This is actually really fun! Thanks for inviting me to play.",
+                                "feedback": "Wonderful! Expressing enjoyment strengthens group connections. 😄",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Sharing your feelings helps others know you're having a good time.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "title": "Making Small Talk",
+                "character": "Riley",
+                "steps": [
+                    {
+                        "character": "Nice weather we're having today, isn't it?",
+                        "options": [
+                            {
+                                "text": "Yes, it's beautiful! I love how sunny and warm it is.",
+                                "feedback": "Perfect! You acknowledged the comment and added your own thoughts. ☀️",
+                                "score": 1
+                            },
+                            {
+                                "text": "I guess.",
+                                "feedback": "Adding a bit more enthusiasm shows you're engaged in the conversation.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I know, right? It makes me want to spend time outside. Do you have any outdoor plans?",
+                        "options": [
+                            {
+                                "text": "I was thinking about going for a walk in the park later. How about you?",
+                                "feedback": "Great! Sharing plans and asking in return keeps conversation flowing. 🌳",
+                                "score": 1
+                            },
+                            {
+                                "text": "No.",
+                                "feedback": "Even if you don't have plans, you could mention what you enjoy doing outdoors.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "That sounds nice! I might go for a bike ride. Do you enjoy outdoor activities?",
+                        "options": [
+                            {
+                                "text": "I really like hiking and reading outside. What kind of biking do you do?",
+                                "feedback": "Excellent! Sharing interests and asking follow-up questions builds connection. 🚴",
+                                "score": 1
+                            },
+                            {
+                                "text": "Sometimes.",
+                                "feedback": "Being more specific helps the other person learn about your interests.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Mostly trail riding. There's a great path near the river. Have you been there?",
+                        "options": [
+                            {
+                                "text": "I haven't, but it sounds lovely! Maybe I'll check it out sometime.",
+                                "feedback": "Perfect! Showing interest in their suggestions builds rapport. 🌊",
+                                "score": 1
+                            },
+                            {
+                                "text": "No.",
+                                "feedback": "Adding why you haven't been or asking for details keeps conversation going.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "You should! The views are amazing. Speaking of amazing views, have you seen the new art installation downtown?",
+                        "options": [
+                            {
+                                "text": "I haven't yet, but I've heard good things about it. What did you think?",
+                                "feedback": "Great transition! Asking for their opinion shows genuine interest. 🎨",
+                                "score": 1
+                            },
+                            {
+                                "text": "No, I don't go downtown much.",
+                                "feedback": "This could lead to learning about new places if you ask why they like it.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "It's really impressive! Well, I should probably get going, but it was nice chatting with you!",
+                        "options": [
+                            {
+                                "text": "It was great talking with you too! Enjoy your bike ride!",
+                                "feedback": "Perfect ending! Friendly and leaves a positive impression. 👋",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A warmer goodbye helps maintain the connection for future conversations.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "title": "Handling a Mistake",
+                "character": "Casey",
+                "steps": [
+                    {
+                        "character": "Oops, I think you accidentally took my pencil.",
+                        "options": [
+                            {
+                                "text": "I'm so sorry! Here you go. I didn't realize it was yours.",
+                                "feedback": "Perfect! Apologizing and fixing mistakes shows maturity. ✏️",
+                                "score": 1
+                            },
+                            {
+                                "text": "It was on the table.",
+                                "feedback": "Taking responsibility for mistakes helps maintain good relationships.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "No problem at all! It's easy to mix up pencils. I have an extra if you need one.",
+                        "options": [
+                            {
+                                "text": "That's very kind of you, thank you! I'll be more careful next time.",
+                                "feedback": "Excellent! Accepting kindness graciously builds positive interactions. 🤲",
+                                "score": 1
+                            },
+                            {
+                                "text": "I have my own.",
+                                "feedback": "Acknowledging their offer kindly strengthens the interaction.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Of course! By the way, I noticed you're working on the math homework too. How are you finding it?",
+                        "options": [
+                            {
+                                "text": "It's challenging but interesting. How about you?",
+                                "feedback": "Great! Moving past the small incident shows emotional resilience. 📚",
+                                "score": 1
+                            },
+                            {
+                                "text": "It's hard.",
+                                "feedback": "Sharing a bit more about your experience can lead to helpful conversations.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I'm finding it tricky too. Maybe we could compare answers later if you want?",
+                        "options": [
+                            {
+                                "text": "That would be really helpful! Working together might make it easier.",
+                                "feedback": "Perfect! Turning a mistake into an opportunity for connection. 🤝",
+                                "score": 1
+                            },
+                            {
+                                "text": "Maybe.",
+                                "feedback": "Being more open to collaboration can lead to positive outcomes.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Great! I'm usually here during lunch if you want to meet up then.",
+                        "options": [
+                            {
+                                "text": "That works for me! Thanks for being so understanding about the pencil mix-up.",
+                                "feedback": "Excellent! Acknowledging their kindness reinforces positive behavior. 💫",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Expressing appreciation helps build stronger connections.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "No worries at all! These things happen. I'll see you at lunch then!",
+                        "options": [
+                            {
+                                "text": "Looking forward to it! See you then.",
+                                "feedback": "Perfect ending! Turning a small mistake into a positive connection. 👋",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A warmer goodbye helps maintain the positive connection.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "Sharing Something",
+                "character": "Morgan",
+                "steps": [
+                    {
+                        "character": "I brought cookies to share. Would you like one?",
+                        "options": [
+                            {
+                                "text": "Thank you! That's very kind of you. They look delicious!",
+                                "feedback": "Perfect! Accepting offers graciously builds connections. 🍪",
+                                "score": 1
+                            },
+                            {
+                                "text": "No, I'm not hungry.",
+                                "feedback": "You can politely decline while still appreciating the gesture.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "You're welcome! I baked them this morning. They're chocolate chip.",
+                        "options": [
+                            {
+                                "text": "Chocolate chip are my favorite! You must be a great baker.",
+                                "feedback": "Excellent! Complimenting their effort shows appreciation. 👩‍🍳",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Showing more enthusiasm helps the person feel their effort was valued.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Thanks! I've been practicing. Do you enjoy baking too?",
+                        "options": [
+                            {
+                                "text": "I do, but I'm still learning. These cookies are inspiring me to practice more!",
+                                "feedback": "Great! Finding common interests strengthens connections. 🧁",
+                                "score": 1
+                            },
+                            {
+                                "text": "Not really.",
+                                "feedback": "Even if you don't share the interest, you can appreciate their skill.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "That's wonderful! I'd be happy to share the recipe if you'd like.",
+                        "options": [
+                            {
+                                "text": "I'd love that! Thank you for being so generous.",
+                                "feedback": "Perfect! Accepting generosity builds mutual trust and friendship. 📜",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't bake much.",
+                                "feedback": "Even if you won't use it, accepting the offer kindly maintains positivity.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "My pleasure! Sharing recipes is how I learned too. Here, I'll write it down for you.",
+                        "options": [
+                            {
+                                "text": "You're so thoughtful! I'll definitely think of you when I make these.",
+                                "feedback": "Excellent! Creating positive associations strengthens bonds. 💝",
+                                "score": 1
+                            },
+                            {
+                                "text": "Thanks.",
+                                "feedback": "Adding a bit more shows you genuinely appreciate their thoughtfulness.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "That's sweet of you to say! Well, I should get to class, but it was nice sharing with you!",
+                        "options": [
+                            {
+                                "text": "It was lovely talking with you too! Thanks again for the cookie and recipe!",
+                                "feedback": "Perfect ending! Expressing gratitude leaves a lasting positive impression. 🌟",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A more expressive goodbye helps maintain the positive connection.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "Asking to Play/Work Together",
+                "character": "Avery",
+                "steps": [
+                    {
+                        "character": "I'm working on this puzzle. It's pretty challenging!",
+                        "options": [
+                            {
+                                "text": "Would you like some help? I enjoy puzzles.",
+                                "feedback": "Great! Offering help shows kindness and teamwork. 🧩",
+                                "score": 1
+                            },
+                            {
+                                "text": "That looks boring.",
+                                "feedback": "Even if something doesn't interest you, being polite is important.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I'd love some help! I'm stuck on this corner section.",
+                        "options": [
+                            {
+                                "text": "Let me take a look. Maybe we can find the edge pieces first.",
+                                "feedback": "Excellent! Suggesting a strategy shows problem-solving skills. 🔍",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't know how to help.",
+                                "feedback": "Even without expertise, trying together can be fun and productive.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Good idea! I think these blue pieces might all go together.",
+                        "options": [
+                            {
+                                "text": "You're right! Let's group the pieces by color to make it easier.",
+                                "feedback": "Perfect! Building on their observation shows collaboration. 🔵",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Adding your own ideas contributes more to the teamwork.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "This is working well! I can already see the pattern emerging.",
+                        "options": [
+                            {
+                                "text": "Teamwork makes it more fun and we're making good progress!",
+                                "feedback": "Great! Acknowledging successful collaboration builds confidence. 👥",
+                                "score": 1
+                            },
+                            {
+                                "text": "Yeah.",
+                                "feedback": "Expressing more enthusiasm helps both people enjoy the activity.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Definitely! I wouldn't have thought to sort by color. You're good at this!",
+                        "options": [
+                            {
+                                "text": "Thank you! You have a good eye for patterns too.",
+                                "feedback": "Excellent! Giving and receiving compliments strengthens teamwork. 💫",
+                                "score": 1
+                            },
+                            {
+                                "text": "It's nothing.",
+                                "feedback": "Accepting compliments graciously is an important social skill.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "We make a good team! We're almost finished. Thanks for helping me!",
+                        "options": [
+                            {
+                                "text": "I had a great time working together! We should do this again sometime.",
+                                "feedback": "Perfect! Expressing enjoyment and suggesting future collaboration. 🌈",
+                                "score": 1
+                            },
+                            {
+                                "text": "No problem.",
+                                "feedback": "Adding a bit more shows you value the time spent together.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "title": "Saying No Politely",
+                "character": "Quinn",
+                "steps": [
+                    {
+                        "character": "Do you want to come to my party this weekend?",
+                        "options": [
+                            {
+                                "text": "Thanks for inviting me! I appreciate it, but I can't make it this weekend.",
+                                "feedback": "Perfect! You declined politely while appreciating the invitation. 🎉",
+                                "score": 1
+                            },
+                            {
+                                "text": "No, I don't want to.",
+                                "feedback": "Adding a polite explanation can make your refusal feel less harsh.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "No worries! Maybe another time. What are you up to this weekend?",
+                        "options": [
+                            {
+                                "text": "I have family plans, but I hope you have a wonderful party!",
+                                "feedback": "Excellent! Providing a brief reason shows consideration. 👨‍👩‍👧‍👦",
+                                "score": 1
+                            },
+                            {
+                                "text": "Stuff.",
+                                "feedback": "Being a bit more specific helps the other person understand without prying.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Family time sounds nice! Well, I'll definitely invite you to the next one.",
+                        "options": [
+                            {
+                                "text": "That's very kind of you! I'd love to come to your next gathering.",
+                                "feedback": "Great! Keeping the door open for future invitations maintains friendship. 🚪",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Showing more enthusiasm for future opportunities strengthens connections.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Awesome! By the way, are you working on the science project too?",
+                        "options": [
+                            {
+                                "text": "Yes, I am! It's quite interesting but challenging.",
+                                "feedback": "Perfect! Transitioning smoothly to another topic maintains conversation. 🔬",
+                                "score": 1
+                            },
+                            {
+                                "text": "Yeah.",
+                                "feedback": "Adding a bit more keeps the conversation flowing naturally.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I agree! Maybe we could compare notes sometime if you're interested.",
+                        "options": [
+                            {
+                                "text": "That would be helpful! How about we talk after class tomorrow?",
+                                "feedback": "Excellent! Suggesting a specific alternative shows genuine interest. 📅",
+                                "score": 1
+                            },
+                            {
+                                "text": "Maybe.",
+                                "feedback": "Being more definite when you're interested helps build plans.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Perfect! I'll see you tomorrow then. Have a good weekend with your family!",
+                        "options": [
+                            {
+                                "text": "Thanks, Quinn! Enjoy your party and I'll see you tomorrow!",
+                                "feedback": "Perfect ending! Warm, appreciative, and maintains the connection. 👋",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A more expressive goodbye helps maintain the positive relationship.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 9,
+                "title": "Expressing Feelings",
+                "character": "Skyler",
+                "steps": [
+                    {
+                        "character": "You seem a bit quiet today. Is everything okay?",
+                        "options": [
+                            {
+                                "text": "I'm feeling a little tired today, but thank you for asking.",
+                                "feedback": "Great! Sharing feelings appropriately helps others understand you. 💭",
+                                "score": 1
+                            },
+                            {
+                                "text": "It's none of your business.",
+                                "feedback": "You can set boundaries while still being respectful.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "I understand. Sometimes we all have those days. Want to talk about it?",
+                        "options": [
+                            {
+                                "text": "That's kind of you, but I think I just need some quiet time today.",
+                                "feedback": "Perfect! Setting boundaries clearly but kindly. 🤫",
+                                "score": 1
+                            },
+                            {
+                                "text": "No.",
+                                "feedback": "Adding appreciation for their concern maintains positive connections.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "No problem at all. I'm here if you change your mind. Maybe a walk would help?",
+                        "options": [
+                            {
+                                "text": "That's a nice idea. Some fresh air might be just what I need.",
+                                "feedback": "Excellent! Being open to suggestions shows flexibility. 🌳",
+                                "score": 1
+                            },
+                            {
+                                "text": "I don't think so.",
+                                "feedback": "Even declining suggestions gently maintains positive interactions.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "The garden is really peaceful this time of day. The flowers are blooming beautifully.",
+                        "options": [
+                            {
+                                "text": "That sounds lovely. Thank you for being so understanding.",
+                                "feedback": "Great! Expressing gratitude strengthens supportive relationships. 🌸",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Adding more shows you appreciate their effort to help.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Of course! We all need support sometimes. I'm glad I could be here for you.",
+                        "options": [
+                            {
+                                "text": "Your friendship means a lot to me. Thanks for checking in.",
+                                "feedback": "Perfect! Valuing the relationship strengthens emotional bonds. 💖",
+                                "score": 1
+                            },
+                            {
+                                "text": "Thanks.",
+                                "feedback": "Being more expressive helps the other person feel their care is valued.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Anytime! Well, I'll let you have your quiet time. Text me if you need anything!",
+                        "options": [
+                            {
+                                "text": "I will. Thanks again, Skyler. You're a good friend.",
+                                "feedback": "Perfect ending! Affirming the friendship leaves both feeling valued. 👋",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A warmer goodbye acknowledges their caring effort.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 10,
+                "title": "Ending a Conversation",
+                "character": "Peyton",
+                "steps": [
+                    {
+                        "character": "This has been a great chat! I've really enjoyed talking with you.",
+                        "options": [
+                            {
+                                "text": "Me too! It was really nice catching up with you.",
+                                "feedback": "Perfect! Reciprocating positive feelings makes endings pleasant. 😊",
+                                "score": 1
+                            },
+                            {
+                                "text": "Yeah.",
+                                "feedback": "Adding more enthusiasm shows you value the conversation.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "We should definitely do this again soon. Maybe next week?",
+                        "options": [
+                            {
+                                "text": "That would be wonderful! How about we plan for Tuesday?",
+                                "feedback": "Excellent! Being specific about future plans shows genuine interest. 📅",
+                                "score": 1
+                            },
+                            {
+                                "text": "Sure, sometime.",
+                                "feedback": "Being more definite helps turn vague plans into real ones.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Tuesday works perfectly for me! Same time and place?",
+                        "options": [
+                            {
+                                "text": "That sounds great! I'll look forward to it.",
+                                "feedback": "Perfect! Expressing anticipation strengthens future plans. ⏰",
+                                "score": 1
+                            },
+                            {
+                                "text": "Okay.",
+                                "feedback": "Showing more enthusiasm helps both people feel excited about future meetings.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "Me too! Well, I should probably let you go. I know you have that meeting soon.",
+                        "options": [
+                            {
+                                "text": "Thanks for remembering! It was really great talking with you.",
+                                "feedback": "Excellent! Acknowledging their thoughtfulness shows appreciation. 💫",
+                                "score": 1
+                            },
+                            {
+                                "text": "Yeah, I have to go.",
+                                "feedback": "Adding appreciation makes the ending feel more mutual.",
+                                "score": 0
+                            }
+                        ]
+                    },
+                    {
+                        "character": "You're welcome! Have a good meeting and I'll see you on Tuesday!",
+                        "options": [
+                            {
+                                "text": "Thanks! Have a wonderful rest of your day. See you Tuesday!",
+                                "feedback": "Perfect! Warm wishes and clear future plans create positive endings. 🌟",
+                                "score": 1
+                            },
+                            {
+                                "text": "Bye.",
+                                "feedback": "A more expressive goodbye leaves a lasting positive impression.",
+                                "score": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize scenario selector
+            initializeScenarioSelector();
+
+            // Set up navigation buttons
+            prevBtn.addEventListener('click', goToPreviousStep);
+            nextBtn.addEventListener('click', goToNextStep);
+
+            // Set up TTS buttons
+            playTTSBtn.addEventListener('click', playTTS);
+            pauseTTSBtn.addEventListener('click', pauseTTS);
+            stopTTSBtn.addEventListener('click', stopTTS);
+
+            // Set up accessibility buttons
+            document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast);
+            document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize);
+            document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize);
+
+            // Set up mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navTabs').classList.toggle('active');
+            });
+        });
+
+        // Initialize scenario selector buttons
+        function initializeScenarioSelector() {
+            scenarioSelector.innerHTML = '';
+            
+            scenarios.forEach((scenario, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'scenario-btn';
+                btn.textContent = `${index + 1}. ${scenario.title}`;
+                btn.dataset.scenarioId = scenario.id;
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentScenario = scenario;
+                    currentStep = 0;
+                    userChoices = [];
+                    totalScore = 0;
+                    maxScore = 0;
+                    loadScenario();
+                });
+                scenarioSelector.appendChild(btn);
+            });
+        }
+
+        // Load the current scenario
+        function loadScenario() {
+            chatMessages.innerHTML = '';
+            responseOptions.querySelector('.options-grid').innerHTML = '';
+            resultsCard.style.display = 'none';
+            
+            // Update character name
+            characterName.textContent = currentScenario.character;
+            
+            // Add welcome message
+            addMessage(`Let's practice: ${currentScenario.title}`, 'feedback-message');
+            
+            // Show typing indicator before character message
+            showTypingIndicator();
+            
+            // Load the first step after a short delay
+            setTimeout(() => {
+                loadStep(0);
+            }, 1500);
+            
+            // Update progress
+            updateProgress();
+            
+            // Disable navigation buttons initially
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+        }
+
+        // Load a specific step in the scenario
+        function loadStep(stepIndex) {
+            currentStep = stepIndex;
+            
+            // Clear previous options
+            responseOptions.querySelector('.options-grid').innerHTML = '';
+            
+            // Show typing indicator before character message
+            showTypingIndicator();
+            
+            // Add character message after a delay
+            setTimeout(() => {
+                addMessage(currentScenario.steps[stepIndex].character, 'character-message');
+                
+                // Add response options
+                currentScenario.steps[stepIndex].options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'response-option';
+                    optionElement.textContent = option.text;
+                    optionElement.addEventListener('click', () => selectOption(option, stepIndex));
+                    responseOptions.querySelector('.options-grid').appendChild(optionElement);
+                });
+                
+                // Update navigation buttons
+                prevBtn.disabled = stepIndex === 0;
+                nextBtn.disabled = true; // Disabled until an option is selected
+                
+                // Update progress
+                updateProgress();
+            }, 1000);
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingElement = document.createElement('div');
+            typingElement.className = 'typing-indicator';
+            typingElement.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span>${currentScenario.character} is typing...</span>
+            `;
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Remove typing indicator after a delay
+            setTimeout(() => {
+                if (typingElement.parentNode) {
+                    typingElement.remove();
+                }
+            }, 1000);
+        }
+
+        // Add a message to the chat
+        function addMessage(text, className) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${className}`;
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Handle option selection
+        function selectOption(option, stepIndex) {
+            // Add user message
+            addMessage(option.text, 'user-message');
+            
+            // Store user choice
+            userChoices.push({
+                scenario: currentScenario.title,
+                step: stepIndex,
+                choice: option.text,
+                feedback: option.feedback,
+                score: option.score
+            });
+            
+            // Update score
+            totalScore += option.score;
+            maxScore += 1; // Each step has at least one option with score 1
+            
+            // Add feedback after a short delay
+            setTimeout(() => {
+                addMessage(option.feedback, 'feedback-message');
+                
+                // Enable next button
+                nextBtn.disabled = false;
+                
+                // Disable all options
+                document.querySelectorAll('.response-option').forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    opt.style.opacity = '0.7';
+                });
+            }, 500);
+        }
+
+        // Navigate to the next step
+        function goToNextStep() {
+            if (currentStep < currentScenario.steps.length - 1) {
+                loadStep(currentStep + 1);
+            } else {
+                // Scenario completed
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    addMessage("Great job completing this scenario! Would you like to try another one?", 'character-message');
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = true;
+                    responseOptions.querySelector('.options-grid').innerHTML = '';
+                    
+                    // Check if all scenarios are completed
+                    const completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
+                    if (!completedScenarios.includes(currentScenario.id)) {
+                        completedScenarios.push(currentScenario.id);
+                        localStorage.setItem('completedScenarios', JSON.stringify(completedScenarios));
+                    }
+                    
+                    // Show results if all scenarios are completed
+                    if (completedScenarios.length === scenarios.length) {
+                        showFinalResults();
+                    }
+                }, 1000);
+            }
+        }
+
+        // Navigate to the previous step
+        function goToPreviousStep() {
+            if (currentStep > 0) {
+                loadStep(currentStep - 1);
+                
+                // Remove the last user choice
+                if (userChoices.length > 0) {
+                    const lastChoice = userChoices.pop();
+                    totalScore -= lastChoice.score;
+                    maxScore -= 1;
+                }
+            } else {
+                // Back to scenario selection
+                chatMessages.innerHTML = '';
+                addMessage("Hi! Ready to practice some social skills together?", 'character-message');
+                addMessage("Select a scenario above to get started!", 'feedback-message');
+                responseOptions.querySelector('.options-grid').innerHTML = '';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                updateProgress();
+                resultsCard.style.display = 'none';
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            if (!currentScenario) {
+                progressFill.style.width = '0%';
+                progressText.textContent = 'Progress: 0%';
+                return;
+            }
+            
+            const progress = currentStep / currentScenario.steps.length * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `Progress: ${Math.round(progress)}%`;
+        }
+
+        // Show final results
+        function showFinalResults() {
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            // Determine strengths and areas for improvement
+            const strengths = [];
+            const improvements = [];
+            
+            userChoices.forEach(choice => {
+                if (choice.score === 1) {
+                    if (!strengths.includes(choice.scenario)) {
+                        strengths.push(choice.scenario);
+                    }
+                } else {
+                    if (!improvements.includes(choice.scenario)) {
+                        improvements.push(choice.scenario);
+                    }
+                }
+            });
+            
+            // Create results card content
+            resultsCard.innerHTML = `
+                <div class="results-header">
+                    <h2>Scenario Completion Results</h2>
+                    <p>You've completed all 10 social scenarios!</p>
+                </div>
+                <div class="score-display">${percentage}%</div>
+                <div class="encouragement-message">
+                    ${percentage >= 80 ? "You did amazing! 🌟 Keep practicing and you'll shine even more." :
+                      percentage >= 60 ? "Great job! 👍 You're making good progress with social skills." :
+                      "Good effort! 💪 With more practice, you'll continue to improve."}
+                </div>
+                ${strengths.length > 0 ? `
+                <div class="strengths">
+                    <h3>Your Strengths</h3>
+                    <ul class="strengths-list">
+                        ${strengths.map(strength => `<li>${strength}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                ${improvements.length > 0 ? `
+                <div class="improvements">
+                    <h3>Areas to Practice</h3>
+                    <ul class="improvements-list">
+                        ${improvements.map(improvement => `<li>${improvement}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                <button class="review-choices-btn" id="reviewChoicesBtn">Review My Choices</button>
+            `;
+            
+            resultsCard.style.display = 'block';
+            
+            // Set up review choices button
+            document.getElementById('reviewChoicesBtn').addEventListener('click', reviewChoices);
+        }
+
+        // Review user choices
+        function reviewChoices() {
+            chatMessages.innerHTML = '';
+            responseOptions.querySelector('.options-grid').innerHTML = '';
+            resultsCard.style.display = 'none';
+            
+            addMessage("Let's review your choices:", 'feedback-message');
+            
+            userChoices.forEach(choice => {
+                addMessage(`Scenario: ${choice.scenario}`, 'character-message');
+                addMessage(`Your choice: ${choice.choice}`, 'user-message');
+                addMessage(`Feedback: ${choice.feedback}`, 'feedback-message');
+            });
+            
+            addMessage("Review completed. Would you like to practice any scenario again?", 'character-message');
+            
+            prevBtn.disabled = false;
+            nextBtn.disabled = true;
+        }
+
+        // Text-to-Speech functionality
+        function playTTS() {
+            if (!window.speechSynthesis) {
+                alert("Text-to-speech is not supported in your browser.");
+                return;
+            }
+            
+            // Stop any ongoing speech
+            stopTTS();
+            
+            // Get all character and feedback messages
+            const characterMessages = document.querySelectorAll('.character-message, .feedback-message');
+            let fullText = "";
+            
+            characterMessages.forEach(msg => {
+                fullText += msg.textContent + ". ";
+            });
+            
+            if (fullText.trim() === "") return;
+            
+            // Create and speak the utterance
+            ttsUtterance = new SpeechSynthesisUtterance(fullText);
+            ttsUtterance.rate = 0.9;
+            ttsUtterance.pitch = 1;
+            ttsUtterance.volume = 0.8;
+            
+            ttsUtterance.onstart = function() {
+                isPlayingTTS = true;
+                playTTSBtn.disabled = true;
+                pauseTTSBtn.disabled = false;
+                stopTTSBtn.disabled = false;
+            };
+            
+            ttsUtterance.onend = function() {
+                isPlayingTTS = false;
+                playTTSBtn.disabled = false;
+                pauseTTSBtn.disabled = true;
+                stopTTSBtn.disabled = true;
+            };
+            
+            ttsUtterance.onerror = function() {
+                isPlayingTTS = false;
+                playTTSBtn.disabled = false;
+                pauseTTSBtn.disabled = true;
+                stopTTSBtn.disabled = true;
+            };
+            
+            window.speechSynthesis.speak(ttsUtterance);
+        }
+
+        function pauseTTS() {
+            if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+                window.speechSynthesis.pause();
+                pauseTTSBtn.disabled = true;
+                playTTSBtn.disabled = false;
+            }
+        }
+
+        function stopTTS() {
+            window.speechSynthesis.cancel();
+            isPlayingTTS = false;
+            playTTSBtn.disabled = false;
+            pauseTTSBtn.disabled = true;
+            stopTTSBtn.disabled = true;
+        }
+
+        // Accessibility functions
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function increaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + 2) + 'px';
+        }
+
+        function decreaseTextSize() {
+            const currentSize = parseFloat(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize - 2) + 'px';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friend Zone - SafeSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+        --user-bubble: #a8dadc;
+        --friend-bubble: #e8f4f8;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        text-decoration: none;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Friend Page Layout */
+      .friend-container {
+        flex: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 5%;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Header Section */
+      .friend-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      
+      .friend-header h1 {
+        font-size: 2.5rem;
+        color: var(--soft-blue);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .friend-header p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      /* Chat Interface */
+      .chat-interface {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        height: 65vh;
+        flex: 1;
+      }
+      
+      .chat-header {
+        background-color: var(--soft-blue);
+        color: var(--white);
+        padding: 1rem;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .friend-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--soft-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+      
+      .friend-info h3 {
+        margin-bottom: 0.25rem;
+      }
+      
+      .friend-info p {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+      
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .message {
+        max-width: 80%;
+        padding: 1rem;
+        border-radius: 18px;
+        position: relative;
+        animation: fadeIn 0.3s ease;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .user-message {
+        align-self: flex-end;
+        background-color: var(--user-bubble);
+        border-bottom-right-radius: 5px;
+      }
+      
+      .friend-message {
+        align-self: flex-start;
+        background-color: var(--friend-bubble);
+        border-bottom-left-radius: 5px;
+      }
+      
+      .message-time {
+        font-size: 0.7rem;
+        opacity: 0.6;
+        margin-top: 0.5rem;
+        text-align: right;
+      }
+      
+      .friend-message .message-time {
+        text-align: left;
+      }
+      
+      .typing-indicator {
+        align-self: flex-start;
+        background-color: var(--friend-bubble);
+        border-bottom-left-radius: 5px;
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 80px;
+      }
+      
+      .typing-dots {
+        display: flex;
+        gap: 0.25rem;
+      }
+      
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--text-dark);
+        opacity: 0.6;
+        animation: typingAnimation 1.4s infinite ease-in-out;
+      }
+      
+      .typing-dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      
+      @keyframes typingAnimation {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+      
+      .input-area {
+        padding: 1.5rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 1rem;
+      }
+      
+      .message-input {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid var(--soft-blue);
+        border-radius: var(--border-radius);
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        resize: none;
+        height: 60px;
+      }
+      
+      .message-input:focus {
+        outline: none;
+        border-color: var(--soft-green);
+      }
+      
+      .input-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+      
+      .icon-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background-color: var(--soft-blue);
+        color: var(--white);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+      
+      .icon-btn:hover {
+        background-color: #8bc5c7;
+        transform: translateY(-2px);
+      }
+      
+      .icon-btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+      
+      .mood-selector {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        justify-content: flex-end;
+        padding: 0 1.5rem;
+        background-color: var(--white);
+        padding-bottom: 1rem;
+      }
+      
+      .mood-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+        padding: 0.5rem;
+      }
+      
+      .mood-btn:hover,
+      .mood-btn.active {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: auto;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+        --user-bubble: #0066cc;
+        --friend-bubble: #333333;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
+        }
+      
+        .nav-tabs.active {
+          display: flex;
+        }
+      
+        .mobile-menu-btn {
+          display: block;
+        }
+      
+        .friend-header h1 {
+          font-size: 2rem;
+        }
+      
+        .chat-interface {
+          height: 60vh;
+        }
+      
+        .message {
+          max-width: 90%;
+        }
+      
+        .footer-content {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab active">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab ">SafeLine</a>  
+        </div>
+      </nav>
+    </header>
+
+    <!-- Friend Page Content -->
+    <div class="friend-container">
+      <div class="friend-header">
+        <h1>🤝 Your Friend</h1>
+        <p>Share your struggles. I'm here to listen.</p>
+      </div>
+
+      <!-- Chat Interface -->
+      <div class="chat-interface">
+        <div class="chat-header">
+          <div class="friend-avatar">😊</div>
+          <div class="friend-info">
+            <h3>Your Friend</h3>
+            <p>Always here for you</p>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="message friend-message">
+            Hi there! I'm your friend. You can share anything with me - your struggles, worries, or just how your day went. I'm here to listen and support you. 💙<div class="message-time">Just now</div>
+          </div>
+        </div>
+
+        <div class="input-area">
+          <textarea class="message-input" id="messageInput" placeholder="Tell me about your day or any struggle you faced..." rows="1"></textarea>
+          <div class="input-buttons">
+            <button class="icon-btn" id="voiceBtn" title="Voice input"><i class="fas fa-microphone"></i></button>
+            <button class="icon-btn" id="sendBtn" title="Send message"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+        <div class="mood-selector" id="moodSelector" style="display: none;">
+          <button class="mood-btn" data-mood="happy" title="Happy">😊</button>
+          <button class="mood-btn" data-mood="sad" title="Sad">😟</button>
+          <button class="mood-btn" data-mood="angry" title="Angry">😡</button>
+          <button class="mood-btn" data-mood="crying" title="Upset">😢</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // DOM elements
+      const chatMessages = document.getElementById('chatMessages')
+      const messageInput = document.getElementById('messageInput')
+      const sendBtn = document.getElementById('sendBtn')
+      const voiceBtn = document.getElementById('voiceBtn')
+      const moodSelector = document.getElementById('moodSelector')
+      
+      // API Configuration
+      const API_BASE_URL = 'https://safespace.kwscloud.in'
+      const CHAT_ENDPOINT = `${API_BASE_URL}/api/chat`
+      
+      // Initialize the page
+      document.addEventListener('DOMContentLoaded', function () {
+        // Load previous chat history
+        loadChatHistory()
+      
+        // Set up event listeners
+        sendBtn.addEventListener('click', sendMessage)
+        messageInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            sendMessage()
+          }
+        })
+      
+        voiceBtn.addEventListener('click', toggleVoiceInput)
+      
+        // Set up mood buttons
+        document.querySelectorAll('.mood-btn').forEach((btn) => {
+          btn.addEventListener('click', function () {
+            document.querySelectorAll('.mood-btn').forEach((b) => b.classList.remove('active'))
+            this.classList.add('active')
+          })
+        })
+      
+        // Set up mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function () {
+          document.getElementById('navTabs').classList.toggle('active')
+        })
+      
+        // Set up accessibility buttons
+        document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast)
+        document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize)
+        document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize)
+      
+        // Auto-resize textarea
+        messageInput.addEventListener('input', autoResizeTextarea)
+      
+        // Test API connection on load
+        testAPIConnection()
+      })
+      
+      // Test API connection
+      async function testAPIConnection() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/health`)
+          if (response.ok) {
+            console.log('✅ API connection successful')
+          } else {
+            console.warn('⚠️ API health check failed')
+          }
+        } catch (error) {
+          console.error('❌ API connection failed:', error)
+        }
+      }
+      
+      // Send a message
+      async function sendMessage() {
+        const message = messageInput.value.trim()
+        if (message === '') return
+      
+        // Add user message to chat
+        addMessage(message, 'user')
+      
+        // Show mood selector
+        moodSelector.style.display = 'flex'
+      
+        // Clear input
+        messageInput.value = ''
+        autoResizeTextarea()
+      
+        // Show typing indicator
+        showTypingIndicator()
+      
+        try {
+          // Get current mood
+          const currentMood = getCurrentMood()
+      
+          // Call your backend API
+          const response = await callFriendAPI(message, currentMood)
+      
+          // Remove typing indicator
+          removeTypingIndicator()
+      
+          // Add friend response to chat
+          addMessage(response, 'friend')
+      
+          // Check for safety concerns
+          if (hasSafetyConcerns(message)) {
+            addSafetyNotice()
+          }
+      
+          // Save to chat history
+          saveChatHistory()
+        } catch (error) {
+          console.error('API Error:', error)
+          removeTypingIndicator()
+          addMessage("I'm having trouble connecting right now. Please make sure the backend server is running on http://127.0.0.1:5000", 'friend')
+        }
+      }
+      
+      // API Call Function - Connect to your Flask backend
+      async function callFriendAPI(userMessage, mood) {
+        try {
+          const response = await fetch(CHAT_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: userMessage,
+              mood: mood
+            })
+          })
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+      
+          const data = await response.json()
+          return data.reply
+        } catch (error) {
+          console.error('Error calling API:', error)
+          throw error
+        }
+      }
+      
+      // Add a message to the chat
+      function addMessage(text, sender) {
+        const messageElement = document.createElement('div')
+        messageElement.className = `message ${sender}-message`
+      
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      
+        messageElement.innerHTML = `
+                      ${text}
+                      <div class="message-time">${time}</div>
+                  `
+      
+        chatMessages.appendChild(messageElement)
+        chatMessages.scrollTop = chatMessages.scrollHeight
+      }
+      
+      // Show typing indicator
+      function showTypingIndicator() {
+        const typingElement = document.createElement('div')
+        typingElement.className = 'typing-indicator'
+        typingElement.id = 'typingIndicator'
+        typingElement.innerHTML = `
+                      <div class="typing-dots">
+                          <div class="typing-dot"></div>
+                          <div class="typing-dot"></div>
+                          <div class="typing-dot"></div>
+                      </div>
+                      <span>Your Friend is typing...</span>
+                  `
+        chatMessages.appendChild(typingElement)
+        chatMessages.scrollTop = chatMessages.scrollHeight
+      }
+      
+      // Remove typing indicator
+      function removeTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator')
+        if (typingIndicator) {
+          typingIndicator.remove()
+        }
+      }
+      
+      // Get current mood from selected button
+      function getCurrentMood() {
+        const activeMood = document.querySelector('.mood-btn.active')
+        return activeMood ? activeMood.dataset.mood : null
+      }
+      
+      // Check if message has safety concerns
+      function hasSafetyConcerns(message) {
+        const lowerMessage = message.toLowerCase()
+        const concerningWords = ['suicide', 'kill myself', 'end it all', 'want to die', 'self harm', 'hurt myself']
+        return concerningWords.some((word) => lowerMessage.includes(word))
+      }
+      
+      // Add safety notice
+      function addSafetyNotice() {
+        const safetyElement = document.createElement('div')
+        safetyElement.className = 'message friend-message'
+        safetyElement.innerHTML = `
+                      <strong>You're not alone.</strong> Please consider talking to someone you trust or a professional. There are people who want to help you. 💙
+                      <div class="message-time">Important</div>
+                  `
+        chatMessages.appendChild(safetyElement)
+        chatMessages.scrollTop = chatMessages.scrollHeight
+      
+        // Save to chat history
+        saveChatHistory()
+      }
+      
+      // Toggle voice input
+      function toggleVoiceInput() {
+        if (!('webkitSpeechRecognition' in window)) {
+          alert('Speech recognition is not supported in your browser. Try Chrome or Edge.')
+          return
+        }
+      
+        const recognition = new webkitSpeechRecognition()
+        recognition.continuous = false
+        recognition.interimResults = false
+      
+        recognition.start()
+      
+        voiceBtn.innerHTML = '<i class="fas fa-circle"></i>'
+        voiceBtn.style.backgroundColor = '#ff6b6b'
+      
+        recognition.onresult = function (event) {
+          const transcript = event.results[0][0].transcript
+          messageInput.value = transcript
+          autoResizeTextarea()
+      
+          // Reset button
+          voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
+          voiceBtn.style.backgroundColor = ''
+        }
+      
+        recognition.onerror = function (event) {
+          console.error('Speech recognition error', event.error)
+      
+          // Reset button
+          voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
+          voiceBtn.style.backgroundColor = ''
+        }
+      
+        recognition.onend = function () {
+          // Reset button if recognition ends without result
+          if (voiceBtn.innerHTML.includes('fa-circle')) {
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
+            voiceBtn.style.backgroundColor = ''
+          }
+        }
+      }
+      
+      // Auto-resize textarea
+      function autoResizeTextarea() {
+        messageInput.style.height = 'auto'
+        messageInput.style.height = messageInput.scrollHeight + 'px'
+      }
+      
+      // Save chat history to localStorage
+      function saveChatHistory() {
+        const messages = chatMessages.innerHTML
+        localStorage.setItem('friendChatHistory', messages)
+      }
+      
+      // Load chat history from localStorage
+      function loadChatHistory() {
+        const savedMessages = localStorage.getItem('friendChatHistory')
+        if (savedMessages) {
+          chatMessages.innerHTML = savedMessages
+          chatMessages.scrollTop = chatMessages.scrollHeight
+        }
+      }
+      
+      // Accessibility functions
+      function toggleHighContrast() {
+        document.body.classList.toggle('high-contrast')
+      }
+      
+      function increaseTextSize() {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize + 2 + 'px'
+      }
+      
+      function decreaseTextSize() {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize - 2 + 'px'
+      }
+    </script>
+  </body>
+</html>

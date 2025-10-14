@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSpace | Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --soft-blue: #a8dadc;
+            --soft-green: #b7e4c7;
+            --light-yellow: #ffe5b4;
+            --soft-purple: #d4a5c8;
+            --white: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --error-color: #e74c3c;
+            --premium-gold: #ffd700;
+            --premium-dark: #b8860b;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-green));
+            padding: 30px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            margin-right: 10px;
+            color: var(--text-dark);
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .login-header p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .form-title {
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .form-control:focus {
+            border-color: var(--soft-blue);
+            box-shadow: 0 0 0 3px rgba(168, 218, 220, 0.2);
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .btn-login {
+            background-color: var(--soft-blue);
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            color: var(--text-dark);
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, var(--premium-gold), var(--premium-dark));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-link {
+            color: var(--soft-blue);
+            cursor: pointer;
+            font-weight: 600;
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+        }
+        
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+    
+        .form-footer a {
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .gender-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .gender-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .gender-option:hover {
+            border-color: var(--soft-blue);
+            background: rgba(168, 218, 220, 0.1);
+        }
+        
+        .gender-option.selected {
+            border-color: var(--soft-blue);
+            background: var(--soft-blue);
+            color: white;
+        }
+        
+        .gender-option i {
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .col {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Header Section -->
+    <div class="login-header">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <h1>SafeSpace</h1>
+        </div>
+        <p>Your mental wellness journey starts here</p>
+    </div>
+    
+    <!-- Body Section -->
+    <div class="login-body">
+        <!-- Login Form -->
+        <form id="loginForm" action="{{ url_for('login') }}" method="POST">
+            <h3 class="form-title">Login to SafeSpace</h3>
+            
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Enter Email" required>
+                <div class="error-message" id="emailError">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+                <div class="error-message" id="passwordError">Incorrect email or password</div>
+            </div>
+            
+            <div class="form-group d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" style="color: var(--soft-blue); text-decoration: none; font-size: 14px;">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+        
+        <!-- Registration Form -->
+        <form id="registerForm" action="{{ url_for('register') }}" method="POST" class="hidden">
+            <h3 class="form-title">Create Your Account</h3>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input type="text" name="firstName" class="form-control" placeholder="First Name" required>
+                        <div class="error-message" id="firstNameError">First name is required</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input type="text" name="lastName" class="form-control" placeholder="Last Name" required>
+                        <div class="error-message" id="lastNameError">Last name is required</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                <div class="error-message" id="registerEmailError">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <div class="error-message" id="registerPasswordError">Password must be at least 8 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: 500;">Gender</label>
+                <div class="gender-options">
+                    <div class="gender-option" data-value="male">
+                        <i class="fas fa-mars"></i>
+                        <span>Male</span>
+                    </div>
+                    <div class="gender-option" data-value="female">
+                        <i class="fas fa-venus"></i>
+                        <span>Female</span>
+                    </div>
+                    <div class="gender-option" data-value="other">
+                        <i class="fas fa-transgender-alt"></i>
+                        <span>Other</span>
+                    </div>
+                </div>
+                <input type="hidden" name="gender" id="genderInput">
+            </div>
+            
+            <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: 500;">Date of Birth</label>
+                <input type="date" name="dateOfBirth" class="form-control">
+            </div>
+            
+            <button type="submit" class="btn-login">Create Account</button>
+        </form>
+        
+        <div class="toggle-link" id="toggleLink">Don't have an account? Create one</div>
+        
+        <div class="form-footer">
+            <p>By continuing, you agree to SafeSpace's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const toggleLink = document.getElementById('toggleLink');
+    const genderOptions = document.querySelectorAll('.gender-option');
+    const genderInput = document.getElementById('genderInput');
+    
+    // Toggle between Login and Register
+    toggleLink.addEventListener('click', function() {
+        if (registerForm.classList.contains('hidden')) {
+            // Show registration form
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            toggleLink.textContent = "Already have an account? Login";
+        } else {
+            // Show login form
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            toggleLink.textContent = "Don't have an account? Create one";
+        }
+    });
+    
+    // Gender Selection
+    genderOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove selected class from all options
+            genderOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selected class to clicked option
+            this.classList.add('selected');
+            
+            // Set the hidden input value
+            genderInput.value = this.getAttribute('data-value');
+        });
+    });
+    
+    // Form Validation
+    loginForm.addEventListener('submit', function(e) {
+        //e.preventDefault();
+        const email = this.querySelector('input[name="email"]').value;
+        const password = this.querySelector('input[name="password"]').value;
+        
+        // Simple validation - in a real app, this would be done on the server
+        if (!isValidEmail(email)) {
+            document.getElementById('emailError').style.display = 'block';
+            return;
+        } else {
+            document.getElementById('emailError').style.display = 'none';
+        }
+        
+        if (password.length < 6) {
+            document.getElementById('passwordError').style.display = 'block';
+            return;
+        } else {
+            document.getElementById('passwordError').style.display = 'none';
+        }
+        
+        // If validation passes, submit the form
+        // In a real app, you would remove this alert and let the form submit
+        alert('Login successful! In a real application, this would redirect to the dashboard.');
+        // this.submit(); // Uncomment this in a real application
+    });
+    
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const firstName = this.querySelector('input[name="firstName"]').value;
+        const lastName = this.querySelector('input[name="lastName"]').value;
+        const email = this.querySelector('input[name="email"]').value;
+        const password = this.querySelector('input[name="password"]').value;
+        let isValid = true;
+        
+        // Simple validation
+        if (firstName.trim() === '') {
+            document.getElementById('firstNameError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('firstNameError').style.display = 'none';
+        }
+        
+        if (lastName.trim() === '') {
+            document.getElementById('lastNameError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('lastNameError').style.display = 'none';
+        }
+        
+        if (!isValidEmail(email)) {
+            document.getElementById('registerEmailError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('registerEmailError').style.display = 'none';
+        }
+        
+        if (password.length < 8) {
+            document.getElementById('registerPasswordError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('registerPasswordError').style.display = 'none';
+        }
+        
+        if (isValid) {
+            // If validation passes, submit the form
+            // In a real app, you would remove this alert and let the form submit
+            alert('Account created successfully! In a real application, this would redirect to the login page.');
+            // this.submit(); // Uncomment this in a real application
+        }
+    });
+    
+    // Helper function to validate email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+</script>
+
+</body>
+</html>

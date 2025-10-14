@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeSpace - A Safe Space for Autistic Minds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, var(--soft-blue) 0%, var(--soft-green) 100%);
+        padding: 4rem 5%;
+        text-align: center;
+        color: var(--white);
+      }
+      
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+      
+      /* Zones Section */
+      .zones {
+        padding: 4rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .zones-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      
+      .zone-card {
+        background-color: var(--white);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .zone-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-hover);
+      }
+      
+      .zone-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+      
+      .zone-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .zone-card p {
+        color: var(--text-light);
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: 4rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
+        }
+      
+        .nav-tabs.active {
+          display: flex;
+        }
+      
+        .mobile-menu-btn {
+          display: block;
+        }
+      
+        .hero h1 {
+          font-size: 2rem;
+        }
+      
+        .zones-grid {
+          grid-template-columns: 1fr;
+        }
+      
+        .footer-content {
+          flex-direction: column;
+        }
+      }
+      
+      /* Animation for breathing guide */
+      @keyframes breathe {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      
+      .breathing-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: var(--soft-blue);
+        margin: 2rem auto;
+        animation: breathe 4s infinite ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab active">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab">SafeLine</a>          
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>SafeSpace</h1>
+      <p>Learn, Calm, Shine & Discover – A safe space for autistic minds.</p>
+    </section>
+
+    <!-- Zones Section -->
+    <section class="zones">
+      <h2>Explore Our Zones</h2>
+      <div class="zones-grid">
+        <a href="{{ url_for('learn') }}" class="zone-card">
+          <div class="zone-icon">💬</div>
+          <h3>Learn Zone</h3>
+          <p>Practice social skills in a safe environment</p>
+        </a>
+        <a href="{{ url_for('calm') }}" class="zone-card">
+          <div class="zone-icon">🌧️</div>
+          <h3>Calm Zone</h3>
+          <p>Relax with soothing sounds and breathing exercises</p>
+        </a>
+        <a href="{{ url_for('shine') }}" class="zone-card">
+          <div class="zone-icon">🌟</div>
+          <h3>Shine Zone</h3>
+          <p>Showcase your talents and creativity</p>
+        </a>
+        <a href="{{ url_for('discover') }}" class="zone-card">
+          <div class="zone-icon">🧩</div>
+          <h3>Discover Zone</h3>
+          <p>Learn more about autism with our screening quiz</p>
+        </a>
+        <a href="{{ url_for('friend') }}" class="zone-card">
+          <div class="zone-icon">🫂</div>
+          <h3>Friend Zone</h3>
+          <p>Connect with your friend and share experiences</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      document.getElementById('mobileMenuBtn').addEventListener('click', function () {
+        document.getElementById('navTabs').classList.toggle('active')
+      })
+      
+      // High contrast toggle
+      document.getElementById('highContrastToggle').addEventListener('click', function () {
+        document.body.classList.toggle('high-contrast')
+      })
+      
+      // Text size controls
+      document.getElementById('textSizeIncrease').addEventListener('click', function () {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize + 2 + 'px'
+      })
+      
+      document.getElementById('textSizeDecrease').addEventListener('click', function () {
+        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+        document.body.style.fontSize = currentSize - 2 + 'px'
+      })
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault()
+      
+          const targetId = this.getAttribute('href')
+          if (targetId === '#') return
+      
+          const targetElement = document.querySelector(targetId)
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            })
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

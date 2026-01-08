@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSpace | Video Call</title>
+    <title>SafeLine - SafeSpace</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
     <style>
-        /* Your existing CSS remains the same */
         :root {
             --soft-blue: #a8dadc;
             --soft-green: #b7e4c7;
@@ -21,10 +20,6 @@
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
-            --premium-gold: #ffd700;
-            --premium-dark: #b8860b;
-            --calm-blue: #E6F0FA;
-            --calm-lavender: #F0E6FA;
             --success: #4CAF50;
             --error: #f44336;
         }
@@ -43,10 +38,9 @@
             background-color: var(--light-gray);
             overflow-x: hidden;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        
-        /* Your existing CSS continues... */
-        /* [Include all your existing CSS here - it's already optimized] */
         
         /* Header & Navigation */
         header {
@@ -80,8 +74,39 @@
             font-size: 2rem;
         }
         
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .nav-tab:hover,
+        .nav-tab.active {
+            background-color: var(--soft-blue);
+            color: var(--white);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--soft-blue);
+        }
+        
         /* Main Content */
         .container {
+            flex: 1;
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 5%;
@@ -106,7 +131,7 @@
         }
         
         .section-title i {
-            color: var(--premium-gold);
+            color: var(--soft-blue);
         }
         
         .intro-text {
@@ -143,7 +168,7 @@
         
         .user-card.selected {
             border-color: var(--soft-blue);
-            background-color: var(--calm-blue);
+            background-color: rgba(168, 218, 220, 0.1);
         }
         
         .user-icon {
@@ -165,8 +190,8 @@
             margin-bottom: 1.5rem;
         }
         
-        /* Room Creation/Joining */
-        .room-actions {
+        /* Role Actions */
+        .role-actions {
             display: none;
             margin-top: 2rem;
         }
@@ -177,6 +202,7 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
+            text-align: center;
         }
         
         .action-title {
@@ -184,32 +210,6 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--text-dark);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--soft-blue);
-            box-shadow: 0 0 0 3px rgba(168, 218, 220, 0.3);
         }
         
         .btn {
@@ -245,7 +245,7 @@
         /* Video Call Interface */
         .video-interface {
             display: none;
-            background: var(--calm-blue);
+            background: rgba(168, 218, 220, 0.1);
             border-radius: var(--border-radius);
             overflow: hidden;
             margin-bottom: 2rem;
@@ -364,13 +364,6 @@
             color: var(--text-dark);
         }
         
-        .room-code-display {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-        }
-        
         /* Status Messages */
         .status-message {
             padding: 1rem;
@@ -401,7 +394,7 @@
         /* Waiting State */
         .waiting-state {
             display: none;
-            background: var(--calm-blue);
+            background: rgba(168, 218, 220, 0.1);
             border-radius: var(--border-radius);
             padding: 3rem;
             text-align: center;
@@ -429,12 +422,42 @@
             margin-right: auto;
         }
         
+        /* Therapist Request Notification */
+        .request-notification {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-hover);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .request-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .request-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
         /* Footer */
         footer {
             background-color: var(--white);
             padding: 2rem 5%;
             text-align: center;
-            margin-top: 4rem;
+            margin-top: auto;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
         
@@ -497,6 +520,30 @@
             .video-controls {
                 flex-wrap: wrap;
             }
+            
+            .nav-tabs {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow);
+                padding: 1rem;
+            }
+            
+            .nav-tabs.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -508,6 +555,16 @@
                 <span class="logo-icon">🌿</span>
                 <span>SafeSpace</span>
             </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <div class="nav-tabs" id="navTabs">
+                <a href="{{ url_for('home') }}" class="nav-tab">Home</a>
+                <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+                <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+                <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+                <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+                <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+                <a href="{{ url_for('safeline') }}" class="nav-tab active">SafeLine</a>
+            </div>
         </nav>
     </header>
 
@@ -517,8 +574,8 @@
         <section class="content-section">
             <h2 class="section-title"><i class="fas fa-video"></i> SafeLine Video Call</h2>
             <p class="intro-text">
-                Connect securely with therapists through our encrypted video calling system.
-                Create a room and share the code with your therapist, or join an existing room with a code.
+                Connect securely with therapists through our encrypted video calling system. 
+                Clients can request a session, and available therapists will be notified to accept the call.
             </p>
             
             <!-- Status Messages -->
@@ -526,14 +583,14 @@
             
             <!-- User Selection -->
             <div class="user-selection">
-                <div class="user-card" id="userCard">
+                <div class="user-card" id="clientCard">
                     <div class="user-icon">👤</div>
-                    <h3 class="user-title">User / Client</h3>
+                    <h3 class="user-title">Client</h3>
                     <p class="user-description">
-                        I need to talk to a therapist. I'll create a room and share the code.
+                        I need to talk to a therapist. I'll request a SafeLine session and connect with an available therapist.
                     </p>
-                    <button class="btn" id="selectUserBtn">
-                        <i class="fas fa-user"></i> Select as User
+                    <button class="btn" id="selectClientBtn">
+                        <i class="fas fa-user"></i> Select as Client
                     </button>
                 </div>
                 
@@ -541,7 +598,7 @@
                     <div class="user-icon">👨‍⚕️</div>
                     <h3 class="user-title">Therapist</h3>
                     <p class="user-description">
-                        I'm a therapist. I'll join a room using a code provided by a client.
+                        I'm a therapist. I'll wait for client requests and accept calls when available.
                     </p>
                     <button class="btn" id="selectTherapistBtn">
                         <i class="fas fa-user-md"></i> Select as Therapist
@@ -549,35 +606,26 @@
                 </div>
             </div>
             
-            <!-- Room Actions -->
-            <div class="room-actions" id="roomActions">
-                <!-- User Actions (Create Room) -->
-                <div class="action-card" id="userActions">
-                    <h3 class="action-title">Create a New Room</h3>
-                    <p>Click the button below to create a secure room. Share the room code with your therapist.</p>
+            <!-- Role Actions -->
+            <div class="role-actions" id="roleActions">
+                <!-- Client Actions -->
+                <div class="action-card" id="clientActions">
+                    <h3 class="action-title">Request SafeLine Session</h3>
+                    <p>Click the button below to request a 10-minute session with an available therapist.</p>
                     <div class="form-group">
-                        <button class="btn" id="createRoomBtn">
-                            <i class="fas fa-plus-circle"></i> Create Room
+                        <button class="btn" id="requestSessionBtn">
+                            <i class="fas fa-headset"></i> Request for SafeLine
                         </button>
-                    </div>
-                    <div id="roomCodeDisplay" style="display: none;">
-                        <p>Your room code: <strong id="roomCode"></strong></p>
-                        <p>Share this code with your therapist.</p>
-                        <p>Waiting for therapist to join...</p>
                     </div>
                 </div>
                 
-                <!-- Therapist Actions (Join Room) -->
+                <!-- Therapist Actions -->
                 <div class="action-card" id="therapistActions">
-                    <h3 class="action-title">Join an Existing Room</h3>
-                    <p>Enter the room code provided by your client to join the session.</p>
+                    <h3 class="action-title">Therapist Online</h3>
+                    <p>You are now online and waiting for client requests. You will receive a notification when a client requests a session.</p>
                     <div class="form-group">
-                        <label for="roomCodeInput" class="form-label">Room Code</label>
-                        <input type="text" id="roomCodeInput" class="form-input" placeholder="Enter 6-digit code" maxlength="6">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn" id="joinRoomBtn">
-                            <i class="fas fa-sign-in-alt"></i> Join Room
+                        <button class="btn btn-secondary" id="goOfflineBtn">
+                            <i class="fas fa-sign-out-alt"></i> Go Offline
                         </button>
                     </div>
                 </div>
@@ -589,18 +637,20 @@
             <div class="waiting-icon">
                 <i class="fas fa-clock"></i>
             </div>
-            <h2 class="waiting-title" id="waitingTitle">Connecting You</h2>
+            <h2 class="waiting-title" id="waitingTitle">Waiting for Connection</h2>
             <p class="waiting-description" id="waitingDescription">
-                Please wait while we establish a secure connection.
+                Please wait while we connect you with a therapist.
             </p>
+            <button class="btn btn-error" id="cancelRequestBtn" style="display: none;">
+                <i class="fas fa-times"></i> Cancel Request
+            </button>
         </section>
 
         <!-- Video Call Interface -->
         <section class="video-interface" id="videoInterface">
             <div class="video-header">
-                <h3>Secure Video Session</h3>
-                <div class="session-timer" id="sessionTimer">00:00</div>
-                <div class="room-code-display" id="roomCodeHeader"></div>
+                <h3>SafeLine Video Session</h3>
+                <div class="session-timer" id="sessionTimer">10:00</div>
             </div>
             
             <div class="video-container">
@@ -634,11 +684,25 @@
         </section>
     </div>
 
+    <!-- Therapist Request Notification -->
+    <div class="request-notification" id="requestNotification">
+        <div class="request-title">New Connection Request</div>
+        <p>A client is requesting a SafeLine session. Would you like to accept?</p>
+        <div class="request-actions">
+            <button class="btn btn-secondary" id="acceptRequestBtn">
+                <i class="fas fa-check"></i> Accept
+            </button>
+            <button class="btn btn-error" id="declineRequestBtn">
+                <i class="fas fa-times"></i> Decline
+            </button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
-            <div class="confidentiality">All video calls are encrypted and private.</div>
+            <div class="confidentiality">All video calls are encrypted and private. Sessions are limited to 10 minutes.</div>
             <div class="footer-links">
                 <a href="#" class="footer-link">Contact</a>
                 <a href="#" class="footer-link">Privacy Policy</a>
@@ -649,20 +713,19 @@
 
     <script>
         // DOM Elements
-        const userCard = document.getElementById('userCard');
+        const clientCard = document.getElementById('clientCard');
         const therapistCard = document.getElementById('therapistCard');
-        const selectUserBtn = document.getElementById('selectUserBtn');
+        const selectClientBtn = document.getElementById('selectClientBtn');
         const selectTherapistBtn = document.getElementById('selectTherapistBtn');
-        const roomActions = document.getElementById('roomActions');
-        const userActions = document.getElementById('userActions');
+        const roleActions = document.getElementById('roleActions');
+        const clientActions = document.getElementById('clientActions');
         const therapistActions = document.getElementById('therapistActions');
-        const createRoomBtn = document.getElementById('createRoomBtn');
-        const joinRoomBtn = document.getElementById('joinRoomBtn');
-        const roomCodeInput = document.getElementById('roomCodeInput');
-        const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-        const roomCodeElement = document.getElementById('roomCode');
-        const roomCodeHeader = document.getElementById('roomCodeHeader');
+        const requestSessionBtn = document.getElementById('requestSessionBtn');
+        const goOfflineBtn = document.getElementById('goOfflineBtn');
         const waitingState = document.getElementById('waitingState');
+        const waitingTitle = document.getElementById('waitingTitle');
+        const waitingDescription = document.getElementById('waitingDescription');
+        const cancelRequestBtn = document.getElementById('cancelRequestBtn');
         const videoInterface = document.getElementById('videoInterface');
         const localVideo = document.getElementById('localVideo');
         const remoteVideo = document.getElementById('remoteVideo');
@@ -673,21 +736,23 @@
         const endCallBtn = document.getElementById('endCallBtn');
         const sessionTimer = document.getElementById('sessionTimer');
         const statusMessage = document.getElementById('statusMessage');
-        const waitingTitle = document.getElementById('waitingTitle');
-        const waitingDescription = document.getElementById('waitingDescription');
+        const requestNotification = document.getElementById('requestNotification');
+        const acceptRequestBtn = document.getElementById('acceptRequestBtn');
+        const declineRequestBtn = document.getElementById('declineRequestBtn');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navTabs = document.getElementById('navTabs');
 
         // Global variables
         let socket;
         let localStream;
         let remoteStream;
         let peerConnection;
-        let roomCode;
         let userType;
         let isAudioMuted = false;
         let isVideoMuted = false;
-        let callStartTime;
         let timerInterval;
-        
+        let sessionTimeLeft = 600; // 10 minutes in seconds
+
         // WebRTC configuration (using free STUN servers)
         const configuration = {
             iceServers: [
@@ -698,14 +763,8 @@
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Connect to Socket.IO server with optimized settings
-            socket = io({
-                transports: ['websocket', 'polling'], // Prefer websocket
-                upgrade: true,
-                rememberUpgrade: true,
-                forceNew: true,
-                timeout: 10000
-            });
+            // Connect to Socket.IO server
+            socket = io();
             
             // Set up event listeners
             setupEventListeners();
@@ -717,68 +776,70 @@
         // Set up DOM event listeners
         function setupEventListeners() {
             // User selection
-            selectUserBtn.addEventListener('click', () => selectUserType('user'));
+            selectClientBtn.addEventListener('click', () => selectUserType('client'));
             selectTherapistBtn.addEventListener('click', () => selectUserType('therapist'));
             
-            // Room actions
-            createRoomBtn.addEventListener('click', createRoom);
-            joinRoomBtn.addEventListener('click', joinRoom);
+            // Client actions
+            requestSessionBtn.addEventListener('click', requestSession);
+            cancelRequestBtn.addEventListener('click', cancelRequest);
+            
+            // Therapist actions
+            goOfflineBtn.addEventListener('click', goOffline);
+            acceptRequestBtn.addEventListener('click', acceptRequest);
+            declineRequestBtn.addEventListener('click', declineRequest);
             
             // Video controls
             muteAudioBtn.addEventListener('click', toggleAudio);
             muteVideoBtn.addEventListener('click', toggleVideo);
             endCallBtn.addEventListener('click', endCall);
             
-            // Allow Enter key to join room
-            roomCodeInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') joinRoom();
+            // Mobile menu
+            mobileMenuBtn.addEventListener('click', function() {
+                navTabs.classList.toggle('active');
             });
         }
 
         // Set up Socket.IO event handlers
         function setupSocketHandlers() {
-            // Room created successfully
-            socket.on('room-created', (code) => {
-                roomCode = code;
-                roomCodeElement.textContent = code;
-                roomCodeDisplay.style.display = 'block';
-                showStatus('Room created successfully! Share the code with your therapist.', 'success');
+            // Client request sent successfully
+            socket.on('request-sent', () => {
+                showStatus('Your request has been sent to available therapists.', 'info');
                 waitingTitle.textContent = 'Waiting for Therapist';
-                waitingDescription.textContent = 'Please wait while we connect you with a therapist.';
+                waitingDescription.textContent = 'Your request has been sent. Please wait for a therapist to accept your session.';
                 waitingState.style.display = 'block';
-                roomActions.style.display = 'none';
-                initializeCall();
+                cancelRequestBtn.style.display = 'block';
+                roleActions.style.display = 'none';
             });
             
-            // Room joined successfully
-            socket.on('room-joined', (code) => {
-                roomCode = code;
-                roomCodeHeader.textContent = `Room: ${code}`;
-                showStatus('Successfully joined the room!', 'success');
-                initializeCall();
+            // Therapist received a request
+            socket.on('therapist-request', () => {
+                requestNotification.style.display = 'block';
             });
             
-            // Room not found
-            socket.on('room-not-found', () => {
-                showStatus('Room not found. Please check the code and try again.', 'error');
-            });
-            
-            // Room is full
-            socket.on('room-full', () => {
-                showStatus('This room is already full. Please try another code.', 'error');
-            });
-            
-            // User joined the room
-            socket.on('user-joined', (userId) => {
-                showStatus('Therapist has joined the room! Starting call...', 'success');
+            // Request accepted
+            socket.on('request-accepted', () => {
+                showStatus('A therapist has accepted your request! Starting session...', 'success');
                 waitingState.style.display = 'none';
+                initializeCall();
+            });
+            
+            // Request declined
+            socket.on('request-declined', () => {
+                showStatus('Therapist is busy. Please try again later.', 'error');
+                waitingState.style.display = 'none';
+                roleActions.style.display = 'block';
+            });
+            
+            // Session started
+            socket.on('session-started', () => {
                 videoInterface.style.display = 'block';
                 startCall();
+                startTimer();
             });
             
-            // User left the room
-            socket.on('user-left', (userId) => {
-                showStatus('The other participant has left the call.', 'info');
+            // Session ended
+            socket.on('session-ended', () => {
+                showStatus('Your session has ended. Thank you for connecting with SafeLine.', 'info');
                 endCall();
             });
             
@@ -793,45 +854,68 @@
             });
         }
 
-        // Select user type (user or therapist)
+        // Select user type (client or therapist)
         function selectUserType(type) {
             userType = type;
             
             // Update UI
-            userCard.classList.toggle('selected', type === 'user');
+            clientCard.classList.toggle('selected', type === 'client');
             therapistCard.classList.toggle('selected', type === 'therapist');
             
-            // Show appropriate room actions
-            roomActions.style.display = 'block';
-            userActions.style.display = type === 'user' ? 'block' : 'none';
+            // Show appropriate role actions
+            roleActions.style.display = 'block';
+            clientActions.style.display = type === 'client' ? 'block' : 'none';
             therapistActions.style.display = type === 'therapist' ? 'block' : 'none';
+            
+            // If therapist, go online
+            if (type === 'therapist') {
+                socket.emit('therapist-online');
+                showStatus('You are now online and waiting for client requests.', 'success');
+            }
         }
 
-        // Create a new room
-        function createRoom() {
-            if (!userType) {
-                showStatus('Please select your role first.', 'error');
-                return;
-            }
+        // Client requests a session
+        function requestSession() {
+            if (userType !== 'client') return;
             
-            socket.emit('create-room', { userType: userType });
+            socket.emit('request-therapist');
         }
 
-        // Join an existing room
-        function joinRoom() {
-            const code = roomCodeInput.value.trim().toUpperCase();
+        // Client cancels request
+        function cancelRequest() {
+            if (userType !== 'client') return;
             
-            if (!userType) {
-                showStatus('Please select your role first.', 'error');
-                return;
-            }
+            socket.emit('cancel-request');
+            waitingState.style.display = 'none';
+            roleActions.style.display = 'block';
+            showStatus('Your request has been cancelled.', 'info');
+        }
+
+        // Therapist goes offline
+        function goOffline() {
+            if (userType !== 'therapist') return;
             
-            if (code.length !== 6) {
-                showStatus('Please enter a valid 6-character room code.', 'error');
-                return;
-            }
-            
-            socket.emit('join-room', { roomCode: code, userType: userType });
+            socket.emit('therapist-offline');
+            roleActions.style.display = 'none';
+            clientCard.classList.remove('selected');
+            therapistCard.classList.remove('selected');
+            showStatus('You are now offline.', 'info');
+        }
+
+        // Therapist accepts a request
+        function acceptRequest() {
+            requestNotification.style.display = 'none';
+            socket.emit('accept-request');
+            waitingTitle.textContent = 'Connecting to Client';
+            waitingDescription.textContent = 'Please wait while we establish a secure connection.';
+            waitingState.style.display = 'block';
+        }
+
+        // Therapist declines a request
+        function declineRequest() {
+            requestNotification.style.display = 'none';
+            socket.emit('decline-request');
+            showStatus('You have declined the request.', 'info');
         }
 
         // Initialize the call (get user media)
@@ -855,13 +939,6 @@
                 localVideo.srcObject = localStream;
                 localVideoPlaceholder.style.display = 'none';
                 
-                if (userType === 'therapist') {
-                    // Therapists wait for users to join
-                    waitingTitle.textContent = 'Waiting for User';
-                    waitingDescription.textContent = 'Please wait for the user to join the room.';
-                    waitingState.style.display = 'block';
-                }
-                
             } catch (error) {
                 console.error('Error accessing media devices:', error);
                 showStatus('Error accessing camera or microphone. Please check permissions.', 'error');
@@ -882,8 +959,7 @@
             peerConnection.onicecandidate = (event) => {
                 if (event.candidate) {
                     socket.emit('ice-candidate', {
-                        candidate: event.candidate,
-                        roomCode: roomCode
+                        candidate: event.candidate
                     });
                 }
             };
@@ -895,23 +971,19 @@
                 remoteVideoPlaceholder.style.display = 'none';
             };
             
-            // Create and send offer if user
-            if (userType === 'user') {
+            // Create and send offer if client
+            if (userType === 'client') {
                 try {
                     const offer = await peerConnection.createOffer();
                     await peerConnection.setLocalDescription(offer);
                     
                     socket.emit('offer', {
-                        offer: offer,
-                        roomCode: roomCode
+                        offer: offer
                     });
                 } catch (error) {
                     console.error('Error creating offer:', error);
                 }
             }
-            
-            // Start call timer
-            startTimer();
         }
 
         // Handle incoming offer
@@ -927,8 +999,7 @@
                 await peerConnection.setLocalDescription(answer);
                 
                 socket.emit('answer', {
-                    answer: answer,
-                    roomCode: roomCode
+                    answer: answer
                 });
             } catch (error) {
                 console.error('Error handling offer:', error);
@@ -1004,8 +1075,7 @@
             // Reset UI
             videoInterface.style.display = 'none';
             waitingState.style.display = 'none';
-            roomActions.style.display = 'block';
-            roomCodeDisplay.style.display = 'none';
+            roleActions.style.display = 'block';
             
             // Reset video elements
             localVideo.srcObject = null;
@@ -1022,25 +1092,34 @@
             // Stop timer
             stopTimer();
             
-            // Leave the room
-            if (socket && roomCode) {
-                socket.emit('leave-room', { roomCode: roomCode });
+            // Notify server
+            if (socket) {
+                socket.emit('end-session');
             }
         }
 
         // Start call timer
         function startTimer() {
-            callStartTime = new Date();
+            sessionTimeLeft = 600; // Reset to 10 minutes
+            updateTimerDisplay();
             timerInterval = setInterval(updateTimer, 1000);
         }
 
         // Update call timer
         function updateTimer() {
-            const now = new Date();
-            const diff = Math.floor((now - callStartTime) / 1000);
-            const minutes = Math.floor(diff / 60);
-            const seconds = diff % 60;
+            sessionTimeLeft--;
+            updateTimerDisplay();
             
+            if (sessionTimeLeft <= 0) {
+                endCall();
+                showStatus('Your session has ended. Thank you for connecting with SafeLine.', 'info');
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(sessionTimeLeft / 60);
+            const seconds = sessionTimeLeft % 60;
             sessionTimer.textContent = 
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
@@ -1051,7 +1130,7 @@
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
-            sessionTimer.textContent = '00:00';
+            sessionTimer.textContent = '10:00';
         }
 
         // Show status message
@@ -1067,3 +1146,4 @@
         }
     </script>
 </body>
+</html>

@@ -1,9 +1,9 @@
-# app_combined.py
 from flask import (
     Flask, render_template, request, redirect, url_for, flash, jsonify, session, send_from_directory
 )
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
@@ -15,12 +15,14 @@ import time
 import pickle
 import numpy as np
 from datetime import datetime
+import threading
+import uuid
 
 # -------------------------
 # Configuration
 # -------------------------
 APP_SECRET_KEY = os.getenv("SAFESPACE_SECRET_KEY", "safespace_secret_key")
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "xxxxx")
 OPENROUTER_URL = os.getenv("OPENROUTER_URL", "https://openrouter.ai/api/v1/chat/completions")
 
 UPLOAD_FOLDER = os.path.join("static", "uploads")
@@ -32,17 +34,25 @@ SHINE_DB = 'safespace.db'       # sqlite3 DB for shine submissions
 ML_MODEL_PATH = "autism_model.pkl"  # optional ML model (pickle)
 
 # -------------------------
-# Flask setup
+# Flask & SocketIO setup
 # -------------------------
 app = Flask(__name__)
 CORS(app)
 app.secret_key = APP_SECRET_KEY
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # SQLAlchemy (users)
 base_dir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(base_dir, USERS_DB)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# -------------------------
+# SafeLine State Management
+# -------------------------
+online_therapists = set()
+pending_requests = {}      # client_sid -> therapist_sid
+active_sessions = {}       # sid -> partner_sid
 
 # -------------------------
 # SQLAlchemy User model
@@ -111,52 +121,59 @@ def chat_with_openrouter(user_message):
 Provide gentle, supportive responses. Use simple language and be understanding.
 Offer encouragement and practical coping strategies when appropriate.
 Keep responses conversational and warm."""
+
     payload = {
-        "model": "openai/gpt-3.5-turbo",
+        "model": "openai/gpt-3.5-turbo-instruct",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
         ],
         "temperature": 0.7
     }
+
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json"
     }
+
     try:
-        resp = requests.post(OPENROUTER_URL, headers=headers, data=json.dumps(payload), timeout=20)
+        resp = requests.post(
+            OPENROUTER_URL,
+            headers=headers,
+            json=payload,
+            timeout=20
+        )
+
+        # ✅ DEBUG LINE — THIS IS WHERE IT GOES
+        print("OPENROUTER RESPONSE:", resp.status_code, resp.text)
+        print("OPENROUTER STATUS:", resp.status_code)
+        print("OPENROUTER BODY:", resp.text)
+        
         resp.raise_for_status()
         data = resp.json()
-        # support both openrouter and openai shaped responses
-        # try common paths
-        if 'choices' in data and len(data['choices']) > 0:
-            # openrouter often returns choices[0].message.content
-            choice = data['choices'][0]
-            if 'message' in choice and 'content' in choice['message']:
-                return choice['message']['content'].strip()
-            elif 'text' in choice:
-                return choice['text'].strip()
-        # fallback: try top-level fields
-        if 'reply' in data:
-            return data['reply']
-        return "Sorry — couldn't parse response from AI."
-    except requests.exceptions.HTTPError as e:
-        status = getattr(e.response, "status_code", None)
-        app.logger.error("HTTP error from OpenRouter: %s (status=%s)", e, status)
-        if status == 429:
-            time.sleep(2)
-            return chat_with_openrouter(user_message)
-        return "I'm having trouble connecting right now. Please try again later."
+        return data["choices"][0]["message"]["content"].strip()
+
     except Exception as e:
-        app.logger.exception("Error calling OpenRouter: %s", e)
+        print("OpenRouter ERROR:", e)
         return "I'm having trouble connecting right now. Please try again later."
+
+# -------------------------
+# SafeLine Auto-End Session
+# -------------------------
+def auto_end_session(client_sid, therapist_sid):
+    time.sleep(600)  # 10 minutes
+    if client_sid in active_sessions:
+        active_sessions.pop(client_sid, None)
+        active_sessions.pop(therapist_sid, None)
+        emit("session-ended", room=client_sid)
+        emit("session-ended", room=therapist_sid)
+        app.logger.info("Session auto-ended for %s and %s", client_sid, therapist_sid)
 
 # -------------------------
 # Routes: pages
 # -------------------------
 @app.route('/')
 def home():
-    # If logged in, go to index; else show login/register page
     if 'user_id' in session:
         return redirect(url_for('index'))
     return render_template('login.html')
@@ -186,37 +203,31 @@ def friend():
 
 @app.route('/safeline')
 def safeline():
-    return render_template('safeline1.html')
+    return render_template('safeline.html')
 
 @app.route('/shine')
 def shine():
-    # Connect to the Shine SQLite DB
     conn = sqlite3.connect(SHINE_DB)
     c = conn.cursor()
     c.execute("SELECT id, username, title, description, file_path, likes, created_at FROM shine_submissions ORDER BY datetime(created_at) DESC")
     submissions = c.fetchall()
     conn.close()
 
-    # Convert string dates to datetime objects
     submissions_fixed = []
     for sub in submissions:
         try:
-            date_obj = datetime.strptime(sub[6], '%Y-%m-%d %H:%M:%S')  # full timestamp format
+            date_obj = datetime.strptime(sub[6], '%Y-%m-%d %H:%M:%S')
         except Exception:
             date_obj = None
-        submissions_fixed.append(sub[:6] + (date_obj,))  # keep other columns
+        submissions_fixed.append(sub[:6] + (date_obj,))
 
-    # Render template with converted dates
     return render_template('shine.html', submissions=submissions_fixed)
 
-
-
 # -------------------------
-# Authentication endpoints (register/login/logout)
+# Authentication endpoints
 # -------------------------
 @app.route('/register', methods=['POST'])
 def register():
-    # Fields from your login.html register form
     firstName = request.form.get('firstName')
     lastName = request.form.get('lastName')
     email = request.form.get('email')
@@ -265,7 +276,7 @@ def logout():
     return redirect(url_for('home'))
 
 # -------------------------
-# View users (admin-ish)
+# View users
 # -------------------------
 @app.route('/view_users')
 def view_users():
@@ -276,7 +287,7 @@ def view_users():
     return render_template('view_users.html', users=users)
 
 # -------------------------
-# Shine endpoints (upload, like)
+# Shine endpoints
 # -------------------------
 @app.route('/shine/submit', methods=['POST'])
 def shine_submit():
@@ -326,13 +337,12 @@ def shine_like(submission_id):
     conn.close()
     return jsonify({"success": True, "likes": likes})
 
-# Serve uploaded files
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 # -------------------------
-# Friend chat API (frontend -> this backend -> OpenRouter)
+# Friend chat API
 # -------------------------
 @app.route('/api/chat', methods=['POST', 'OPTIONS'])
 def api_chat():
@@ -358,7 +368,6 @@ def predict():
     if ml_model is None:
         return jsonify({"error": "ML model not available on server."}), 500
     try:
-        # expecting form fields Q1..Q10 or Q1..Q10 numerically
         data = []
         for i in range(1, 11):
             key = f"Q{i}"
@@ -382,25 +391,124 @@ def health():
     return jsonify({"status": "healthy"})
 
 # -------------------------
-# Before request: (optional) clear session when debug and landing on home
+# Socket.IO Event Handlers
 # -------------------------
-@app.before_request
-def maybe_clear_session():
-    # Do not auto-clear sessions in production; this was in your earlier code for debug
-    if app.debug and request.endpoint == 'home':
-        # keep as-is or comment out if undesired
-        pass
+@socketio.on('connect')
+def handle_connect():
+    app.logger.info("Client connected: %s", request.sid)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    app.logger.info("Client disconnected: %s", request.sid)
+    online_therapists.discard(request.sid)
+    pending_requests.pop(request.sid, None)
+
+    partner = active_sessions.pop(request.sid, None)
+    if partner:
+        active_sessions.pop(partner, None)
+        emit("session-ended", room=partner)
+
+# -------------------------
+# SafeLine: Therapist Events
+# -------------------------
+@socketio.on('therapist-online')
+def handle_therapist_online():
+    online_therapists.add(request.sid)
+    app.logger.info("Therapist online: %s", request.sid)
+
+@socketio.on('therapist-offline')
+def handle_therapist_offline():
+    online_therapists.discard(request.sid)
+
+@socketio.on('accept-request')
+def handle_accept_request(data):
+    client_sid = data.get('clientId')
+    if not client_sid or client_sid not in pending_requests:
+        return
+
+    therapist_sid = request.sid
+    active_sessions[client_sid] = therapist_sid
+    active_sessions[therapist_sid] = client_sid
+    pending_requests.pop(client_sid, None)
+
+    emit('request-accepted', {'role': 'client'}, room=client_sid)
+    emit('request-accepted', {'role': 'therapist'}, room=therapist_sid)
+
+    threading.Thread(target=auto_end_session, args=(client_sid, therapist_sid), daemon=True).start()
+
+@socketio.on('decline-request')
+def handle_decline_request(data):
+    client_sid = data.get('clientId')
+    if client_sid:
+        emit('request-declined', room=client_sid)
+        pending_requests.pop(client_sid, None)
+
+# -------------------------
+# SafeLine: Client Events
+# -------------------------
+@socketio.on('request-therapist')
+def handle_request_therapist():
+    if not online_therapists:
+        emit('error', {'message': 'No therapists available'}, room=request.sid)
+        return
+
+    therapist_sid = list(online_therapists)[0]
+    pending_requests[request.sid] = therapist_sid
+
+    emit('therapist-request', {'clientId': request.sid}, room=therapist_sid)
+    emit('request-sent', room=request.sid)
+
+@socketio.on('cancel-request')
+def handle_cancel_request():
+    pending_requests.pop(request.sid, None)
+
+# -------------------------
+# SafeLine: WebRTC Signaling
+# -------------------------
+@socketio.on('offer')
+def handle_offer(data):
+    target = active_sessions.get(request.sid)
+    if target:
+        emit('offer', {
+            'offer': data['offer'],
+            'from': request.sid
+        }, room=target)
+
+@socketio.on('answer')
+def handle_answer(data):
+    target = active_sessions.get(request.sid)
+    if target:
+        emit('answer', {
+            'answer': data['answer'],
+            'from': request.sid
+        }, room=target)
+
+@socketio.on('ice-candidate')
+def handle_ice_candidate(data):
+    target = active_sessions.get(request.sid)
+    if target:
+        emit('ice-candidate', {
+            'candidate': data['candidate'],
+            'from': request.sid
+        }, room=target)
+
+@socketio.on('end-session')
+def handle_end_session():
+    partner = active_sessions.pop(request.sid, None)
+    if partner:
+        active_sessions.pop(partner, None)
+        emit('session-ended', room=partner)
 
 # -------------------------
 # Create DBs and run
 # -------------------------
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()   # create users table if needed
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
-
-
+        db.create_all()
+    app.logger.info("🚀 SafeSpace is running")
+    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    
+    
 #git add .
 #git commit -m ""
 #git push

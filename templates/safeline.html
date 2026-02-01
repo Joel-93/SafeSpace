@@ -1,1069 +1,1303 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSpace | Video Call</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeSpace - SafeLine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        /* Your existing CSS remains the same */
-        :root {
-            --soft-blue: #a8dadc;
-            --soft-green: #b7e4c7;
-            --light-yellow: #ffe5b4;
-            --soft-purple: #d4a5c8;
-            --light-gray: #f5f5f5;
-            --text-dark: #2d3748;
-            --text-light: #4a5568;
-            --white: #ffffff;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --border-radius: 12px;
-            --premium-gold: #ffd700;
-            --premium-dark: #b8860b;
-            --calm-blue: #E6F0FA;
-            --calm-lavender: #F0E6FA;
-            --success: #4CAF50;
-            --error: #f44336;
+      :root {
+        --soft-blue: #a8dadc;
+        --soft-green: #b7e4c7;
+        --light-yellow: #ffe5b4;
+        --soft-purple: #d4a5c8;
+        --light-gray: #f5f5f5;
+        --text-dark: #2d3748;
+        --text-light: #4a5568;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+        --success: #4caf50;
+        --error: #f44336;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        transition: all 0.3s ease;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      
+      /* Animated background */
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+      
+      .cloud {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: float linear infinite;
+      }
+      
+      .cloud:nth-child(1) {
+        width: 120px;
+        height: 40px;
+        top: 10%;
+        left: -120px;
+        animation-duration: 40s;
+        animation-delay: 0s;
+      }
+      
+      .cloud:nth-child(2) {
+        width: 180px;
+        height: 60px;
+        top: 25%;
+        left: -180px;
+        animation-duration: 50s;
+        animation-delay: 10s;
+      }
+      
+      .cloud:nth-child(3) {
+        width: 100px;
+        height: 35px;
+        top: 40%;
+        left: -100px;
+        animation-duration: 35s;
+        animation-delay: 5s;
+      }
+      
+      .cloud:nth-child(4) {
+        width: 150px;
+        height: 50px;
+        top: 60%;
+        left: -150px;
+        animation-duration: 45s;
+        animation-delay: 15s;
+      }
+      
+      .cloud:nth-child(5) {
+        width: 200px;
+        height: 70px;
+        top: 75%;
+        left: -200px;
+        animation-duration: 55s;
+        animation-delay: 20s;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateX(0);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        100% {
+          transform: translateX(calc(100vw + 200px));
         }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--light-gray);
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        
-        /* Your existing CSS continues... */
-        /* [Include all your existing CSS here - it's already optimized] */
-        
-        /* Header & Navigation */
-        header {
-            background-color: var(--white);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--soft-blue);
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            font-size: 2rem;
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 5%;
-        }
-        
-        .content-section {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-        
-        .section-title {
-            color: var(--text-dark);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: var(--premium-gold);
-        }
-        
-        .intro-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            color: var(--text-dark);
-        }
-        
-        /* User Selection */
+      }
+      
+      /* Header & Navigation */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--soft-blue);
+        text-decoration: none;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+      
+      .nav-tabs {
+        display: flex;
+        gap: 2rem;
+      }
+      
+      .nav-tab {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--text-dark);
+      }
+      
+      .nav-tab:hover,
+      .nav-tab.active {
+        background-color: var(--soft-blue);
+        color: var(--white);
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--soft-blue);
+      }
+      
+      /* Main Content */
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 5%;
+      }
+      
+      .content-section {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+      }
+      
+      .section-title {
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .section-title i {
+        color: var(--soft-blue);
+      }
+      
+      .intro-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+        color: var(--text-dark);
+      }
+      
+      /* User Selection */
+      .user-selection {
+        display: flex;
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      
+      @media (max-width: 968px) {
         .user-selection {
-            display: flex;
-            gap: 2rem;
-            margin: 2rem 0;
+          flex-direction: column;
         }
-        
-        .user-card {
-            flex: 1;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            text-align: center;
-            cursor: pointer;
+      }
+      
+      .user-card {
+        flex: 1;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        text-align: center;
+        cursor: pointer;
+      }
+      
+      .user-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--soft-blue);
+      }
+      
+      .user-card.selected {
+        border-color: var(--soft-blue);
+        background-color: rgba(168, 218, 220, 0.1);
+      }
+      
+      .user-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        color: var(--soft-blue);
+      }
+      
+      .user-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .user-description {
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Role Actions */
+      .role-actions {
+        display: none;
+        margin-top: 2rem;
+      }
+      
+      .action-card {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+      
+      .action-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .btn {
+        background: linear-gradient(135deg, var(--soft-blue), #8bc5c7);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(168, 218, 220, 0.3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(168, 218, 220, 0.4);
+      }
+      
+      .btn-secondary {
+        background: linear-gradient(135deg, var(--soft-green), #9bd4ad);
+      }
+      
+      .btn-error {
+        background: linear-gradient(135deg, var(--error), #d32f2f);
+      }
+      
+      /* Video Call Interface */
+      .video-interface {
+        display: none;
+        background: rgba(168, 218, 220, 0.1);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+      }
+      
+      .video-header {
+        background: var(--soft-blue);
+        color: var(--white);
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .video-container {
+        display: flex;
+        height: 500px;
+        position: relative;
+      }
+      
+      .remote-video-container {
+        flex: 1;
+        background: var(--text-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      
+      .remote-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .local-video-container {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 200px;
+        height: 150px;
+        background: var(--text-dark);
+        border-radius: 10px;
+        border: 2px solid var(--white);
+        overflow: hidden;
+      }
+      
+      .local-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .no-video {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+      
+      .no-video i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      
+      .video-controls {
+        padding: 1rem 1.5rem;
+        background: var(--white);
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        align-items: center;
+      }
+      
+      .control-btn {
+        background: var(--soft-blue);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .control-btn:hover {
+        background: #8bc5c7;
+        transform: scale(1.05);
+      }
+      
+      .control-btn.active {
+        background: var(--success);
+      }
+      
+      .control-btn.muted {
+        background: var(--error);
+      }
+      
+      .end-call-btn {
+        background: var(--error);
+      }
+      
+      .end-call-btn:hover {
+        background: #c0392b;
+      }
+      
+      .session-timer {
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+      
+      /* Status Messages */
+      .status-message {
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        text-align: center;
+        display: none;
+      }
+      
+      .status-success {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--success);
+        border: 1px solid var(--success);
+      }
+      
+      .status-error {
+        background-color: rgba(244, 67, 54, 0.1);
+        color: var(--error);
+        border: 1px solid var(--error);
+      }
+      
+      .status-info {
+        background-color: rgba(168, 218, 220, 0.1);
+        color: var(--soft-blue);
+        border: 1px solid var(--soft-blue);
+      }
+      
+      /* Waiting State */
+      .waiting-state {
+        display: none;
+        background: rgba(168, 218, 220, 0.1);
+        border-radius: var(--border-radius);
+        padding: 3rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+      }
+      
+      .waiting-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        color: var(--soft-blue);
+      }
+      
+      .waiting-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .waiting-description {
+        color: var(--text-light);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      /* Therapist Request Notification */
+      .request-notification {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--shadow-hover);
+        z-index: 1000;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+      }
+      
+      .request-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+      }
+      
+      .request-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+      
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        padding: 2rem 5%;
+        text-align: center;
+        margin-top: 4rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .copyright {
+        color: var(--text-light);
+      }
+      
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      
+      .footer-link {
+        color: var(--soft-blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-link:hover {
+        color: var(--soft-green);
+      }
+      
+      /* Accessibility Features */
+      .accessibility-bar {
+        background-color: var(--text-dark);
+        padding: 0.5rem 5%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+      
+      .accessibility-btn {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .accessibility-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* High Contrast Mode */
+      body.high-contrast {
+        --soft-blue: #0066cc;
+        --soft-green: #008000;
+        --light-yellow: #ffff00;
+        --soft-purple: #800080;
+        --light-gray: #000000;
+        --text-dark: #ffffff;
+        --text-light: #cccccc;
+        --white: #000000;
+        --shadow: 0 0 0 2px #ffffff;
+        --shadow-hover: 0 0 0 3px #ffffff;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-tabs {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          padding: 1rem;
         }
-        
-        .user-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--soft-blue);
+      
+        .nav-tabs.active {
+          display: flex;
         }
-        
-        .user-card.selected {
-            border-color: var(--soft-blue);
-            background-color: var(--calm-blue);
+      
+        .mobile-menu-btn {
+          display: block;
         }
-        
-        .user-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--soft-blue);
-        }
-        
-        .user-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-        
-        .user-description {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* Room Creation/Joining */
-        .room-actions {
-            display: none;
-            margin-top: 2rem;
-        }
-        
-        .action-card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-        
-        .action-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--soft-blue);
-            box-shadow: 0 0 0 3px rgba(168, 218, 220, 0.3);
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--soft-blue), #8bc5c7);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(168, 218, 220, 0.3);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(168, 218, 220, 0.4);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--soft-green), #9bd4ad);
-        }
-        
-        .btn-error {
-            background: linear-gradient(135deg, var(--error), #d32f2f);
-        }
-        
-        /* Video Call Interface */
-        .video-interface {
-            display: none;
-            background: var(--calm-blue);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-        
-        .video-header {
-            background: var(--soft-blue);
-            color: var(--white);
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
+      
         .video-container {
-            display: flex;
-            height: 500px;
-            position: relative;
+          flex-direction: column;
+          height: auto;
         }
-        
-        .remote-video-container {
-            flex: 1;
-            background: var(--text-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .remote-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
+      
         .local-video-container {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 200px;
-            height: 150px;
-            background: var(--text-dark);
-            border-radius: 10px;
-            border: 2px solid var(--white);
-            overflow: hidden;
+          position: relative;
+          bottom: auto;
+          right: auto;
+          width: 100%;
+          height: 200px;
+          margin: 1rem 0;
         }
-        
-        .local-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .no-video {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .no-video i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
+      
         .video-controls {
-            padding: 1rem 1.5rem;
-            background: var(--white);
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            align-items: center;
+          flex-wrap: wrap;
         }
-        
-        .control-btn {
-            background: var(--soft-blue);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .control-btn:hover {
-            background: #8bc5c7;
-            transform: scale(1.05);
-        }
-        
-        .control-btn.active {
-            background: var(--success);
-        }
-        
-        .control-btn.muted {
-            background: var(--error);
-        }
-        
-        .end-call-btn {
-            background: var(--error);
-        }
-        
-        .end-call-btn:hover {
-            background: #c0392b;
-        }
-        
-        .session-timer {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        
-        .room-code-display {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-        }
-        
-        /* Status Messages */
-        .status-message {
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-            text-align: center;
-            display: none;
-        }
-        
-        .status-success {
-            background-color: rgba(76, 175, 80, 0.1);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-        
-        .status-error {
-            background-color: rgba(244, 67, 54, 0.1);
-            color: var(--error);
-            border: 1px solid var(--error);
-        }
-        
-        .status-info {
-            background-color: rgba(168, 218, 220, 0.1);
-            color: var(--soft-blue);
-            border: 1px solid var(--soft-blue);
-        }
-        
-        /* Waiting State */
-        .waiting-state {
-            display: none;
-            background: var(--calm-blue);
-            border-radius: var(--border-radius);
-            padding: 3rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-        
-        .waiting-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            color: var(--soft-blue);
-        }
-        
-        .waiting-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-        
-        .waiting-description {
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--white);
-            padding: 2rem 5%;
-            text-align: center;
-            margin-top: 4rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
+      
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+          flex-direction: column;
         }
-        
-        .copyright {
-            color: var(--text-light);
+      
+        .request-actions {
+          flex-direction: column;
         }
-        
-        .confidentiality {
-            color: var(--text-light);
-            font-style: italic;
-            margin-top: 1rem;
-            width: 100%;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        
-        .footer-link {
-            color: var(--soft-blue);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-link:hover {
-            color: var(--soft-green);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .user-selection {
-                flex-direction: column;
-            }
-            
-            .video-container {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .local-video-container {
-                position: relative;
-                bottom: auto;
-                right: auto;
-                width: 100%;
-                height: 200px;
-                margin: 1rem 0;
-            }
-            
-            .video-controls {
-                flex-wrap: wrap;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+    </div>
+
+    <!-- Accessibility Bar -->
+    <div class="accessibility-bar">
+      <button class="accessibility-btn" id="highContrastToggle">High Contrast</button>
+      <button class="accessibility-btn" id="textSizeIncrease">A+</button>
+      <button class="accessibility-btn" id="textSizeDecrease">A-</button>
+    </div>
+
     <!-- Header -->
     <header>
-        <nav class="navbar">
-            <a href="/" class="logo">
-                <span class="logo-icon">🌿</span>
-                <span>SafeSpace</span>
-            </a>
-        </nav>
+      <nav class="navbar">
+        <a href="safeline.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span>SafeSpace</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <div class="nav-tabs" id="navTabs">
+          <a href="{{ url_for('home') }}" class="nav-tab ">Home</a>
+          <a href="{{ url_for('learn') }}" class="nav-tab">Learn</a>
+          <a href="{{ url_for('calm') }}" class="nav-tab">Calm</a>
+          <a href="{{ url_for('shine') }}" class="nav-tab">Shine</a>
+          <a href="{{ url_for('discover') }}" class="nav-tab">Discover</a>
+          <a href="{{ url_for('friend') }}" class="nav-tab">Friend</a>
+          <a href="{{ url_for('safeline') }}" class="nav-tab active">SafeLine</a>
+        </div>
+      </nav>
     </header>
 
-    <!-- Main Content -->
+    <!-- SafeLine Content -->
     <div class="container">
-        <!-- Welcome Section -->
-        <section class="content-section">
-            <h2 class="section-title"><i class="fas fa-video"></i> SafeLine Video Call</h2>
-            <p class="intro-text">
-                Connect securely with therapists through our encrypted video calling system.
-                Create a room and share the code with your therapist, or join an existing room with a code.
-            </p>
-            
-            <!-- Status Messages -->
-            <div class="status-message" id="statusMessage"></div>
-            
-            <!-- User Selection -->
-            <div class="user-selection">
-                <div class="user-card" id="userCard">
-                    <div class="user-icon">👤</div>
-                    <h3 class="user-title">User / Client</h3>
-                    <p class="user-description">
-                        I need to talk to a therapist. I'll create a room and share the code.
-                    </p>
-                    <button class="btn" id="selectUserBtn">
-                        <i class="fas fa-user"></i> Select as User
-                    </button>
-                </div>
-                
-                <div class="user-card" id="therapistCard">
-                    <div class="user-icon">👨‍⚕️</div>
-                    <h3 class="user-title">Therapist</h3>
-                    <p class="user-description">
-                        I'm a therapist. I'll join a room using a code provided by a client.
-                    </p>
-                    <button class="btn" id="selectTherapistBtn">
-                        <i class="fas fa-user-md"></i> Select as Therapist
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Room Actions -->
-            <div class="room-actions" id="roomActions">
-                <!-- User Actions (Create Room) -->
-                <div class="action-card" id="userActions">
-                    <h3 class="action-title">Create a New Room</h3>
-                    <p>Click the button below to create a secure room. Share the room code with your therapist.</p>
-                    <div class="form-group">
-                        <button class="btn" id="createRoomBtn">
-                            <i class="fas fa-plus-circle"></i> Create Room
-                        </button>
-                    </div>
-                    <div id="roomCodeDisplay" style="display: none;">
-                        <p>Your room code: <strong id="roomCode"></strong></p>
-                        <p>Share this code with your therapist.</p>
-                        <p>Waiting for therapist to join...</p>
-                    </div>
-                </div>
-                
-                <!-- Therapist Actions (Join Room) -->
-                <div class="action-card" id="therapistActions">
-                    <h3 class="action-title">Join an Existing Room</h3>
-                    <p>Enter the room code provided by your client to join the session.</p>
-                    <div class="form-group">
-                        <label for="roomCodeInput" class="form-label">Room Code</label>
-                        <input type="text" id="roomCodeInput" class="form-input" placeholder="Enter 6-digit code" maxlength="6">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn" id="joinRoomBtn">
-                            <i class="fas fa-sign-in-alt"></i> Join Room
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <!-- Welcome Section -->
+      <section class="content-section">
+        <h2 class="section-title"><i class="fas fa-video"></i> SafeLine Video Call</h2>
+        <p class="intro-text">Connect securely with therapists through our encrypted video calling system. Clients can request a session, and available therapists will be notified to accept the call. All sessions are limited to 10 minutes for privacy and efficiency.</p>
 
-        <!-- Waiting State -->
-        <section class="waiting-state" id="waitingState">
-            <div class="waiting-icon">
-                <i class="fas fa-clock"></i>
-            </div>
-            <h2 class="waiting-title" id="waitingTitle">Connecting You</h2>
-            <p class="waiting-description" id="waitingDescription">
-                Please wait while we establish a secure connection.
-            </p>
-        </section>
+        <!-- Status Messages -->
+        <div class="status-message" id="statusMessage"></div>
 
-        <!-- Video Call Interface -->
-        <section class="video-interface" id="videoInterface">
-            <div class="video-header">
-                <h3>Secure Video Session</h3>
-                <div class="session-timer" id="sessionTimer">00:00</div>
-                <div class="room-code-display" id="roomCodeHeader"></div>
+        <!-- User Selection -->
+        <div class="user-selection">
+          <div class="user-card" id="clientCard">
+            <div class="user-icon">👤</div>
+            <h3 class="user-title">Client</h3>
+            <p class="user-description">I need to talk to a therapist. I'll request a SafeLine session and connect with an available therapist.</p>
+            <button class="btn" id="selectClientBtn"><i class="fas fa-user"></i> Select as Client</button>
+          </div>
+
+          <div class="user-card" id="therapistCard">
+            <div class="user-icon">👨‍⚕️</div>
+            <h3 class="user-title">Therapist</h3>
+            <p class="user-description">I'm a therapist. I'll wait for client requests and accept calls when available.</p>
+            <button class="btn" id="selectTherapistBtn"><i class="fas fa-user-md"></i> Select as Therapist</button>
+          </div>
+        </div>
+
+        <!-- Role Actions -->
+        <div class="role-actions" id="roleActions">
+          <!-- Client Actions -->
+          <div class="action-card" id="clientActions">
+            <h3 class="action-title">Request SafeLine Session</h3>
+            <p>Click the button below to request a 10-minute session with an available therapist.</p>
+            <div class="form-group">
+              <button class="btn" id="requestSessionBtn"><i class="fas fa-headset"></i> Request for SafeLine</button>
             </div>
-            
-            <div class="video-container">
-                <div class="remote-video-container">
-                    <video class="remote-video" id="remoteVideo" autoplay playsinline></video>
-                    <div class="no-video" id="remoteVideoPlaceholder">
-                        <i class="fas fa-user"></i>
-                        <p>Waiting for participant...</p>
-                    </div>
-                </div>
-                
-                <div class="local-video-container">
-                    <video class="local-video" id="localVideo" autoplay muted playsinline></video>
-                    <div class="no-video" id="localVideoPlaceholder">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
+          </div>
+
+          <!-- Therapist Actions -->
+          <div class="action-card" id="therapistActions">
+            <h3 class="action-title">Therapist Online</h3>
+            <p>You are now online and waiting for client requests. You will receive a notification when a client requests a session.</p>
+            <div class="form-group">
+              <button class="btn btn-secondary" id="goOfflineBtn"><i class="fas fa-sign-out-alt"></i> Go Offline</button>
             </div>
-            
-            <div class="video-controls">
-                <button class="control-btn" id="muteAudioBtn">
-                    <i class="fas fa-microphone"></i>
-                </button>
-                <button class="control-btn" id="muteVideoBtn">
-                    <i class="fas fa-video"></i>
-                </button>
-                <button class="control-btn end-call-btn" id="endCallBtn">
-                    <i class="fas fa-phone-slash"></i>
-                </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Waiting State -->
+      <section class="waiting-state" id="waitingState">
+        <div class="waiting-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h2 class="waiting-title" id="waitingTitle">Waiting for Connection</h2>
+        <p class="waiting-description" id="waitingDescription">Please wait while we connect you with a therapist.</p>
+        <button class="btn btn-error" id="cancelRequestBtn" style="display: none;"><i class="fas fa-times"></i> Cancel Request</button>
+      </section>
+
+      <!-- Video Call Interface -->
+      <section class="video-interface" id="videoInterface">
+        <div class="video-header">
+          <h3>SafeLine Video Session</h3>
+          <div class="session-timer" id="sessionTimer">10:00</div>
+        </div>
+
+        <div class="video-container">
+          <div class="remote-video-container">
+            <video class="remote-video" id="remoteVideo" autoplay playsinline></video>
+            <div class="no-video" id="remoteVideoPlaceholder">
+              <i class="fas fa-user"></i>
+              <p>Waiting for participant...</p>
             </div>
-        </section>
+          </div>
+
+          <div class="local-video-container">
+            <video class="local-video" id="localVideo" autoplay muted playsinline></video>
+            <div class="no-video" id="localVideoPlaceholder">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-controls">
+          <button class="control-btn" id="muteAudioBtn"><i class="fas fa-microphone"></i></button>
+          <button class="control-btn" id="muteVideoBtn"><i class="fas fa-video"></i></button>
+          <button class="control-btn end-call-btn" id="endCallBtn"><i class="fas fa-phone-slash"></i></button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Therapist Request Notification -->
+    <div class="request-notification" id="requestNotification">
+      <div class="request-title">New Connection Request</div>
+      <p>A client is requesting a SafeLine session. Would you like to accept?</p>
+      <div class="request-actions">
+        <button class="btn btn-secondary" id="acceptRequestBtn"><i class="fas fa-check"></i> Accept</button>
+        <button class="btn btn-error" id="declineRequestBtn"><i class="fas fa-times"></i> Decline</button>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
-            <div class="confidentiality">All video calls are encrypted and private.</div>
-            <div class="footer-links">
-                <a href="#" class="footer-link">Contact</a>
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-            </div>
+      <div class="footer-content">
+        <div class="copyright">© 2025 SafeSpace. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
         </div>
+      </div>
     </footer>
 
+    <!-- Socket.io -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+
     <script>
-        // DOM Elements
-        const userCard = document.getElementById('userCard');
-        const therapistCard = document.getElementById('therapistCard');
-        const selectUserBtn = document.getElementById('selectUserBtn');
-        const selectTherapistBtn = document.getElementById('selectTherapistBtn');
-        const roomActions = document.getElementById('roomActions');
-        const userActions = document.getElementById('userActions');
-        const therapistActions = document.getElementById('therapistActions');
-        const createRoomBtn = document.getElementById('createRoomBtn');
-        const joinRoomBtn = document.getElementById('joinRoomBtn');
-        const roomCodeInput = document.getElementById('roomCodeInput');
-        const roomCodeDisplay = document.getElementById('roomCodeDisplay');
-        const roomCodeElement = document.getElementById('roomCode');
-        const roomCodeHeader = document.getElementById('roomCodeHeader');
-        const waitingState = document.getElementById('waitingState');
-        const videoInterface = document.getElementById('videoInterface');
-        const localVideo = document.getElementById('localVideo');
-        const remoteVideo = document.getElementById('remoteVideo');
-        const localVideoPlaceholder = document.getElementById('localVideoPlaceholder');
-        const remoteVideoPlaceholder = document.getElementById('remoteVideoPlaceholder');
-        const muteAudioBtn = document.getElementById('muteAudioBtn');
-        const muteVideoBtn = document.getElementById('muteVideoBtn');
-        const endCallBtn = document.getElementById('endCallBtn');
-        const sessionTimer = document.getElementById('sessionTimer');
-        const statusMessage = document.getElementById('statusMessage');
-        const waitingTitle = document.getElementById('waitingTitle');
-        const waitingDescription = document.getElementById('waitingDescription');
-
-        // Global variables
-        let socket;
-        let localStream;
-        let remoteStream;
-        let peerConnection;
-        let roomCode;
-        let userType;
-        let isAudioMuted = false;
-        let isVideoMuted = false;
-        let callStartTime;
-        let timerInterval;
-        
-        // WebRTC configuration (using free STUN servers)
-        const configuration = {
-            iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
-            ]
-        };
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Connect to Socket.IO server with optimized settings
-            socket = io({
-                transports: ['websocket', 'polling'], // Prefer websocket
-                upgrade: true,
-                rememberUpgrade: true,
-                forceNew: true,
-                timeout: 10000
-            });
-            
-            // Set up event listeners
-            setupEventListeners();
-            
-            // Set up Socket.IO event handlers
-            setupSocketHandlers();
-        });
-
-        // Set up DOM event listeners
-        function setupEventListeners() {
-            // User selection
-            selectUserBtn.addEventListener('click', () => selectUserType('user'));
-            selectTherapistBtn.addEventListener('click', () => selectUserType('therapist'));
-            
-            // Room actions
-            createRoomBtn.addEventListener('click', createRoom);
-            joinRoomBtn.addEventListener('click', joinRoom);
-            
-            // Video controls
-            muteAudioBtn.addEventListener('click', toggleAudio);
-            muteVideoBtn.addEventListener('click', toggleVideo);
-            endCallBtn.addEventListener('click', endCall);
-            
-            // Allow Enter key to join room
-            roomCodeInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') joinRoom();
-            });
-        }
-
+      // DOM Elements
+      const clientCard = document.getElementById('clientCard')
+      const therapistCard = document.getElementById('therapistCard')
+      const selectClientBtn = document.getElementById('selectClientBtn')
+      const selectTherapistBtn = document.getElementById('selectTherapistBtn')
+      const roleActions = document.getElementById('roleActions')
+      const clientActions = document.getElementById('clientActions')
+      const therapistActions = document.getElementById('therapistActions')
+      const requestSessionBtn = document.getElementById('requestSessionBtn')
+      const goOfflineBtn = document.getElementById('goOfflineBtn')
+      const waitingState = document.getElementById('waitingState')
+      const waitingTitle = document.getElementById('waitingTitle')
+      const waitingDescription = document.getElementById('waitingDescription')
+      const cancelRequestBtn = document.getElementById('cancelRequestBtn')
+      const videoInterface = document.getElementById('videoInterface')
+      const localVideo = document.getElementById('localVideo')
+      const remoteVideo = document.getElementById('remoteVideo')
+      const localVideoPlaceholder = document.getElementById('localVideoPlaceholder')
+      const remoteVideoPlaceholder = document.getElementById('remoteVideoPlaceholder')
+      const muteAudioBtn = document.getElementById('muteAudioBtn')
+      const muteVideoBtn = document.getElementById('muteVideoBtn')
+      const endCallBtn = document.getElementById('endCallBtn')
+      const sessionTimer = document.getElementById('sessionTimer')
+      const statusMessage = document.getElementById('statusMessage')
+      const requestNotification = document.getElementById('requestNotification')
+      const acceptRequestBtn = document.getElementById('acceptRequestBtn')
+      const declineRequestBtn = document.getElementById('declineRequestBtn')
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn')
+      const navTabs = document.getElementById('navTabs')
+      
+      // Global variables
+      let socket
+      let localStream
+      let peerConnection
+      let userType
+      let currentRequestId
+      let isAudioMuted = false
+      let isVideoMuted = false
+      let timerInterval
+      let sessionTimeLeft = 600 // 10 minutes in seconds
+      
+      // WebRTC configuration
+      const configuration = {
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }, { urls: 'stun:stun2.l.google.com:19302' }]
+      }
+      
+      // Initialize the application
+      document.addEventListener('DOMContentLoaded', function () {
+        // Connect to Socket.IO server
+        socket = io()
+      
+        // Set up event listeners
+        setupEventListeners()
+      
         // Set up Socket.IO event handlers
-        function setupSocketHandlers() {
-            // Room created successfully
-            socket.on('room-created', (code) => {
-                roomCode = code;
-                roomCodeElement.textContent = code;
-                roomCodeDisplay.style.display = 'block';
-                showStatus('Room created successfully! Share the code with your therapist.', 'success');
-                waitingTitle.textContent = 'Waiting for Therapist';
-                waitingDescription.textContent = 'Please wait while we connect you with a therapist.';
-                waitingState.style.display = 'block';
-                roomActions.style.display = 'none';
-                initializeCall();
-            });
-            
-            // Room joined successfully
-            socket.on('room-joined', (code) => {
-                roomCode = code;
-                roomCodeHeader.textContent = `Room: ${code}`;
-                showStatus('Successfully joined the room!', 'success');
-                initializeCall();
-            });
-            
-            // Room not found
-            socket.on('room-not-found', () => {
-                showStatus('Room not found. Please check the code and try again.', 'error');
-            });
-            
-            // Room is full
-            socket.on('room-full', () => {
-                showStatus('This room is already full. Please try another code.', 'error');
-            });
-            
-            // User joined the room
-            socket.on('user-joined', (userId) => {
-                showStatus('Therapist has joined the room! Starting call...', 'success');
-                waitingState.style.display = 'none';
-                videoInterface.style.display = 'block';
-                startCall();
-            });
-            
-            // User left the room
-            socket.on('user-left', (userId) => {
-                showStatus('The other participant has left the call.', 'info');
-                endCall();
-            });
-            
-            // WebRTC signaling
-            socket.on('offer', handleOffer);
-            socket.on('answer', handleAnswer);
-            socket.on('ice-candidate', handleIceCandidate);
-            
-            // Error handling
-            socket.on('error', (data) => {
-                showStatus(data.message || 'An error occurred', 'error');
-            });
+        setupSocketHandlers()
+      
+        // Set up accessibility features
+        setupAccessibility()
+      
+        // Set up mobile menu
+        setupMobileMenu()
+      })
+      
+      // Set up DOM event listeners
+      function setupEventListeners() {
+        // User selection
+        selectClientBtn.addEventListener('click', () => selectUserType('client'))
+        selectTherapistBtn.addEventListener('click', () => selectUserType('therapist'))
+      
+        // Client actions
+        requestSessionBtn.addEventListener('click', requestSession)
+        cancelRequestBtn.addEventListener('click', cancelRequest)
+      
+        // Therapist actions
+        goOfflineBtn.addEventListener('click', goOffline)
+        acceptRequestBtn.addEventListener('click', acceptRequest)
+        declineRequestBtn.addEventListener('click', declineRequest)
+      
+        // Video controls
+        muteAudioBtn.addEventListener('click', toggleAudio)
+        muteVideoBtn.addEventListener('click', toggleVideo)
+        endCallBtn.addEventListener('click', endCall)
+      }
+      
+      // Set up Socket.IO event handlers
+      function setupSocketHandlers() {
+        // Client request sent successfully
+        socket.on('request-sent', () => {
+          showStatus('Your request has been sent to available therapists.', 'info')
+          waitingTitle.textContent = 'Waiting for Therapist'
+          waitingDescription.textContent = 'Your request has been sent. Please wait for a therapist to accept your session.'
+          waitingState.style.display = 'block'
+          cancelRequestBtn.style.display = 'block'
+          roleActions.style.display = 'none'
+        })
+      
+        // Therapist received a request
+        socket.on('therapist-request', (data) => {
+          currentRequestId = data.clientId
+          requestNotification.style.display = 'block'
+        })
+      
+        // Request accepted
+        socket.on('request-accepted', (data) => {
+          showStatus('Connection established! Starting session...', 'success')
+          waitingState.style.display = 'none'
+          initializeCall().then(() => {
+            startCall()
+          })
+        })
+      
+        // Request declined
+        socket.on('request-declined', () => {
+          showStatus('Therapist is busy. Please try again later.', 'error')
+          waitingState.style.display = 'none'
+          roleActions.style.display = 'block'
+        })
+      
+        // Session ended
+        socket.on('session-ended', () => {
+          showStatus('Your session has ended. Thank you for connecting with SafeLine.', 'info')
+          endCall()
+        })
+      
+        // WebRTC signaling
+        socket.on('offer', handleOffer)
+        socket.on('answer', handleAnswer)
+        socket.on('ice-candidate', handleIceCandidate)
+      
+        // Error handling
+        socket.on('error', (data) => {
+          showStatus(data.message || 'An error occurred', 'error')
+        })
+      }
+      
+      // Set up accessibility features
+      function setupAccessibility() {
+        // High Contrast toggle
+        const highContrastBtn = document.getElementById('highContrastToggle')
+        highContrastBtn.addEventListener('click', () => {
+          document.body.classList.toggle('high-contrast')
+        })
+      
+        // Text size adjustments
+        const textIncreaseBtn = document.getElementById('textSizeIncrease')
+        const textDecreaseBtn = document.getElementById('textSizeDecrease')
+        textIncreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+          document.body.style.fontSize = `${currentSize * 1.1}px`
+        })
+        textDecreaseBtn.addEventListener('click', () => {
+          const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
+          document.body.style.fontSize = `${currentSize / 1.1}px`
+        })
+      }
+      
+      // Set up mobile menu
+      function setupMobileMenu() {
+        mobileMenuBtn.addEventListener('click', function () {
+          navTabs.classList.toggle('active')
+        })
+      
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (event) {
+          if (!event.target.closest('.navbar')) {
+            navTabs.classList.remove('active')
+          }
+        })
+      }
+      
+      // Select user type (client or therapist)
+      function selectUserType(type) {
+        userType = type
+      
+        // Update UI
+        clientCard.classList.toggle('selected', type === 'client')
+        therapistCard.classList.toggle('selected', type === 'therapist')
+      
+        // Show appropriate role actions
+        roleActions.style.display = 'block'
+        clientActions.style.display = type === 'client' ? 'block' : 'none'
+        therapistActions.style.display = type === 'therapist' ? 'block' : 'none'
+      
+        // If therapist, go online
+        if (type === 'therapist') {
+          socket.emit('therapist-online')
+          showStatus('You are now online and waiting for client requests.', 'success')
+        } else {
+          socket.emit('therapist-offline')
         }
-
-        // Select user type (user or therapist)
-        function selectUserType(type) {
-            userType = type;
-            
-            // Update UI
-            userCard.classList.toggle('selected', type === 'user');
-            therapistCard.classList.toggle('selected', type === 'therapist');
-            
-            // Show appropriate room actions
-            roomActions.style.display = 'block';
-            userActions.style.display = type === 'user' ? 'block' : 'none';
-            therapistActions.style.display = type === 'therapist' ? 'block' : 'none';
-        }
-
-        // Create a new room
-        function createRoom() {
-            if (!userType) {
-                showStatus('Please select your role first.', 'error');
-                return;
+      }
+      
+      // Client requests a session
+      function requestSession() {
+        if (userType !== 'client') return
+      
+        socket.emit('request-therapist')
+      }
+      
+      // Client cancels request
+      function cancelRequest() {
+        if (userType !== 'client') return
+      
+        socket.emit('cancel-request')
+        waitingState.style.display = 'none'
+        roleActions.style.display = 'block'
+        showStatus('Your request has been cancelled.', 'info')
+      }
+      
+      // Therapist goes offline
+      function goOffline() {
+        if (userType !== 'therapist') return
+      
+        socket.emit('therapist-offline')
+        roleActions.style.display = 'none'
+        clientCard.classList.remove('selected')
+        therapistCard.classList.remove('selected')
+        showStatus('You are now offline.', 'info')
+      }
+      
+      // Therapist accepts a request
+      function acceptRequest() {
+        requestNotification.style.display = 'none'
+        socket.emit('accept-request', { clientId: currentRequestId })
+        waitingTitle.textContent = 'Connecting to Client'
+        waitingDescription.textContent = 'Please wait while we establish a secure connection.'
+        waitingState.style.display = 'block'
+      }
+      
+      // Therapist declines a request
+      function declineRequest() {
+        requestNotification.style.display = 'none'
+        socket.emit('decline-request', { clientId: currentRequestId })
+        showStatus('You have declined the request.', 'info')
+      }
+      
+      // Initialize the call (get user media)
+      async function initializeCall() {
+        try {
+          // Get user media (audio and video)
+          localStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              frameRate: { ideal: 30 }
+            },
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true
             }
-            
-            socket.emit('create-room', { userType: userType });
+          })
+      
+          // Display local video
+          localVideo.srcObject = localStream
+          localVideoPlaceholder.style.display = 'none'
+        } catch (error) {
+          console.error('Error accessing media devices:', error)
+          showStatus('Error accessing camera or microphone. Please check permissions.', 'error')
         }
-
-        // Join an existing room
-        function joinRoom() {
-            const code = roomCodeInput.value.trim().toUpperCase();
-            
-            if (!userType) {
-                showStatus('Please select your role first.', 'error');
-                return;
-            }
-            
-            if (code.length !== 6) {
-                showStatus('Please enter a valid 6-character room code.', 'error');
-                return;
-            }
-            
-            socket.emit('join-room', { roomCode: code, userType: userType });
+      }
+      
+      // Start the call (create peer connection)
+      async function startCall() {
+        // Create peer connection
+        peerConnection = new RTCPeerConnection(configuration)
+      
+        // Add local stream to connection
+        localStream.getTracks().forEach((track) => {
+          peerConnection.addTrack(track, localStream)
+        })
+      
+        // Set up event handlers for peer connection
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+            socket.emit('ice-candidate', {
+              candidate: event.candidate
+            })
+          }
         }
-
-        // Initialize the call (get user media)
-        async function initializeCall() {
-            try {
-                // Get user media (audio and video)
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 },
-                        frameRate: { ideal: 30 }
-                    },
-                    audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        autoGainControl: true
-                    }
-                });
-                
-                // Display local video
-                localVideo.srcObject = localStream;
-                localVideoPlaceholder.style.display = 'none';
-                
-                if (userType === 'therapist') {
-                    // Therapists wait for users to join
-                    waitingTitle.textContent = 'Waiting for User';
-                    waitingDescription.textContent = 'Please wait for the user to join the room.';
-                    waitingState.style.display = 'block';
-                }
-                
-            } catch (error) {
-                console.error('Error accessing media devices:', error);
-                showStatus('Error accessing camera or microphone. Please check permissions.', 'error');
-            }
+      
+        peerConnection.ontrack = (event) => {
+          // Get remote stream
+          remoteVideo.srcObject = event.streams[0]
+          remoteVideoPlaceholder.style.display = 'none'
         }
-
-        // Start the call (create peer connection)
-        async function startCall() {
-            // Create peer connection
-            peerConnection = new RTCPeerConnection(configuration);
-            
-            // Add local stream to connection
-            localStream.getTracks().forEach(track => {
-                peerConnection.addTrack(track, localStream);
-            });
-            
-            // Set up event handlers for peer connection
-            peerConnection.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.emit('ice-candidate', {
-                        candidate: event.candidate,
-                        roomCode: roomCode
-                    });
-                }
-            };
-            
-            peerConnection.ontrack = (event) => {
-                // Get remote stream
-                remoteStream = event.streams[0];
-                remoteVideo.srcObject = remoteStream;
-                remoteVideoPlaceholder.style.display = 'none';
-            };
-            
-            // Create and send offer if user
-            if (userType === 'user') {
-                try {
-                    const offer = await peerConnection.createOffer();
-                    await peerConnection.setLocalDescription(offer);
-                    
-                    socket.emit('offer', {
-                        offer: offer,
-                        roomCode: roomCode
-                    });
-                } catch (error) {
-                    console.error('Error creating offer:', error);
-                }
-            }
-            
-            // Start call timer
-            startTimer();
+      
+        // Create and send offer if client
+        if (userType === 'client') {
+          try {
+            const offer = await peerConnection.createOffer({
+              offerToReceiveAudio: true,
+              offerToReceiveVideo: true
+            })
+            await peerConnection.setLocalDescription(offer)
+      
+            socket.emit('offer', {
+              offer: offer
+            })
+      
+            // Show video interface and start timer
+            videoInterface.style.display = 'block'
+            startTimer()
+          } catch (error) {
+            console.error('Error creating offer:', error)
+          }
+        } else {
+          // Therapist: show video interface and start timer
+          videoInterface.style.display = 'block'
+          startTimer()
         }
-
-        // Handle incoming offer
-        async function handleOffer(data) {
-            if (!peerConnection) {
-                await startCall();
+      }
+      
+      // Handle incoming offer
+      async function handleOffer(data) {
+        if (!peerConnection) {
+          await initializeCall()
+          peerConnection = new RTCPeerConnection(configuration)
+      
+          // Add local stream
+          localStream.getTracks().forEach((track) => {
+            peerConnection.addTrack(track, localStream)
+          })
+      
+          // Set up event handlers
+          peerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+              socket.emit('ice-candidate', {
+                candidate: event.candidate
+              })
             }
-            
-            try {
-                await peerConnection.setRemoteDescription(data.offer);
-                
-                const answer = await peerConnection.createAnswer();
-                await peerConnection.setLocalDescription(answer);
-                
-                socket.emit('answer', {
-                    answer: answer,
-                    roomCode: roomCode
-                });
-            } catch (error) {
-                console.error('Error handling offer:', error);
-            }
+          }
+      
+          peerConnection.ontrack = (event) => {
+            remoteVideo.srcObject = event.streams[0]
+            remoteVideoPlaceholder.style.display = 'none'
+          }
         }
-
-        // Handle incoming answer
-        async function handleAnswer(data) {
-            try {
-                await peerConnection.setRemoteDescription(data.answer);
-            } catch (error) {
-                console.error('Error handling answer:', error);
-            }
+      
+        try {
+          await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer))
+          const answer = await peerConnection.createAnswer()
+          await peerConnection.setLocalDescription(answer)
+      
+          socket.emit('answer', {
+            answer: answer
+          })
+        } catch (error) {
+          console.error('Error handling offer:', error)
         }
-
-        // Handle incoming ICE candidate
-        async function handleIceCandidate(data) {
-            try {
-                await peerConnection.addIceCandidate(data.candidate);
-            } catch (error) {
-                console.error('Error adding ICE candidate:', error);
-            }
+      }
+      
+      // Handle incoming answer
+      async function handleAnswer(data) {
+        try {
+          if (!peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer))
+          }
+        } catch (error) {
+          console.error('Error handling answer:', error)
         }
-
-        // Toggle audio mute
-        function toggleAudio() {
-            if (!localStream) return;
-            
-            const audioTracks = localStream.getAudioTracks();
-            if (audioTracks.length > 0) {
-                isAudioMuted = !isAudioMuted;
-                audioTracks[0].enabled = !isAudioMuted;
-                
-                muteAudioBtn.classList.toggle('muted', isAudioMuted);
-                muteAudioBtn.innerHTML = isAudioMuted ? 
-                    '<i class="fas fa-microphone-slash"></i>' : 
-                    '<i class="fas fa-microphone"></i>';
-            }
+      }
+      
+      // Handle incoming ICE candidate
+      async function handleIceCandidate(data) {
+        try {
+          if (peerConnection) {
+            await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate))
+          }
+        } catch (error) {
+          console.error('Error adding ICE candidate:', error)
         }
-
-        // Toggle video mute
-        function toggleVideo() {
-            if (!localStream) return;
-            
-            const videoTracks = localStream.getVideoTracks();
-            if (videoTracks.length > 0) {
-                isVideoMuted = !isVideoMuted;
-                videoTracks[0].enabled = !isVideoMuted;
-                
-                muteVideoBtn.classList.toggle('muted', isVideoMuted);
-                muteVideoBtn.innerHTML = isVideoMuted ? 
-                    '<i class="fas fa-video-slash"></i>' : 
-                    '<i class="fas fa-video"></i>';
-                
-                // Show/hide video placeholder
-                localVideoPlaceholder.style.display = isVideoMuted ? 'flex' : 'none';
-            }
+      }
+      
+      // Toggle audio mute
+      function toggleAudio() {
+        if (!localStream) return
+      
+        const audioTracks = localStream.getAudioTracks()
+        if (audioTracks.length > 0) {
+          isAudioMuted = !isAudioMuted
+          audioTracks[0].enabled = !isAudioMuted
+      
+          muteAudioBtn.classList.toggle('muted', isAudioMuted)
+          muteAudioBtn.innerHTML = isAudioMuted ? '<i class="fas fa-microphone-slash"></i>' : '<i class="fas fa-microphone"></i>'
         }
-
-        // End the call
-        function endCall() {
-            // Stop all media tracks
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-            }
-            
-            // Close peer connection
-            if (peerConnection) {
-                peerConnection.close();
-                peerConnection = null;
-            }
-            
-            // Reset UI
-            videoInterface.style.display = 'none';
-            waitingState.style.display = 'none';
-            roomActions.style.display = 'block';
-            roomCodeDisplay.style.display = 'none';
-            
-            // Reset video elements
-            localVideo.srcObject = null;
-            remoteVideo.srcObject = null;
-            localVideoPlaceholder.style.display = 'flex';
-            remoteVideoPlaceholder.style.display = 'flex';
-            
-            // Reset controls
-            muteAudioBtn.classList.remove('muted');
-            muteVideoBtn.classList.remove('muted');
-            muteAudioBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-            muteVideoBtn.innerHTML = '<i class="fas fa-video"></i>';
-            
-            // Stop timer
-            stopTimer();
-            
-            // Leave the room
-            if (socket && roomCode) {
-                socket.emit('leave-room', { roomCode: roomCode });
-            }
+      }
+      
+      // Toggle video mute
+      function toggleVideo() {
+        if (!localStream) return
+      
+        const videoTracks = localStream.getVideoTracks()
+        if (videoTracks.length > 0) {
+          isVideoMuted = !isVideoMuted
+          videoTracks[0].enabled = !isVideoMuted
+      
+          muteVideoBtn.classList.toggle('muted', isVideoMuted)
+          muteVideoBtn.innerHTML = isVideoMuted ? '<i class="fas fa-video-slash"></i>' : '<i class="fas fa-video"></i>'
+      
+          // Show/hide video placeholder
+          localVideoPlaceholder.style.display = isVideoMuted ? 'flex' : 'none'
         }
-
-        // Start call timer
-        function startTimer() {
-            callStartTime = new Date();
-            timerInterval = setInterval(updateTimer, 1000);
+      }
+      
+      // End the call
+      function endCall() {
+        // Stop all media tracks
+        if (localStream) {
+          localStream.getTracks().forEach((track) => track.stop())
         }
-
-        // Update call timer
-        function updateTimer() {
-            const now = new Date();
-            const diff = Math.floor((now - callStartTime) / 1000);
-            const minutes = Math.floor(diff / 60);
-            const seconds = diff % 60;
-            
-            sessionTimer.textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+        // Close peer connection
+        if (peerConnection) {
+          peerConnection.close()
+          peerConnection = null
         }
-
-        // Stop call timer
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            sessionTimer.textContent = '00:00';
+      
+        // Reset UI
+        videoInterface.style.display = 'none'
+        waitingState.style.display = 'none'
+        roleActions.style.display = 'block'
+      
+        // Reset video elements
+        localVideo.srcObject = null
+        remoteVideo.srcObject = null
+        localVideoPlaceholder.style.display = 'flex'
+        remoteVideoPlaceholder.style.display = 'flex'
+      
+        // Reset controls
+        muteAudioBtn.classList.remove('muted')
+        muteVideoBtn.classList.remove('muted')
+        muteAudioBtn.innerHTML = '<i class="fas fa-microphone"></i>'
+        muteVideoBtn.innerHTML = '<i class="fas fa-video"></i>'
+      
+        // Stop timer
+        stopTimer()
+      
+        // Notify server
+        if (socket) {
+          socket.emit('end-session')
         }
-
-        // Show status message
-        function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message status-${type}`;
-            statusMessage.style.display = 'block';
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 5000);
+      }
+      
+      // Start call timer
+      function startTimer() {
+        sessionTimeLeft = 600 // Reset to 10 minutes
+        updateTimerDisplay()
+        timerInterval = setInterval(updateTimer, 1000)
+      }
+      
+      // Update call timer
+      function updateTimer() {
+        sessionTimeLeft--
+        updateTimerDisplay()
+      
+        if (sessionTimeLeft <= 0) {
+          endCall()
+          showStatus('Your session has ended. Thank you for connecting with SafeLine.', 'info')
         }
+      }
+      
+      // Update timer display
+      function updateTimerDisplay() {
+        const minutes = Math.floor(sessionTimeLeft / 60)
+        const seconds = sessionTimeLeft % 60
+        sessionTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      }
+      
+      // Stop call timer
+      function stopTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval)
+          timerInterval = null
+        }
+        sessionTimer.textContent = '10:00'
+      }
+      
+      // Show status message
+      function showStatus(message, type) {
+        statusMessage.textContent = message
+        statusMessage.className = `status-message status-${type}`
+        statusMessage.style.display = 'block'
+      
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          statusMessage.style.display = 'none'
+        }, 5000)
+      }
     </script>
-</body>
+  </body>
+</html>

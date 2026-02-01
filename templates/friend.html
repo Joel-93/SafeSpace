@@ -550,291 +550,201 @@
       </div>
     </footer>
 
-    <script>
-      // DOM elements
-      const chatMessages = document.getElementById('chatMessages')
-      const messageInput = document.getElementById('messageInput')
-      const sendBtn = document.getElementById('sendBtn')
-      const voiceBtn = document.getElementById('voiceBtn')
-      const moodSelector = document.getElementById('moodSelector')
-      
-      // API Configuration
-      const API_BASE_URL = 'https://safespace.kwscloud.in'
-      const CHAT_ENDPOINT = `${API_BASE_URL}/api/chat`
-      
-      // Initialize the page
-      document.addEventListener('DOMContentLoaded', function () {
-        // Load previous chat history
-        loadChatHistory()
-      
-        // Set up event listeners
-        sendBtn.addEventListener('click', sendMessage)
-        messageInput.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            sendMessage()
-          }
-        })
-      
-        voiceBtn.addEventListener('click', toggleVoiceInput)
-      
-        // Set up mood buttons
-        document.querySelectorAll('.mood-btn').forEach((btn) => {
-          btn.addEventListener('click', function () {
-            document.querySelectorAll('.mood-btn').forEach((b) => b.classList.remove('active'))
-            this.classList.add('active')
-          })
-        })
-      
-        // Set up mobile menu
-        document.getElementById('mobileMenuBtn').addEventListener('click', function () {
-          document.getElementById('navTabs').classList.toggle('active')
-        })
-      
-        // Set up accessibility buttons
-        document.getElementById('highContrastToggle').addEventListener('click', toggleHighContrast)
-        document.getElementById('textSizeIncrease').addEventListener('click', increaseTextSize)
-        document.getElementById('textSizeDecrease').addEventListener('click', decreaseTextSize)
-      
-        // Auto-resize textarea
-        messageInput.addEventListener('input', autoResizeTextarea)
-      
-        // Test API connection on load
-        testAPIConnection()
+<script>
+  // =========================
+  // DOM ELEMENTS
+  // =========================
+  const chatMessages = document.getElementById('chatMessages')
+  const messageInput = document.getElementById('messageInput')
+  const sendBtn = document.getElementById('sendBtn')
+  const voiceBtn = document.getElementById('voiceBtn')
+  const moodSelector = document.getElementById('moodSelector')
+
+  // =========================
+  // API CONFIG (LOCALHOST)
+  // =========================
+  const CHAT_ENDPOINT = '/api/chat'   // ✅ CORRECT
+  const HEALTH_ENDPOINT = '/health'
+
+  // =========================
+  // INIT
+  // =========================
+  document.addEventListener('DOMContentLoaded', () => {
+    loadChatHistory()
+
+    sendBtn.addEventListener('click', sendMessage)
+    messageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        sendMessage()
+      }
+    })
+
+    voiceBtn.addEventListener('click', toggleVoiceInput)
+
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
       })
-      
-      // Test API connection
-      async function testAPIConnection() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/health`)
-          if (response.ok) {
-            console.log('✅ API connection successful')
-          } else {
-            console.warn('⚠️ API health check failed')
-          }
-        } catch (error) {
-          console.error('❌ API connection failed:', error)
-        }
+    })
+
+    testAPIConnection()
+  })
+
+  // =========================
+  // API HEALTH CHECK
+  // =========================
+  async function testAPIConnection() {
+    try {
+      const res = await fetch(HEALTH_ENDPOINT)
+      if (res.ok) {
+        console.log('✅ Backend connected')
+      } else {
+        console.warn('⚠️ Backend reachable but unhealthy')
       }
-      
-      // Send a message
-      async function sendMessage() {
-        const message = messageInput.value.trim()
-        if (message === '') return
-      
-        // Add user message to chat
-        addMessage(message, 'user')
-      
-        // Show mood selector
-        moodSelector.style.display = 'flex'
-      
-        // Clear input
-        messageInput.value = ''
-        autoResizeTextarea()
-      
-        // Show typing indicator
-        showTypingIndicator()
-      
-        try {
-          // Get current mood
-          const currentMood = getCurrentMood()
-      
-          // Call your backend API
-          const response = await callFriendAPI(message, currentMood)
-      
-          // Remove typing indicator
-          removeTypingIndicator()
-      
-          // Add friend response to chat
-          addMessage(response, 'friend')
-      
-          // Check for safety concerns
-          if (hasSafetyConcerns(message)) {
-            addSafetyNotice()
-          }
-      
-          // Save to chat history
-          saveChatHistory()
-        } catch (error) {
-          console.error('API Error:', error)
-          removeTypingIndicator()
-          addMessage("I'm having trouble connecting right now. Please make sure the backend server is running on http://127.0.0.1:5000", 'friend')
-        }
+    } catch (err) {
+      console.error('❌ Backend NOT running', err)
+    }
+  }
+
+  // =========================
+  // SEND MESSAGE
+  // =========================
+  async function sendMessage() {
+    const message = messageInput.value.trim()
+    if (!message) return
+
+    addMessage(message, 'user')
+    messageInput.value = ''
+    autoResizeTextarea()
+    showTypingIndicator()
+
+    try {
+      const mood = getCurrentMood()
+      const reply = await callFriendAPI(message, mood)
+      removeTypingIndicator()
+      addMessage(reply, 'friend')
+
+      if (hasSafetyConcerns(message)) {
+        addSafetyNotice()
       }
-      
-      // API Call Function - Connect to your Flask backend
-      async function callFriendAPI(userMessage, mood) {
-        try {
-          const response = await fetch(CHAT_ENDPOINT, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              message: userMessage,
-              mood: mood
-            })
-          })
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-          }
-      
-          const data = await response.json()
-          return data.reply
-        } catch (error) {
-          console.error('Error calling API:', error)
-          throw error
-        }
-      }
-      
-      // Add a message to the chat
-      function addMessage(text, sender) {
-        const messageElement = document.createElement('div')
-        messageElement.className = `message ${sender}-message`
-      
-        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      
-        messageElement.innerHTML = `
-                      ${text}
-                      <div class="message-time">${time}</div>
-                  `
-      
-        chatMessages.appendChild(messageElement)
-        chatMessages.scrollTop = chatMessages.scrollHeight
-      }
-      
-      // Show typing indicator
-      function showTypingIndicator() {
-        const typingElement = document.createElement('div')
-        typingElement.className = 'typing-indicator'
-        typingElement.id = 'typingIndicator'
-        typingElement.innerHTML = `
-                      <div class="typing-dots">
-                          <div class="typing-dot"></div>
-                          <div class="typing-dot"></div>
-                          <div class="typing-dot"></div>
-                      </div>
-                      <span>Your Friend is typing...</span>
-                  `
-        chatMessages.appendChild(typingElement)
-        chatMessages.scrollTop = chatMessages.scrollHeight
-      }
-      
-      // Remove typing indicator
-      function removeTypingIndicator() {
-        const typingIndicator = document.getElementById('typingIndicator')
-        if (typingIndicator) {
-          typingIndicator.remove()
-        }
-      }
-      
-      // Get current mood from selected button
-      function getCurrentMood() {
-        const activeMood = document.querySelector('.mood-btn.active')
-        return activeMood ? activeMood.dataset.mood : null
-      }
-      
-      // Check if message has safety concerns
-      function hasSafetyConcerns(message) {
-        const lowerMessage = message.toLowerCase()
-        const concerningWords = ['suicide', 'kill myself', 'end it all', 'want to die', 'self harm', 'hurt myself']
-        return concerningWords.some((word) => lowerMessage.includes(word))
-      }
-      
-      // Add safety notice
-      function addSafetyNotice() {
-        const safetyElement = document.createElement('div')
-        safetyElement.className = 'message friend-message'
-        safetyElement.innerHTML = `
-                      <strong>You're not alone.</strong> Please consider talking to someone you trust or a professional. There are people who want to help you. 💙
-                      <div class="message-time">Important</div>
-                  `
-        chatMessages.appendChild(safetyElement)
-        chatMessages.scrollTop = chatMessages.scrollHeight
-      
-        // Save to chat history
-        saveChatHistory()
-      }
-      
-      // Toggle voice input
-      function toggleVoiceInput() {
-        if (!('webkitSpeechRecognition' in window)) {
-          alert('Speech recognition is not supported in your browser. Try Chrome or Edge.')
-          return
-        }
-      
-        const recognition = new webkitSpeechRecognition()
-        recognition.continuous = false
-        recognition.interimResults = false
-      
-        recognition.start()
-      
-        voiceBtn.innerHTML = '<i class="fas fa-circle"></i>'
-        voiceBtn.style.backgroundColor = '#ff6b6b'
-      
-        recognition.onresult = function (event) {
-          const transcript = event.results[0][0].transcript
-          messageInput.value = transcript
-          autoResizeTextarea()
-      
-          // Reset button
-          voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
-          voiceBtn.style.backgroundColor = ''
-        }
-      
-        recognition.onerror = function (event) {
-          console.error('Speech recognition error', event.error)
-      
-          // Reset button
-          voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
-          voiceBtn.style.backgroundColor = ''
-        }
-      
-        recognition.onend = function () {
-          // Reset button if recognition ends without result
-          if (voiceBtn.innerHTML.includes('fa-circle')) {
-            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>'
-            voiceBtn.style.backgroundColor = ''
-          }
-        }
-      }
-      
-      // Auto-resize textarea
-      function autoResizeTextarea() {
-        messageInput.style.height = 'auto'
-        messageInput.style.height = messageInput.scrollHeight + 'px'
-      }
-      
-      // Save chat history to localStorage
-      function saveChatHistory() {
-        const messages = chatMessages.innerHTML
-        localStorage.setItem('friendChatHistory', messages)
-      }
-      
-      // Load chat history from localStorage
-      function loadChatHistory() {
-        const savedMessages = localStorage.getItem('friendChatHistory')
-        if (savedMessages) {
-          chatMessages.innerHTML = savedMessages
-          chatMessages.scrollTop = chatMessages.scrollHeight
-        }
-      }
-      
-      // Accessibility functions
-      function toggleHighContrast() {
-        document.body.classList.toggle('high-contrast')
-      }
-      
-      function increaseTextSize() {
-        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
-        document.body.style.fontSize = currentSize + 2 + 'px'
-      }
-      
-      function decreaseTextSize() {
-        const currentSize = parseFloat(getComputedStyle(document.body).fontSize)
-        document.body.style.fontSize = currentSize - 2 + 'px'
-      }
-    </script>
+
+      saveChatHistory()
+    } catch (err) {
+      removeTypingIndicator()
+      addMessage(
+        "I'm having trouble connecting right now. Please make sure the backend server is running on http://127.0.0.1:5000",
+        'friend'
+      )
+      console.error(err)
+    }
+  }
+
+  // =========================
+  // BACKEND CALL
+  // =========================
+  async function callFriendAPI(userMessage, mood) {
+    const response = await fetch(CHAT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage,
+        mood: mood
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`)
+    }
+
+    const data = await response.json()
+    return data.reply
+  }
+
+  // =========================
+  // UI HELPERS
+  // =========================
+  function addMessage(text, sender) {
+    const msg = document.createElement('div')
+    msg.className = `message ${sender}-message`
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    msg.innerHTML = `${text}<div class="message-time">${time}</div>`
+    chatMessages.appendChild(msg)
+    chatMessages.scrollTop = chatMessages.scrollHeight
+  }
+
+  function showTypingIndicator() {
+    const el = document.createElement('div')
+    el.id = 'typingIndicator'
+    el.className = 'typing-indicator'
+    el.innerHTML = `
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <small>Your Friend is typing...</small>
+    `
+    chatMessages.appendChild(el)
+    chatMessages.scrollTop = chatMessages.scrollHeight
+  }
+
+  function removeTypingIndicator() {
+    const el = document.getElementById('typingIndicator')
+    if (el) el.remove()
+  }
+
+  function getCurrentMood() {
+    const active = document.querySelector('.mood-btn.active')
+    return active ? active.dataset.mood : null
+  }
+
+  function hasSafetyConcerns(text) {
+    const risky = ['suicide', 'kill myself', 'end it all', 'want to die', 'self harm']
+    return risky.some(word => text.toLowerCase().includes(word))
+  }
+
+  function addSafetyNotice() {
+    addMessage(
+      "You're not alone. Please consider reaching out to someone you trust or a professional. 💙",
+      'friend'
+    )
+  }
+
+  function autoResizeTextarea() {
+    messageInput.style.height = 'auto'
+    messageInput.style.height = messageInput.scrollHeight + 'px'
+  }
+
+  // =========================
+  // VOICE INPUT
+  // =========================
+  function toggleVoiceInput() {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert('Speech recognition not supported')
+      return
+    }
+
+    const rec = new webkitSpeechRecognition()
+    rec.start()
+
+    rec.onresult = (e) => {
+      messageInput.value = e.results[0][0].transcript
+      autoResizeTextarea()
+    }
+  }
+
+  // =========================
+  // LOCAL STORAGE
+  // =========================
+  function saveChatHistory() {
+    localStorage.setItem('friendChatHistory', chatMessages.innerHTML)
+  }
+
+  function loadChatHistory() {
+    const data = localStorage.getItem('friendChatHistory')
+    if (data) chatMessages.innerHTML = data
+  }
+</script>
+
   </body>
 </html>
